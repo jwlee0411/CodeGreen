@@ -41,14 +41,14 @@ public class MainActivity extends AppCompatActivity {
             String message = re;
             Log.d("onActivityResult", "onActivityResult: ." + re);
 
-            Toast.makeText(this, re, Toast.LENGTH_LONG).show(); // 바코드에 인식된 숫자 Toast로 띄우기
+            //Toast.makeText(this, re, Toast.LENGTH_LONG).show(); // 바코드에 인식된 숫자 Toast로 띄우기
 
             SharedPreferences preferences = getSharedPreferences("BarcodeResult", 0);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString("result", re);
             editor.commit();
 
-            Intent intent1 = new Intent(this, AfterScanActivity.class);
+            Intent intent1 = new Intent(getApplicationContext(), AfterScanActivity.class);
             startActivity(intent1); //새 창(상품정보 띄울 창) 띄우기
             finish();
         }
