@@ -13,10 +13,11 @@ public class AfterScanActivity extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
-        setContentView(R.layout.activity_after_scan);
+        setContentView(R.layout.activity_splash);
         SharedPreferences preferences = getSharedPreferences("BarcodeResult", 0);
         String result = preferences.getString("result", "");
         System.out.println("■");
+        System.out.println(result);
         Button button = findViewById(R.id.button);
         button.setText(result);
     }

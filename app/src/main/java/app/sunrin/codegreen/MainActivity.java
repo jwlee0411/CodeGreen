@@ -19,14 +19,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // setContentView(R.layout.activity_main);
+
     }
 
-    protected void onResume()
+    protected void onResume() // 활성 상태일 경우 바코드를 스캔함.
     {
         super.onResume();
         IntentIntegrator integrator = new IntentIntegrator(this);
-        integrator.setCaptureActivity(CustomScannerActivity.class);
+        integrator.setCaptureActivity(CustomScannerActivity.class); //CustomScannerActivity + activity_custom_scanner을 통해 바코드 스캔 창을 띄우고 바코드를 스캔함.
         integrator.initiateScan();
     }
 
