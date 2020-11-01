@@ -1,5 +1,6 @@
 package app.sunrin.codegreen;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -23,6 +24,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +33,8 @@ public class AfterScanActivity extends AppCompatActivity {
 
     TextView productName, productCategory, textView3;
     String url, Shorturl;
+    Bitmap bitmap;
+    ImageView img;
 
 
 
@@ -45,6 +49,8 @@ public class AfterScanActivity extends AppCompatActivity {
         String result = preferences.getString("result", "");
         Shorturl = "http://gs1.koreannet.or.kr";
         url = Shorturl + "/pr/" + result; //바코드를 통한 url 가져오기
+
+        img = findViewById(R.id.product_img);
 
         ArrayList<Item> data = new ArrayList<>();
         data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"플라스틱","플라스틱은 말이여,,,"));
@@ -163,6 +169,7 @@ public class AfterScanActivity extends AppCompatActivity {
     private class getPhoto1 extends AsyncTask<String, Void, String> //상품 사진 링크 가져오기
     {
 
+
         @Override
         protected String doInBackground(String... params)
         {
@@ -178,9 +185,11 @@ public class AfterScanActivity extends AppCompatActivity {
 
                 int target_num = productNew.indexOf(target);
                 String result;
-                result = Shorturl + productNew.substring(target_num,(productNew.substring(target_num).indexOf("style")+target_num-5));
+                result = Shorturl + productNew.substring(target_num,(productNew.substring(target_num).indexOf("\',\'")+target_num));
                 result = result.replace("&amp;", "&");
                 System.out.println(result);
+
+
 
                 return result;
 
@@ -194,68 +203,42 @@ public class AfterScanActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result)
-        {// 결과값을 화면에 표시함.
+        {
+            TextView textView = findViewById(R.id.debug);
+            textView.setText(result);
+            new LoadImage().execute(result);
 
-            //textView3.setText(result);
-           // ImageView imageView = findViewById(R.id.product_img);
-           // ImageLoadTask task = new ImageLoadTask(result, imageView);
-           // task.execute();
         }
     }
 
-    private class ImageLoadTask extends AsyncTask<Void, Void, Bitmap>
-    {
-        private String urlStr;
-        private ImageView imageView;
-        private HashMap<String, Bitmap> bitmapHash = new HashMap<String, Bitmap>();
-
-        public ImageLoadTask(String urlStr, ImageView imageView) {
-            this.urlStr = urlStr;
-            this.imageView = imageView;
-        }
-
+    private class LoadImage extends AsyncTask<String, String, Bitmap> {
         @Override
-        protected void onPreExecute() {
+        protected void onPreExecute()
+        {
             super.onPreExecute();
+
         }
 
-        @Override
-        protected Bitmap doInBackground(Void... voids) {
-            Bitmap bitmap = null;
-            try {
-                if (bitmapHash.containsKey(urlStr)) {
-                    Bitmap oldbitmap = bitmapHash.remove(urlStr);
-                    if(oldbitmap != null) {
-                        oldbitmap.recycle();
-                        oldbitmap = null;
-                    }
-                }
-                URL url = new URL(urlStr);
-                bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-
-                bitmapHash.put(urlStr,bitmap);
-
-            } catch (Exception e) {
+        protected Bitmap doInBackground(String... args) {
+            try
+            {
+                bitmap = BitmapFactory.decodeStream((InputStream) new URL(args[0]).getContent());
+            }
+            catch (Exception e)
+            {
                 e.printStackTrace();
             }
-
             return bitmap;
         }
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-        }
 
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            super.onPostExecute(bitmap);
+        protected void onPostExecute(Bitmap image) {
+            if(image != null)
+            {
+                img.setImageBitmap(image);
 
-            imageView.setImageBitmap(bitmap);
-            imageView.invalidate();
+            }
         }
     }
-
-
 
 
     private void NotConnected_showAlert() //네트워크 연결 오류 시 어플리케이션 종료
