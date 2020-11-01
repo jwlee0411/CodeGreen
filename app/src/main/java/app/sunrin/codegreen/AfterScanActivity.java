@@ -33,8 +33,11 @@ public class AfterScanActivity extends AppCompatActivity {
 
     TextView productName, productCategory, textView3;
     String url, Shorturl;
+    String Category;
     Bitmap bitmap;
     ImageView img;
+    String result;
+    RecyclerView recyclerView;
 
 
 
@@ -46,24 +49,11 @@ public class AfterScanActivity extends AppCompatActivity {
 
 
         SharedPreferences preferences = getSharedPreferences("BarcodeResult", 0);
-        String result = preferences.getString("result", "");
+        result = preferences.getString("result", "");
         Shorturl = "http://gs1.koreannet.or.kr";
         url = Shorturl + "/pr/" + result; //바코드를 통한 url 가져오기
 
         img = findViewById(R.id.product_img);
-
-        ArrayList<Item> data = new ArrayList<>();
-        data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"플라스틱","플라스틱은 말이여,,,"));
-        data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"종이","종이는 말이여,,,"));
-        data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"비닐","비닐은 말이여,,,"));
-        data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"캔","캔은 말이여,,,"));
-        data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"스티로폼","스티로폼은 말이여,,,"));
-        data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"페트병","페트병은 말이여,,,"));
-
-        RecyclerView recyclerView =findViewById(R.id.recycling);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ReAdapter reAdapter = new ReAdapter(data);
-        recyclerView.setAdapter(reAdapter);
 
 
         // 네트워크 연결상태 체크
@@ -73,6 +63,7 @@ public class AfterScanActivity extends AppCompatActivity {
         }
 
         initView();
+
 
 
     }
@@ -96,6 +87,43 @@ public class AfterScanActivity extends AppCompatActivity {
         new getCategory().execute();//상품 카테고리 가져오기
         new getPhoto1().execute();
 
+        ArrayList<Item> data = new ArrayList<>();
+        System.out.println(Category);
+        switch(result) // 1차로 바코드 번호를 불러와서 분리수거 정보를 가져온다.
+        {
+            case "8808244201014":
+                data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"비닐","비닐은 말이여,,,"));
+                break;
+            case "8809482500358":
+                data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"페트병","페트병은 말이여,,,"));
+                break;
+            default: //등록된 바코드가 없을 경우
+/*
+                if(Category.contains("생수")) //카테고리를 기준으로 상품을 구분한다.
+                {
+                    data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"페트병","페트병은 말이여,,,"));
+                }
+                else //해당되는 카테고리도 없을 경우
+                {
+                */
+
+                    //분리수거에 관한 모든 정보를 띄워준다.
+                    data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"플라스틱","플라스틱은 말이여,,,"));
+                    data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"종이","종이는 말이여,,,"));
+                    data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"비닐","비닐은 말이여,,,"));
+                    data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"캔","캔은 말이여,,,"));
+                    data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"스티로폼","스티로폼은 말이여,,,"));
+                    data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"페트병","페트병은 말이여,,,"));
+               // }
+
+        }
+
+
+
+        recyclerView =findViewById(R.id.recycling);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        ReAdapter reAdapter = new ReAdapter(data);
+        recyclerView.setAdapter(reAdapter);
 
     }
 
@@ -129,6 +157,7 @@ public class AfterScanActivity extends AppCompatActivity {
         {// 결과값을 화면에 표시함.
 
             productName.setText(result);
+            Category = result;
         }
     }
 
