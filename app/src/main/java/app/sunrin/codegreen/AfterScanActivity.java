@@ -1,24 +1,21 @@
 package app.sunrin.codegreen;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -26,23 +23,14 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AfterScanActivity extends AppCompatActivity {
-    Context context;
-    TextView textView, textView2, textView3;
 
-    PermissionListener permissionlistener = new PermissionListener() {
-        @Override
-        public void onPermissionGranted() {
-            initView();
-        }
-
-        @Override
-        public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-            Toast.makeText(AfterScanActivity.this, "권한 허용을 하지 않으면 서비스를 이용할 수 없습니다.", Toast.LENGTH_SHORT).show();
-        }
-    };
+    TextView productName, productCategory, textView3;
+    String url, Shorturl;
 
 
 
@@ -50,65 +38,79 @@ public class AfterScanActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_after_scan);
+
+
+
         SharedPreferences preferences = getSharedPreferences("BarcodeResult", 0);
         String result = preferences.getString("result", "");
-        Button button = findViewById(R.id.button);
-        button.setText(result);
+        Shorturl = "http://gs1.koreannet.or.kr";
+        url = Shorturl + "/pr/" + result; //바코드를 통한 url 가져오기
 
-        context = AfterScanActivity.this;
+        ArrayList<Item> data = new ArrayList<>();
+        data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"플라스틱","플라스틱은 말이여,,,"));
+        data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"종이","종이는 말이여,,,"));
+        data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"비닐","비닐은 말이여,,,"));
+        data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"캔","캔은 말이여,,,"));
+        data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"스티로폼","스티로폼은 말이여,,,"));
+        data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"페트병","페트병은 말이여,,,"));
+
+        RecyclerView recyclerView =findViewById(R.id.recycling);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        ReAdapter reAdapter = new ReAdapter(data);
+        recyclerView.setAdapter(reAdapter);
+
 
         // 네트워크 연결상태 체크
-        if (NetworkConnection() == false) NotConnected_showAlert();
-        checkPermissions();
-
-
-    }
-
-
-    private void checkPermissions() {
-        if (Build.VERSION.SDK_INT >= 23) { // 마시멜로(안드로이드 6.0) 이상 권한 체크
-            TedPermission.with(context)
-                    .setPermissionListener(permissionlistener)
-                    .setRationaleMessage("앱을 이용하기 위해서는 접근 권한이 필요합니다")
-                    .setDeniedMessage("앱에서 요구하는 권한설정이 필요합니다...\n [설정] > [권한] 에서 사용으로 활성화해주세요.")
-                    .setPermissions(new String[]{
-                            android.Manifest.permission.WRITE_CONTACTS, // 주소록 액세스 권한
-                            android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE // 기기, 사진, 미디어, 파일 엑세스 권한
-                    })
-                    .check();
-
-        } else {
-            initView();
+        if (NetworkConnection() == false)
+        {
+            NotConnected_showAlert();
         }
+
+        initView();
+
+
     }
 
-
+    public Item addItem(Drawable img, String title, String way)
+    {
+        Item item = new Item();
+        item.setRecycle_img(img);
+        item.setRecycle_class(title);
+        item.setRecycle_how(way);
+        return item;
+    }
     private void initView() {
 
-        textView = findViewById(R.id.textView);
-        textView2 = findViewById(R.id.textView2);
+        productName = findViewById(R.id.product_name);
+        productCategory = findViewById(R.id.pn);
+        //textView3 = findViewById(R.id.textView3);
 
 
-       // new getCategory().execute();
-        new getProductName().execute();
-        //new getImage().execute();
+        new getName().execute();//상품명 가져오기
+        new getCategory().execute();//상품 카테고리 가져오기
+        new getPhoto1().execute();
+
+
     }
 
+    private class getName extends AsyncTask<String, Void, String> //상품명 가져오기
+    {
 
-    private class getProductName extends AsyncTask<String, Void, String> {
-        // String 으로 값을 전달받은 값을 처리하고, Boolean 으로 doInBackground 결과를 넘겨준다.
         @Override
-        protected String doInBackground(String... params) {
+        protected String doInBackground(String... params)
+        {
             try {
-                Connection.Response response = Jsoup.connect("http://gs1.koreannet.or.kr/pr/8808244201014").method(Connection.Method.GET).execute();
+                Connection.Response response = Jsoup.connect(url).method(Connection.Method.GET).execute();
                 Document document = response.parse();
-                Element category = document.select("tr[class=b_line]").first();
+
+
+                Element category = document.select("h3").first();
                 System.out.println(category);
                 String categoryNew = category.toString();
-                String categoryNew2 = categoryNew.replace("<tr class=\"b_line\">", "").replace("<th>KAN 상품분류</th>", "").replace("&gt;", ">").replace("</tr>", "").replace("<td>", "").replace("</td", "");
-
+                String categoryNew2 = categoryNew.replace("<h3>", "").replace("</h3>", "");
                 return categoryNew2;
+
+
             }
             catch (IOException e) {
                 e.printStackTrace();
@@ -117,30 +119,159 @@ public class AfterScanActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String result) {
-            System.out.println(result);
-            textView2.setText(result);
+        protected void onPostExecute(String result)
+        {// 결과값을 화면에 표시함.
+
+            productName.setText(result);
         }
     }
 
-    private void NotConnected_showAlert() {
+    private class getCategory extends AsyncTask<String, Void, String> //상품 카테고리 가져오기
+    {
+
+        @Override
+        protected String doInBackground(String... params)
+        {
+            try {
+                Connection.Response response = Jsoup.connect(url).method(Connection.Method.GET).execute();
+                Document document = response.parse();
+
+
+
+                    Element product = document.select("tr[class=b_line]").first();
+                    System.out.println(product);
+                    String productNew = product.toString();
+                    String productNew2 = productNew.replace("<tr class=\"b_line\">", "").replace("<th>KAN 상품분류</th>", "").replace("&gt;", ">").replace("</tr>", "").replace("<td>", "").replace("</td", "");
+                    return productNew2;
+
+
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {// 결과값을 화면에 표시함.
+
+                productCategory.setText(result);
+        }
+    }
+
+    private class getPhoto1 extends AsyncTask<String, Void, String> //상품 사진 링크 가져오기
+    {
+
+        @Override
+        protected String doInBackground(String... params)
+        {
+            try {
+                Connection.Response response = Jsoup.connect(url).method(Connection.Method.GET).execute();
+                Document document = response.parse();
+
+                Element product = document.select("ul[class=btn_img]").first();
+                System.out.println(product);
+                String productNew = product.toString();
+
+                String target = "/pr/";
+
+                int target_num = productNew.indexOf(target);
+                String result;
+                result = Shorturl + productNew.substring(target_num,(productNew.substring(target_num).indexOf("style")+target_num-5));
+                result = result.replace("&amp;", "&");
+                System.out.println(result);
+
+                return result;
+
+
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {// 결과값을 화면에 표시함.
+
+            //textView3.setText(result);
+           // ImageView imageView = findViewById(R.id.product_img);
+           // ImageLoadTask task = new ImageLoadTask(result, imageView);
+           // task.execute();
+        }
+    }
+
+    private class ImageLoadTask extends AsyncTask<Void, Void, Bitmap>
+    {
+        private String urlStr;
+        private ImageView imageView;
+        private HashMap<String, Bitmap> bitmapHash = new HashMap<String, Bitmap>();
+
+        public ImageLoadTask(String urlStr, ImageView imageView) {
+            this.urlStr = urlStr;
+            this.imageView = imageView;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Bitmap doInBackground(Void... voids) {
+            Bitmap bitmap = null;
+            try {
+                if (bitmapHash.containsKey(urlStr)) {
+                    Bitmap oldbitmap = bitmapHash.remove(urlStr);
+                    if(oldbitmap != null) {
+                        oldbitmap.recycle();
+                        oldbitmap = null;
+                    }
+                }
+                URL url = new URL(urlStr);
+                bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+
+                bitmapHash.put(urlStr,bitmap);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return bitmap;
+        }
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            super.onPostExecute(bitmap);
+
+            imageView.setImageBitmap(bitmap);
+            imageView.invalidate();
+        }
+    }
+
+
+
+
+    private void NotConnected_showAlert() //네트워크 연결 오류 시 어플리케이션 종료
+    {
         AlertDialog.Builder builder = new AlertDialog.Builder(AfterScanActivity.this);
         builder.setTitle("네트워크 연결 오류");
-        builder.setMessage("사용 가능한 무선네트워크가 없습니다.\n" + "먼저 무선네트워크 연결상태를 확인해 주세요.")
-                .setCancelable(false)
-                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        finish(); // exit
-                        //application 프로세스를 강제 종료
-                        android.os.Process.killProcess(android.os.Process.myPid());
-                    }
+        builder.setMessage("사용 가능한 무선네트워크가 없습니다.\n" + "먼저 무선네트워크 연결상태를 확인해 주세요.").setCancelable(false).setPositiveButton("확인", (dialog, id) -> { //확인 버튼 누르면 어플리케이션 종료
+                    finish();
+                    android.os.Process.killProcess(android.os.Process.myPid());
                 });
         AlertDialog alert = builder.create();
         alert.show();
 
     }
 
-    private boolean NetworkConnection() {
+    private boolean NetworkConnection() { //네트워크 연결 확인하는 코드
         int[] networkTypes = {ConnectivityManager.TYPE_MOBILE, ConnectivityManager.TYPE_WIFI};
         try {
             ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
