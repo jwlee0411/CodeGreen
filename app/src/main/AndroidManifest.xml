@@ -15,7 +15,7 @@
         android:theme="@style/Theme.CodeGreen">
 
         <activity android:name=".SplashActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/Theme.CodeGreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,12 +30,17 @@
             android:name=".AnyOrientationCaptureActivity"
             android:screenOrientation="fullSensor"
             android:stateNotNeeded="true"
-            android:theme="@style/zxing_CaptureTheme"
+            android:theme="@style/Theme.CodeGreen"
             android:windowSoftInputMode="stateAlwaysHidden"></activity>
         <activity android:name=".CustomScannerActivity"></activity>
 
         <activity android:name=".AfterScanActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/Theme.CodeGreen">
+
+        </activity>
+
+        <activity android:name=".RecentActivity"
+            android:theme="@style/Theme.CodeGreen">
 
         </activity>
     </application>

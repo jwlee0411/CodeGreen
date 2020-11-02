@@ -1,6 +1,7 @@
 package app.sunrin.codegreen;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
@@ -32,6 +33,10 @@ public class CustomScannerActivity extends Activity implements DecoratedBarcodeV
         if (!hasFlash()) {
             switchFlashlightButton.setVisibility(View.GONE);
         }
+        setting_btn.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), RecentActivity.class);
+            startActivity(intent);
+        });
 
         barcodeScannerView = (DecoratedBarcodeView)findViewById(R.id.zxing_barcode_scanner);
         barcodeScannerView.setTorchListener(this);
@@ -83,13 +88,13 @@ public class CustomScannerActivity extends Activity implements DecoratedBarcodeV
 
     @Override
     public void onTorchOn() {
-        switchFlashlightButton.setImageResource(R.drawable.ic_flash_on_white_36dp);
+        switchFlashlightButton.setImageResource(R.drawable.baseline_flash_on_white_18dp);
         switchFlashlightButtonCheck = false;
     }
 
     @Override
     public void onTorchOff() {
-        switchFlashlightButton.setImageResource(R.drawable.ic_flash_off_white_36dp);
+        switchFlashlightButton.setImageResource(R.drawable.baseline_flash_off_white_18dp);
         switchFlashlightButtonCheck = true;
     }
 }

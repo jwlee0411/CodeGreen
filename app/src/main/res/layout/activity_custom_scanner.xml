@@ -10,13 +10,12 @@
         android:id="@+id/zxing_barcode_scanner"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:zxing_scanner_layout="@layout/custom_barcode_scanner">
-    </com.journeyapps.barcodescanner.DecoratedBarcodeView>
+        app:zxing_scanner_layout="@layout/custom_barcode_scanner"></com.journeyapps.barcodescanner.DecoratedBarcodeView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#578e5d">
+        android:background="@color/green_02">
     </LinearLayout>
 
     <ImageButton
@@ -34,7 +33,7 @@
         android:onClick="switchFlashlight"
         android:padding="7dp"
         android:background="@null"
-        android:src="@drawable/ic_flash_off_white_36dp"
+        android:src="@drawable/baseline_flash_off_white_18dp"
         android:id="@+id/switch_flashlight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -46,7 +45,7 @@
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:background="#578e5d"
+        android:background="@color/green_02"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
@@ -57,6 +56,8 @@
             android:layout_height="wrap_content"
             android:background="@color/zxing_transparent"
             android:text="@string/zxing_msg_default_status"
+            android:fontFamily="@font/nanum_regular"
+            android:textSize="20dp"
             android:textColor="@color/zxing_status_text" />
     </LinearLayout>
 </RelativeLayout>
