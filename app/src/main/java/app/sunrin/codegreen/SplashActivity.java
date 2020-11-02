@@ -30,4 +30,10 @@ public class SplashActivity  extends AppCompatActivity {
         super.onPause();
         finish();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }
