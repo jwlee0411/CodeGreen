@@ -11,6 +11,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -39,8 +42,43 @@ public class AfterScanActivity extends AppCompatActivity {
     ImageView img;
     String result;
     RecyclerView recyclerView;
+    ArrayList<setData> SetData = new ArrayList<setData>();
+    ArrayList<Item> data = new ArrayList<>(); //분리배출 방법의 recyclerView에 넣는 arraylist
 
+    SharedPreferences preferences, preferences1;
+    // data arraylist에 데이터를 넣는 함수
+    public void addPlastic()
+    {
+        data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"플라스틱","플라스틱은 말이여,,,"));
+    }
 
+    public void addPaper()
+    {
+        data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"종이","종이는 말이여,,,"));
+
+    }
+    public void addVinyl()
+    {
+        data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"비닐","비닐은 말이여,,,"));
+
+    }
+    public void addCan()
+    {
+        data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"캔","캔은 말이여,,,"));
+
+    }
+    public void addStrph()
+    {
+        data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"스티로폼","스티로폼은 말이여,,,"));
+    }
+    public void addPet()
+    {
+        data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"페트병","페트병은 말이여,,,"));
+    }
+    public void addTrash()
+    {
+        data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"일반쓰레기","일반쓰레기는 말이여,,,"));
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,12 +87,18 @@ public class AfterScanActivity extends AppCompatActivity {
 
 
 
-        SharedPreferences preferences = getSharedPreferences("BarcodeResult", 0);
+        preferences = getSharedPreferences("BarcodeResult", 0);
         result = preferences.getString("result", "");
         Shorturl = "http://gs1.koreannet.or.kr";
         url = Shorturl + "/pr/" + result; //바코드를 통한 url 가져오기
 
+        preferences1 = getSharedPreferences("RecentData", 0);
+
+
+
         img = findViewById(R.id.product_img);
+
+
 
 
         // 네트워크 연결상태 체크
@@ -88,15 +132,17 @@ public class AfterScanActivity extends AppCompatActivity {
         new getCategory().execute();//상품 카테고리 가져오기
         new getPhoto1().execute();
 
-        ArrayList<Item> data = new ArrayList<>();
+
+
+
         System.out.println(Category);
         switch(result) // 1차로 바코드 번호를 불러와서 분리수거 정보를 가져온다.
         {
             case "8808244201014":
-                data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"비닐","비닐은 말이여,,,"));
+                addVinyl();
                 break;
             case "8809482500358":
-                data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"페트병","페트병은 말이여,,,"));
+               addPet();
                 break;
             default: //등록된 바코드가 없을 경우
 /*
@@ -109,12 +155,13 @@ public class AfterScanActivity extends AppCompatActivity {
                 */
 
                     //분리수거에 관한 모든 정보를 띄워준다.
-                    data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"플라스틱","플라스틱은 말이여,,,"));
-                    data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"종이","종이는 말이여,,,"));
-                    data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"비닐","비닐은 말이여,,,"));
-                    data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"캔","캔은 말이여,,,"));
-                    data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"스티로폼","스티로폼은 말이여,,,"));
-                    data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"페트병","페트병은 말이여,,,"));
+                    addCan();
+                    addPaper();
+                    addPet();
+                    addPlastic();
+                    addStrph();
+                    addTrash();
+
                // }
 
         }
@@ -238,6 +285,18 @@ public class AfterScanActivity extends AppCompatActivity {
             textView.setText(result);
             new LoadImage().execute(result);
 
+            //이미지가 띄워야 할 것 중 가장 마지막에 load되므로 image를 띄운 후 해당 데이터를 SharedPreference에 저장함
+            //SharedPreference에 String형으로 저장하기 위해 String 3개 -> ArrayList -> JSON -> String으로 저장하는 코드임.
+            // setData : 클래스, SetData : ArrayList
+            setData setData = new setData(productName.getText().toString(), productCategory.getText().toString(), textView.getText().toString(), "추후 수정");
+            //String 3개 -> ArrayList
+            SetData.add(setData);
+
+
+            // ArrayList -> JSON -> String -> 저장완료
+            setStringArrayPref("settings_item_json", SetData);
+
+
         }
     }
 
@@ -267,6 +326,8 @@ public class AfterScanActivity extends AppCompatActivity {
                 img.setImageBitmap(image);
 
             }
+
+
         }
     }
 
@@ -305,4 +366,46 @@ public class AfterScanActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }
+
+
+
+
+
+
+    private void setStringArrayPref(String key, ArrayList<setData> values) {
+
+        SharedPreferences.Editor editor = preferences1.edit();
+        JSONArray a = new JSONArray();
+        for (int i = 0; i < values.size(); i++) {
+            a.put(values.get(i));
+        }
+        if (!values.isEmpty()) {
+            editor.putString(key, a.toString());
+        } else {
+            editor.putString(key, null);
+        }
+        editor.apply();
+    }
+
+    /*
+    private ArrayList<setData> getStringArrayPref(Context context, String key) { // 연구중
+        SharedPreferences prefs = getSharedPreferences("RecentData", 0);
+        String json = prefs.getString(key, null);
+        ArrayList<setData> urls = new ArrayList<setData>();
+        if (json != null) {
+            try {
+                JSONArray a = new JSONArray(json);
+                for (int i = 0; i < a.length(); i++) {
+                    String url = a.optString(i);
+                    urls.add(url);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return urls;
+    }
+
+    */
+
 }
