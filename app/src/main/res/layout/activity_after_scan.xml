@@ -22,11 +22,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:fontFamily="@font/nanum_bold"
         android:text="카테고리"
-        android:fontFamily="@font/nanum_regular"
         android:textColor="@color/black"
-        android:textSize="16dp"
+        android:textSize="20dp"
         app:layout_constraintTop_toBottomOf="@+id/product_img"
+        tools:layout_editor_absoluteX="32dp" />
+
+    <TextView
+        android:id="@+id/pn2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nanum_regular"
+        android:text="이 상품은"
+        android:textColor="@color/black"
+        android:visibility="gone"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/pn"
         tools:layout_editor_absoluteX="32dp" />
 
     <TextView
@@ -34,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="상품명"
-            android:textSize="32dp"
+            android:textSize="25dp"
         android:fontFamily="@font/nanum_bold"
         android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@+id/pn" />
@@ -56,9 +68,9 @@
         android:id="@+id/recycling"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="8dp"
         android:textSize="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/button"
         app:layout_constraintStart_toStartOf="@+id/how"
         app:layout_constraintTop_toBottomOf="@+id/how" />
 
@@ -70,6 +82,18 @@
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="공유하기"
+        android:textColor="@color/white"
+        android:fontFamily="@font/nanum_regular"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
