@@ -71,6 +71,7 @@
         android:layout_marginBottom="8dp"
         android:textSize="16dp"
         app:layout_constraintBottom_toTopOf="@id/button"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/how"
         app:layout_constraintTop_toBottomOf="@+id/how" />
 

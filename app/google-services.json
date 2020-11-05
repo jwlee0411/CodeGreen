@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "995698472465",
+    "firebase_url": "https://digitalcontents2020-526cb.firebaseio.com",
+    "project_id": "digitalcontents2020-526cb",
+    "storage_bucket": "digitalcontents2020-526cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:995698472465:android:040e37f63f77b9e91e63b0",
+        "android_client_info": {
+          "package_name": "app.sunrin.codegreen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "995698472465-r0ar7g646i8g81m0f0kpas6u6bqabc55.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALQ0-NcuH61wTg2-1SyifHsg6PYvxL5RM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "995698472465-r0ar7g646i8g81m0f0kpas6u6bqabc55.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
