@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK) {
             IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
             String re = scanResult.getContents();
+            System.out.println(re);
 
 
             char tmp;
@@ -62,7 +63,18 @@ public class MainActivity extends AppCompatActivity {
 
                 for(int i = 0; i<resultSplit.length-1; i++)
                 {
-                    resultInt[i] = Integer.parseInt(resultSplit[i]);
+                    try {
+                        resultInt[i] = Integer.parseInt(resultSplit[i]);
+
+                    }catch (NumberFormatException e)
+                    {
+
+                    }
+                    catch(Exception e)
+                    {
+
+                    }
+
 
                     if(i%2!=0) //짝수이면
                     {
