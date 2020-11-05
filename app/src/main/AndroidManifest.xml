@@ -15,14 +15,17 @@
         android:theme="@style/Theme.CodeGreen">
 
         <activity android:name=".SplashActivity"
-            android:theme="@style/Theme.CodeGreen">
+            android:theme="@style/Theme.CodeGreen"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
@@ -31,16 +34,21 @@
             android:screenOrientation="fullSensor"
             android:stateNotNeeded="true"
             android:theme="@style/Theme.CodeGreen"
-            android:windowSoftInputMode="stateAlwaysHidden"></activity>
-        <activity android:name=".CustomScannerActivity"></activity>
+            android:windowSoftInputMode="stateAlwaysHidden"
+            ></activity>
+
+        <activity android:name=".CustomScannerActivity"
+            android:screenOrientation="portrait"></activity>
 
         <activity android:name=".AfterScanActivity"
-            android:theme="@style/Theme.CodeGreen">
+            android:theme="@style/Theme.CodeGreen"
+            android:screenOrientation="portrait">
 
         </activity>
 
         <activity android:name=".RecentActivity"
-            android:theme="@style/Theme.CodeGreen">
+            android:theme="@style/Theme.CodeGreen"
+            android:screenOrientation="portrait">
 
         </activity>
     </application>

@@ -100,6 +100,16 @@ public class MainActivity extends AppCompatActivity {
                 {
                     checkDigit = 0;
                 }
+
+                SharedPreferences preferences = getSharedPreferences("BarcodeResult", 0);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("result", re);
+                editor.commit();
+
+                Intent intent1 = new Intent(getApplicationContext(), AfterScanActivity.class);
+                startActivity(intent1); //새 창(상품정보 띄울 창) 띄우기
+                finish();
+                /*
                 if(resultSplit.length>=11 && (resultInt[resultSplit.length-1] == checkDigit)) //체크숫자가 맞으면
                 {
                     Log.d("onActivityResult", "onActivityResult: ." + re);
@@ -120,6 +130,9 @@ public class MainActivity extends AppCompatActivity {
                 {
                     Toast.makeText(getApplicationContext(), "올바른 바코드가 아닙니다.", Toast.LENGTH_SHORT).show();
                 }
+
+
+                 */
             }
             else
             {
