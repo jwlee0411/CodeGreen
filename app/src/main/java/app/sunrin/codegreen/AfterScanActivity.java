@@ -50,6 +50,7 @@ public class AfterScanActivity extends AppCompatActivity {
     TextView productName, productCategory,textView3;
     String url, Shorturl;
     String Category, db_category, KANcode;
+    String shareString = "";
     Boolean prodName;
     Bitmap bitmap;
     ImageView img;
@@ -63,39 +64,44 @@ public class AfterScanActivity extends AppCompatActivity {
     //플라스틱 1,종이 2,비닐 3,캔 4,스티로폼 5,페트병 6,유리 7,일반쓰레기 8
     public void addPlastic()
     {
-        data.add(addItem(getResources().getDrawable(R.drawable.pp),"플라스틱","플라스틱의 이물질을 제거 후 버려주세요"));
+        data.add(addItem(getResources().getDrawable(R.drawable.pp),"플라스틱","플라스틱의 이물질을 제거 후 버려주세요."));
+        shareString = shareString + "\n플라스틱 - 플라스틱의 이물질을 제거 후 버려주세요.";
     }
 
     public void addPaper()
     {
-        data.add(addItem(getResources().getDrawable(R.drawable.paper),"종이","종이에 붙어 있는 테이프 등 종이가 아닌 재질을 제거후 버려주세요"));
-
+        data.add(addItem(getResources().getDrawable(R.drawable.paper),"종이","종이에 붙어 있는 테이프 등 종이가 아닌 재질을 제거 후 버려주세요."));
+        shareString = shareString + "\n종이 - 종이에 붙어 있는 테이프 등 종이가 아닌 재질을 제거 후 버려주세요.";
     }
     public void addVinyl()
     {
         data.add(addItem(getResources().getDrawable(R.drawable.vinyl),"비닐","비닐의 이물질을 제거 후 버려주세요"));
-
+        shareString = shareString + "\n비닐 - 비닐의 이물질을 제거 후 버려주세요.";
     }
     public void addCan()
     {
         data.add(addItem(getResources().getDrawable(R.drawable.can),"캔","캔의 내용물을 제거 후 버려주세요"));
-
+        shareString = shareString + "\n캔 - 캔의 내용물을 제거 후 버려주세요.";
     }
     public void addStrph()
     {
         data.add(addItem(getResources().getDrawable(R.drawable.ps),"스티로폼","스티로폼의 이물질을 제거후 이물질이 없는 상태로 버려주세요"));
+        shareString = shareString + "\n스티로폼 - 스티로폼의 이물질을 제거후 이물질이 없는 상태로 버려주세요.";
     }
     public void addPet()
     {
         data.add(addItem(getResources().getDrawable(R.drawable.pete),"페트병","페트병 안의 내용물을 제거한 뒤 페트병에 붙어 있는 비닐과 뚜껑을 제거 후 분리수거 합니다."));
+        shareString = shareString + "\n페트병 - 페트병 안의 내용물을 제거한 뒤 페트병에 붙어 있는 비닐과 뚜껑을 제거 후 분리수거 합니다.";
     }
     public void addTrash()
     {
-        data.add(addItem(getResources().getDrawable(R.drawable.normal_black),"일반쓰레기","종량제 봉투에 담어 버려주세요."));
+        data.add(addItem(getResources().getDrawable(R.drawable.normal_black),"일반쓰레기","종량제 봉투에 담아 버려주세요."));
+        shareString = shareString + "\n일반쓰레기 - 종량제 봉투에 담아 버려주세요.";
     }
     public void addGlass()
     {
-        data.add(addItem(getResources().getDrawable(R.drawable.glass),"유리","공병의 경우 이물질을 제거 후 버려주세요"));
+        data.add(addItem(getResources().getDrawable(R.drawable.glass),"유리","공병의 경우 이물질을 제거 후 버려주세요."));
+        shareString = shareString + "\n유리 - 공병의 경우 이물질을 제거 후 버려주세요.";
     }
 
     @Override
@@ -502,6 +508,7 @@ public class AfterScanActivity extends AppCompatActivity {
                 db_category = dataSnapshot.getValue(String.class);
 
 
+
                 System.out.println("dbcat : "+db_category);
                 if(db_category==null)
                 {
@@ -550,11 +557,9 @@ public class AfterScanActivity extends AppCompatActivity {
                 button.setVisibility(View.VISIBLE);
                 button.setOnClickListener(v->{
                     Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-                    sharingIntent.setType("text/plain");		// 고정 text
-                    sharingIntent.putExtra(Intent.EXTRA_TEXT, productName.getText().toString() + productCategory.getText().toString());
-                   // sharingIntent.setPackage("com.kakao.talk");	// 고정 text
+                    sharingIntent.setType("text/plain");
+                    sharingIntent.putExtra(Intent.EXTRA_TEXT, "[상품명]\n"+productName.getText().toString() + "\n\n[카테고리]"+productCategory.getText().toString().substring(2) + "\n[분리배출 방법]" + shareString);
                     startActivity(sharingIntent);
-
                 });
 
 
