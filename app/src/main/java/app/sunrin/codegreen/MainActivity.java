@@ -2,6 +2,7 @@ package app.sunrin.codegreen;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,7 +12,10 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.prefs.Preferences;
 
@@ -20,8 +24,32 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /* // 권한허용(이상하게 동작함)
+        TedPermission.with(getApplicationContext())
+                .setPermissionListener(permissionListener)
+                .setRationaleMessage("카메라 권한이 필요합니다.")
+                .setDeniedMessage("카메라 권한을 거부하셨습니다.")
+                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+                .check();
 
+*/
     }
+ // 권한허용 - PermissionListener
+    /*
+    PermissionListener permissionListener = new PermissionListener() {
+        @Override
+        public void onPermissionGranted() {
+            Toast.makeText(getApplicationContext(), "권한이 허용됨", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+            Toast.makeText(getApplicationContext(), "권한이 거부됨", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+
+     */
 
     protected void onResume() // 활성 상태일 경우 바코드를 스캔함.
     {

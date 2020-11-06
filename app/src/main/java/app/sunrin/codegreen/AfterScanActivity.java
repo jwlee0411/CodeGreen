@@ -104,6 +104,12 @@ public class AfterScanActivity extends AppCompatActivity {
         shareString = shareString + "\n유리 - 공병의 경우 이물질을 제거 후 버려주세요.";
     }
 
+    public void addElec()
+    {
+        data.add(addItem(getResources().getDrawable(R.drawable.bolt_black),"전자제품","한 면의 길이가 1m 미만인 소형가전은 재활용품 배출시 함께 배출, 1m 이상인 대형가전은 대형폐가전 무상방문수거 서비스를 이용해 배출"));
+        shareString = shareString + "\n전자제품 - 한 면의 길이가 1m 미만인 소형가전은 재활용품 배출시 함께 배출, 1m 이상인 대형가전은 대형폐가전 무상방문수거 서비스를 이용해 배출";
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,8 +136,12 @@ public class AfterScanActivity extends AppCompatActivity {
         {
             NotConnected_showAlert();
         }
+        else
+        {
+            initView();
+        }
 
-        initView();
+
 
 
 
@@ -461,14 +471,13 @@ public class AfterScanActivity extends AppCompatActivity {
 
     private void NotConnected_showAlert() //네트워크 연결 오류 시 어플리케이션 종료
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(AfterScanActivity.this);
-        builder.setTitle("네트워크 연결 오류");
-        builder.setMessage("사용 가능한 무선네트워크가 없습니다.\n" + "먼저 무선네트워크 연결상태를 확인해 주세요.").setCancelable(false).setPositiveButton("확인", (dialog, id) -> { //확인 버튼 누르면 어플리케이션 종료
-                    finish();
-                    android.os.Process.killProcess(android.os.Process.myPid());
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
+        Toast.makeText(getApplicationContext(), "네트워크 연결 오류", Toast.LENGTH_LONG).show();
+
+       // moveTaskToBack(true);						// 태스크를 백그라운드로 이동
+       // finishAndRemoveTask();						// 액티비티 종료 + 태스크 리스트에서 지우기
+        //android.os.Process.killProcess(android.os.Process.myPid());	// 앱 프로세스 종료
+        finish();
+
 
     }
 
@@ -503,24 +512,19 @@ public class AfterScanActivity extends AppCompatActivity {
         db_KANcode.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
                 db_category = dataSnapshot.getValue(String.class);
-
-
-
                 System.out.println("dbcat : "+db_category);
                 if(db_category==null)
                 {
                     //분리수거에 관한 모든 정보를 띄워준다.
                     addCan();
-                  addPaper();
-                addPet();
-             addPlastic();
-                addStrph();
-              addTrash();
-                addGlass();
-                addVinyl();
+                    addPaper();
+                    addPet();
+                    addPlastic();
+                    addStrph();
+                    addTrash();
+                    addGlass();
+                    addVinyl();
                 }
                 else
                 {
@@ -541,6 +545,7 @@ public class AfterScanActivity extends AppCompatActivity {
                             case "6" : addPet(); break;
                             case "7" : addGlass(); break;
                             case "8" : addTrash(); break;
+                            case "9" : addElec(); break;
 
 
                         }
