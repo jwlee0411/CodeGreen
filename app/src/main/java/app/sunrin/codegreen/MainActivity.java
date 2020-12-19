@@ -24,32 +24,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /* // 권한허용(이상하게 동작함)
-        TedPermission.with(getApplicationContext())
-                .setPermissionListener(permissionListener)
-                .setRationaleMessage("카메라 권한이 필요합니다.")
-                .setDeniedMessage("카메라 권한을 거부하셨습니다.")
-                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-                .check();
-
-*/
     }
- // 권한허용 - PermissionListener
-    /*
-    PermissionListener permissionListener = new PermissionListener() {
-        @Override
-        public void onPermissionGranted() {
-            Toast.makeText(getApplicationContext(), "권한이 허용됨", Toast.LENGTH_SHORT).show();
-        }
 
-        @Override
-        public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-            Toast.makeText(getApplicationContext(), "권한이 거부됨", Toast.LENGTH_SHORT).show();
-        }
-    };
-
-
-     */
 
     protected void onResume() // 활성 상태일 경우 바코드를 스캔함.
     {
@@ -82,52 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
             if(output)
             {
-                String[] resultSplit = re.split("");
-                int[] resultInt = new int[100];
-                int oddNum = 0;
-                int evenNum = 0;
-
-
-
-                for(int i = 0; i<resultSplit.length-1; i++)
-                {
-                    try {
-                        resultInt[i] = Integer.parseInt(resultSplit[i]);
-
-                    }catch (NumberFormatException e)
-                    {
-
-                    }
-                    catch(Exception e)
-                    {
-
-                    }
-
-
-                    if(i%2!=0) //짝수이면
-                    {
-                        evenNum = evenNum + resultInt[i];
-                        System.out.println("※" + resultInt[i]);
-                    }
-                    else
-                    {
-                        oddNum = oddNum + resultInt[i];
-                        System.out.println("★" + resultInt[i]);
-                    }
-                }
-                resultInt[resultSplit.length-1] = Integer.parseInt(resultSplit[resultSplit.length-1]);
-                System.out.println(oddNum);
-                System.out.println(evenNum);
-
-                System.out.println(resultSplit.length);
-                System.out.println(resultInt[resultSplit.length-1]);
-
-
-                int checkDigit = 10 - (oddNum + evenNum*3)%10;
-                if(checkDigit==10)
-                {
-                    checkDigit = 0;
-                }
 
                 SharedPreferences preferences = getSharedPreferences("BarcodeResult", 0);
                 SharedPreferences.Editor editor = preferences.edit();
@@ -137,41 +67,12 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent1 = new Intent(getApplicationContext(), AfterScanActivity.class);
                 startActivity(intent1); //새 창(상품정보 띄울 창) 띄우기
                 finish();
-                /*
-                if(resultSplit.length>=11 && (resultInt[resultSplit.length-1] == checkDigit)) //체크숫자가 맞으면
-                {
-                    Log.d("onActivityResult", "onActivityResult: ." + re);
 
-                    //Toast.makeText(this, re, Toast.LENGTH_LONG).show(); // 바코드에 인식된 숫자 Toast로 띄우기
-
-
-                    SharedPreferences preferences = getSharedPreferences("BarcodeResult", 0);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("result", re);
-                    editor.commit();
-
-                    Intent intent1 = new Intent(getApplicationContext(), AfterScanActivity.class);
-                    startActivity(intent1); //새 창(상품정보 띄울 창) 띄우기
-                    finish();
-                }
-                else //체크숫자가 틀리면
-                {
-                    Toast.makeText(getApplicationContext(), "올바른 바코드가 아닙니다.", Toast.LENGTH_SHORT).show();
-                }
-
-
-                 */
             }
             else
             {
                 Toast.makeText(getApplicationContext(), "올바른 바코드가 아닙니다.", Toast.LENGTH_SHORT).show();
             }
-
-
-
-
-
-
 
         }
     }

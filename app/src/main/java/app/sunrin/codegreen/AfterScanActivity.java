@@ -56,8 +56,13 @@ public class AfterScanActivity extends AppCompatActivity {
     ImageView img;
     String result;
     RecyclerView recyclerView;
-    ArrayList<setData> SetData = new ArrayList<setData>();
+    ArrayList<setData> SetData = new ArrayList<>();
     ArrayList<Item> data = new ArrayList<>(); //분리배출 방법의 recyclerView에 넣는 arraylist
+
+    String saveCategory = "";
+
+    SharedPreferences categorySave;
+
 
     SharedPreferences preferences, preferences1;
     // data arraylist에 데이터를 넣는 함수
@@ -66,48 +71,57 @@ public class AfterScanActivity extends AppCompatActivity {
     {
         data.add(addItem(getResources().getDrawable(R.drawable.pp),"플라스틱","플라스틱의 이물질을 제거 후 버려주세요."));
         shareString = shareString + "\n플라스틱 - 플라스틱의 이물질을 제거 후 버려주세요.";
+        saveCategory = saveCategory + "1-";
     }
 
     public void addPaper()
     {
         data.add(addItem(getResources().getDrawable(R.drawable.paper),"종이","종이에 붙어 있는 테이프 등 종이가 아닌 재질을 제거 후 버려주세요."));
         shareString = shareString + "\n종이 - 종이에 붙어 있는 테이프 등 종이가 아닌 재질을 제거 후 버려주세요.";
+        saveCategory = saveCategory + "2-";
     }
     public void addVinyl()
     {
         data.add(addItem(getResources().getDrawable(R.drawable.vinyl),"비닐","비닐의 이물질을 제거 후 버려주세요"));
         shareString = shareString + "\n비닐 - 비닐의 이물질을 제거 후 버려주세요.";
+        saveCategory = saveCategory + "3-";
     }
     public void addCan()
     {
         data.add(addItem(getResources().getDrawable(R.drawable.can),"캔","캔의 내용물을 제거 후 버려주세요"));
         shareString = shareString + "\n캔 - 캔의 내용물을 제거 후 버려주세요.";
+        saveCategory = saveCategory + "4-";
     }
     public void addStrph()
     {
         data.add(addItem(getResources().getDrawable(R.drawable.ps),"스티로폼","스티로폼의 이물질을 제거후 이물질이 없는 상태로 버려주세요"));
         shareString = shareString + "\n스티로폼 - 스티로폼의 이물질을 제거후 이물질이 없는 상태로 버려주세요.";
+        saveCategory = saveCategory + "5-";
     }
     public void addPet()
     {
         data.add(addItem(getResources().getDrawable(R.drawable.pete),"페트병","페트병 안의 내용물을 제거한 뒤 페트병에 붙어 있는 비닐과 뚜껑을 제거 후 분리수거 합니다."));
         shareString = shareString + "\n페트병 - 페트병 안의 내용물을 제거한 뒤 페트병에 붙어 있는 비닐과 뚜껑을 제거 후 분리수거 합니다.";
+        saveCategory = saveCategory + "6-";
     }
     public void addTrash()
     {
         data.add(addItem(getResources().getDrawable(R.drawable.normal_black),"일반쓰레기","종량제 봉투에 담아 버려주세요."));
         shareString = shareString + "\n일반쓰레기 - 종량제 봉투에 담아 버려주세요.";
+        saveCategory = saveCategory + "8-";
     }
     public void addGlass()
     {
         data.add(addItem(getResources().getDrawable(R.drawable.glass),"유리","공병의 경우 이물질을 제거 후 버려주세요."));
         shareString = shareString + "\n유리 - 공병의 경우 이물질을 제거 후 버려주세요.";
+        saveCategory = saveCategory + "7-";
     }
 
     public void addElec()
     {
         data.add(addItem(getResources().getDrawable(R.drawable.bolt_black),"전자제품","한 면의 길이가 1m 미만인 소형가전은 재활용품 배출시 함께 배출, 1m 이상인 대형가전은 대형폐가전 무상방문수거 서비스를 이용해 배출"));
         shareString = shareString + "\n전자제품 - 한 면의 길이가 1m 미만인 소형가전은 재활용품 배출시 함께 배출, 1m 이상인 대형가전은 대형폐가전 무상방문수거 서비스를 이용해 배출";
+        saveCategory = saveCategory + "9 - ";
     }
 
     @Override
@@ -173,83 +187,6 @@ public class AfterScanActivity extends AppCompatActivity {
 
 
         System.out.println(Category);
-//        switch(KANcode) // 1차로 바코드 번호를 불러와서 분리수거 정보를 가져온다.
-//        {
-//            case "01010101":
-//                addVinyl();
-//                break;
-//            case "01010102":
-//                addPet();
-//                break;
-//            case "01160304":
-//
-//                break;
-//
-//
-//            default: //등록된 바코드가 없을 경우
-///*
-//                if(Category.contains("생수")) //카테고리를 기준으로 상품을 구분한다.
-//                {
-//                    data.add(addItem(getResources().getDrawable(R.drawable.ic_launcher_foreground),"페트병","페트병은 말이여,,,"));
-//                }
-//                else //해당되는 카테고리도 없을 경우
-//                {
-//                */
-//
-//                    //분리수거에 관한 모든 정보를 띄워준다.
-//                    addCan();
-//                    addPaper();
-//                    addPet();
-//                    addPlastic();
-//                    addStrph();
-//                    addTrash();
-//                    addGlass();
-//                    addVinyl();
-//               // }
-//
-//        }
-/*
-        if (KANcode==null){
-            addCan();
-            addPaper();
-            addPet();
-            addPlastic();
-            addStrph();
-            addTrash();
-            addGlass();
-            addVinyl();
-        }else{
-            for(int i=0; i<check_how.length; i++){
-                switch (""+i){
-                    case "1":
-                        addPlastic();
-                        break;
-                    case "2":
-                        addPaper();
-                        break;
-                    case "3":
-                        addVinyl();
-                        break;
-                    case "4":
-                        addCan();
-                        break;
-                    case "5":
-                        addStrph();
-                        break;
-                    case "6":
-                        addPet();
-                        break;
-                    case "7":
-                        addGlass();
-                        break;
-                    case "8":
-                        addTrash();
-                        break;
-
-                }
-            }
-        }
-*/
 
 
 
@@ -525,6 +462,7 @@ public class AfterScanActivity extends AppCompatActivity {
                     addTrash();
                     addGlass();
                     addVinyl();
+                    addElec();
                 }
                 else
                 {
@@ -566,6 +504,10 @@ public class AfterScanActivity extends AppCompatActivity {
                     sharingIntent.putExtra(Intent.EXTRA_TEXT, "[상품명]\n"+productName.getText().toString() + "\n\n[카테고리]"+productCategory.getText().toString().substring(2) + "\n[분리배출 방법]" + shareString);
                     startActivity(sharingIntent);
                 });
+
+                System.out.println("★" + saveCategory);
+
+
 
 
 
