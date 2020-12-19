@@ -1,6 +1,5 @@
 package app.sunrin.codegreen;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,16 +10,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,7 +27,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -42,7 +36,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class AfterScanActivity extends AppCompatActivity {
 
@@ -59,9 +52,9 @@ public class AfterScanActivity extends AppCompatActivity {
     ArrayList<setData> SetData = new ArrayList<>();
     ArrayList<Item> data = new ArrayList<>(); //분리배출 방법의 recyclerView에 넣는 arraylist
 
-    String saveCategory = "";
+    String saveData = "";
 
-    SharedPreferences categorySave;
+    SharedPreferences dataSave;
 
 
     SharedPreferences preferences, preferences1;
@@ -71,57 +64,57 @@ public class AfterScanActivity extends AppCompatActivity {
     {
         data.add(addItem(getResources().getDrawable(R.drawable.pp),"플라스틱","플라스틱의 이물질을 제거 후 버려주세요."));
         shareString = shareString + "\n플라스틱 - 플라스틱의 이물질을 제거 후 버려주세요.";
-        saveCategory = saveCategory + "1-";
+        saveData = saveData + "1-";
     }
 
     public void addPaper()
     {
         data.add(addItem(getResources().getDrawable(R.drawable.paper),"종이","종이에 붙어 있는 테이프 등 종이가 아닌 재질을 제거 후 버려주세요."));
         shareString = shareString + "\n종이 - 종이에 붙어 있는 테이프 등 종이가 아닌 재질을 제거 후 버려주세요.";
-        saveCategory = saveCategory + "2-";
+        saveData = saveData + "2-";
     }
     public void addVinyl()
     {
         data.add(addItem(getResources().getDrawable(R.drawable.vinyl),"비닐","비닐의 이물질을 제거 후 버려주세요"));
         shareString = shareString + "\n비닐 - 비닐의 이물질을 제거 후 버려주세요.";
-        saveCategory = saveCategory + "3-";
+        saveData = saveData + "3-";
     }
     public void addCan()
     {
         data.add(addItem(getResources().getDrawable(R.drawable.can),"캔","캔의 내용물을 제거 후 버려주세요"));
         shareString = shareString + "\n캔 - 캔의 내용물을 제거 후 버려주세요.";
-        saveCategory = saveCategory + "4-";
+        saveData = saveData + "4-";
     }
     public void addStrph()
     {
         data.add(addItem(getResources().getDrawable(R.drawable.ps),"스티로폼","스티로폼의 이물질을 제거후 이물질이 없는 상태로 버려주세요"));
         shareString = shareString + "\n스티로폼 - 스티로폼의 이물질을 제거후 이물질이 없는 상태로 버려주세요.";
-        saveCategory = saveCategory + "5-";
+        saveData = saveData + "5-";
     }
     public void addPet()
     {
         data.add(addItem(getResources().getDrawable(R.drawable.pete),"페트병","페트병 안의 내용물을 제거한 뒤 페트병에 붙어 있는 비닐과 뚜껑을 제거 후 분리수거 합니다."));
         shareString = shareString + "\n페트병 - 페트병 안의 내용물을 제거한 뒤 페트병에 붙어 있는 비닐과 뚜껑을 제거 후 분리수거 합니다.";
-        saveCategory = saveCategory + "6-";
+        saveData = saveData + "6-";
     }
     public void addTrash()
     {
         data.add(addItem(getResources().getDrawable(R.drawable.normal_black),"일반쓰레기","종량제 봉투에 담아 버려주세요."));
         shareString = shareString + "\n일반쓰레기 - 종량제 봉투에 담아 버려주세요.";
-        saveCategory = saveCategory + "8-";
+        saveData = saveData + "8-";
     }
     public void addGlass()
     {
         data.add(addItem(getResources().getDrawable(R.drawable.glass),"유리","공병의 경우 이물질을 제거 후 버려주세요."));
         shareString = shareString + "\n유리 - 공병의 경우 이물질을 제거 후 버려주세요.";
-        saveCategory = saveCategory + "7-";
+        saveData = saveData + "7-";
     }
 
     public void addElec()
     {
         data.add(addItem(getResources().getDrawable(R.drawable.bolt_black),"전자제품","한 면의 길이가 1m 미만인 소형가전은 재활용품 배출시 함께 배출, 1m 이상인 대형가전은 대형폐가전 무상방문수거 서비스를 이용해 배출"));
         shareString = shareString + "\n전자제품 - 한 면의 길이가 1m 미만인 소형가전은 재활용품 배출시 함께 배출, 1m 이상인 대형가전은 대형폐가전 무상방문수거 서비스를 이용해 배출";
-        saveCategory = saveCategory + "9 - ";
+        saveData = saveData + "9 - ";
     }
 
     @Override
@@ -232,6 +225,7 @@ public class AfterScanActivity extends AppCompatActivity {
             else
             {
                 prodName = true;
+
             }
 
         }
@@ -274,7 +268,7 @@ public class AfterScanActivity extends AppCompatActivity {
             {
                 KANcode=result.substring(7, 14);
                 System.out.println("KAN : " + KANcode);
-
+                saveData = saveData + KANcode + "☆";
                 loadDb();
             }
 
@@ -314,6 +308,7 @@ public class AfterScanActivity extends AppCompatActivity {
 
                 productCategory.setText(result);
                 System.out.println(result);
+
         }
     }
 
@@ -358,6 +353,9 @@ public class AfterScanActivity extends AppCompatActivity {
             TextView textView = findViewById(R.id.debug);
             textView.setText(result);
             new LoadImage().execute(result);
+            saveData = saveData + "★" + result + "☆" + productName.getText().toString() + "☆" + productCategory.getText().toString() + "☆" ;
+
+            System.out.println(saveData);
 
             //이미지가 띄워야 할 것 중 가장 마지막에 load되므로 image를 띄운 후 해당 데이터를 SharedPreference에 저장함
             //SharedPreference에 String형으로 저장하기 위해 String 3개 -> ArrayList -> JSON -> String으로 저장하는 코드임.
@@ -496,6 +494,22 @@ public class AfterScanActivity extends AppCompatActivity {
                 ReAdapter reAdapter = new ReAdapter(data);
                 recyclerView.setAdapter(reAdapter);
 
+
+                saveData = saveData.replace("\n", "");
+
+
+
+                dataSave = getSharedPreferences("saveAll", 0);
+                String result = dataSave.getString("saveAll", "");
+                saveData = result + saveData;
+                SharedPreferences.Editor editor = dataSave.edit();
+                editor.putString("saveAll", saveData);
+                editor.commit();
+
+                System.out.println(saveData);
+
+
+
                 Button button = findViewById(R.id.button);
                 button.setVisibility(View.VISIBLE);
                 button.setOnClickListener(v->{
@@ -505,7 +519,6 @@ public class AfterScanActivity extends AppCompatActivity {
                     startActivity(sharingIntent);
                 });
 
-                System.out.println("★" + saveCategory);
 
 
 
