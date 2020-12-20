@@ -35,7 +35,9 @@ import org.jsoup.nodes.Element;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class AfterScanActivity extends AppCompatActivity {
 
@@ -56,10 +58,15 @@ public class AfterScanActivity extends AppCompatActivity {
 
     SharedPreferences dataSave;
 
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    Calendar calendar = Calendar.getInstance();
+
+    String currentDate = format.format(calendar.getTime());
+
 
     SharedPreferences preferences, preferences1;
     // data arraylist에 데이터를 넣는 함수
-    //플라스틱 1,종이 2,비닐 3,캔 4,스티로폼 5,페트병 6,유리 7,일반쓰레기 8
+    //플라스틱 1,종이 2,비닐 3,캔 4,스티로폼 5,페트병 6,유리 7,일반쓰레기 8, 전자제품 9
     public void addPlastic()
     {
         data.add(addItem(getResources().getDrawable(R.drawable.pp),"플라스틱","플라스틱의 이물질을 제거 후 버려주세요."));
@@ -268,7 +275,7 @@ public class AfterScanActivity extends AppCompatActivity {
             {
                 KANcode=result.substring(7, 14);
                 System.out.println("KAN : " + KANcode);
-                saveData = saveData + KANcode + "☆";
+                saveData = saveData + KANcode + "@";
                 loadDb();
             }
 
@@ -353,7 +360,7 @@ public class AfterScanActivity extends AppCompatActivity {
             TextView textView = findViewById(R.id.debug);
             textView.setText(result);
             new LoadImage().execute(result);
-            saveData = saveData + "★" + result + "☆" + productName.getText().toString() + "☆" + productCategory.getText().toString() + "☆" ;
+            saveData = saveData + "★" + result + "@" + productName.getText().toString() + "@" + productCategory.getText().toString() + "@" + currentDate + "@";
 
             System.out.println(saveData);
 
