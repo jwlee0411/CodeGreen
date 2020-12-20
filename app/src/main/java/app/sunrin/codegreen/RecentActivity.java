@@ -13,7 +13,9 @@ public class RecentActivity extends AppCompatActivity {
     String[] data;
     String[][] newData;
 
-    int[] recycleCategory = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+//    int[] recycleCategory = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+    int[][] recycle;
     //각 카테고리별로 몇 개를 버렸는지
     //플라스틱 1,종이 2,비닐 3,캔 4,스티로폼 5,페트병 6,유리 7,일반쓰레기 8, 전자제품 9
 
@@ -50,12 +52,13 @@ public class RecentActivity extends AppCompatActivity {
         int intRecycle = 5;
 
 
+
+        //전체 상품 정보
          newData = new String[data.length][intRecycle+1];
          System.out.println(data.length);
 
         for(int i = 0; i<data.length; i++)
         {
-
             System.out.println(data[i]);
             String[] tempData = data[i].split("@");
             for(int j = 0; j<6; j++)
@@ -65,21 +68,56 @@ public class RecentActivity extends AppCompatActivity {
             }
         }
 
+
+        //전체 상품의 재활용 정보
+        //혹시 필요할 수도 있을까봐 남겨둠
+//        for(int i = 0; i<data.length; i++)
+//        {
+//            for(int j = 1; j<=9; j++)
+//            {
+//                if(newData[i][intRecycle].contains(Integer.toString(j)))
+//                {
+//                    recycleCategory[j-1]++;
+//                }
+//            }
+//        }
+
+
+
+        //전체 재활용 정보(일자별)
+        recycle = new int[data.length][12];
         for(int i = 0; i<data.length; i++)
         {
+            String getYear = newData[i][intScanDate].substring(0, 4);
+            String getMonth = newData[i][intScanDate].substring(5, 7);
+            String getDay = newData[i][intScanDate].substring(8, 10);
+
+            recycle[i][0] = Integer.parseInt(getYear);
+            recycle[i][1] = Integer.parseInt(getMonth);
+            recycle[i][2] = Integer.parseInt(getDay);
+
+            System.out.println(recycle[i][0]);
+            System.out.println(recycle[i][1]);
+            System.out.println(recycle[i][2]);
+
             for(int j = 1; j<=9; j++)
             {
-                System.out.println("f" + newData[i][intRecycle]);
                 if(newData[i][intRecycle].contains(Integer.toString(j)))
                 {
-                    recycleCategory[j-1]++;
+                    recycle[i][j+2] = 1;
+
                 }
+                else
+                {
+                    recycle[j][j+2] = 0;
+                }
+
+                System.out.println(recycle[i][j+2]);
+
+
             }
         }
 
-        System.out.println(recycleCategory[0]);
-        System.out.println(recycleCategory[1]);
-        System.out.println(recycleCategory[2]);
 
 
 
