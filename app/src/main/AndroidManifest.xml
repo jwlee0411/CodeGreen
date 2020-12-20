@@ -24,10 +24,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"
-            android:screenOrientation="portrait">
 
-        </activity>
+
+
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".AnyOrientationCaptureActivity"
@@ -35,22 +36,22 @@
             android:stateNotNeeded="true"
             android:theme="@style/Theme.CodeGreen"
             android:windowSoftInputMode="stateAlwaysHidden"
-            ></activity>
+            />
 
         <activity android:name=".CustomScannerActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"/>
 
         <activity android:name=".AfterScanActivity"
             android:theme="@style/Theme.CodeGreen"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait"/>
 
         <activity android:name=".RecentActivity"
             android:theme="@style/Theme.CodeGreen"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"/>
 
-        </activity>
+        <activity android:name=".NewScannerActivity"
+            android:theme="@style/Theme.CodeGreen"
+            android:screenOrientation="portrait"/>
     </application>
 
 

@@ -35,6 +35,11 @@ public class MainActivity extends AppCompatActivity {
         integrator.initiateScan();
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(MainActivity.this, SplashActivity.class));
+        finish();
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) { // 바코드가 스캔되면
@@ -74,6 +79,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "올바른 바코드가 아닙니다.", Toast.LENGTH_SHORT).show();
             }
 
+        }
+        else
+        {
+            startActivity(new Intent(MainActivity.this, SplashActivity.class));
+            finish();
         }
     }
 }

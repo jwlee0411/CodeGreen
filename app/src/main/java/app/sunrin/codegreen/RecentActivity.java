@@ -58,8 +58,6 @@ public class RecentActivity extends AppCompatActivity {
 
             System.out.println(data[i]);
             String[] tempData = data[i].split("@");
-            System.out.println(tempData[i]);
-            System.out.println(tempData.length);
             for(int j = 0; j<6; j++)
             {
                 newData[i][j] = tempData[j];
