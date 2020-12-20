@@ -42,7 +42,7 @@ import java.util.Calendar;
 public class AfterScanActivity extends AppCompatActivity {
 
     String[] check_how;
-    TextView productName, productCategory,textView3;
+    TextView productName, productCategory;
     String url, Shorturl;
     String Category, db_category, KANcode;
     String shareString = "";
@@ -51,7 +51,6 @@ public class AfterScanActivity extends AppCompatActivity {
     ImageView img;
     String result;
     RecyclerView recyclerView;
-    ArrayList<setData> SetData = new ArrayList<>();
     ArrayList<Item> data = new ArrayList<>(); //분리배출 방법의 recyclerView에 넣는 arraylist
 
     String saveData = "";
@@ -64,7 +63,7 @@ public class AfterScanActivity extends AppCompatActivity {
     String currentDate = format.format(calendar.getTime());
 
 
-    SharedPreferences preferences, preferences1;
+    SharedPreferences preferences;
     // data arraylist에 데이터를 넣는 함수
     //플라스틱 1,종이 2,비닐 3,캔 4,스티로폼 5,페트병 6,유리 7,일반쓰레기 8, 전자제품 9
     public void addPlastic()
@@ -136,7 +135,7 @@ public class AfterScanActivity extends AppCompatActivity {
         Shorturl = "http://gs1.koreannet.or.kr";
         url = Shorturl + "/pr/" + result; //바코드를 통한 url 가져오기
 
-        preferences1 = getSharedPreferences("RecentData", 0);
+       
 
 
 
@@ -174,40 +173,53 @@ public class AfterScanActivity extends AppCompatActivity {
 
         productName = findViewById(R.id.product_name);
         productCategory = findViewById(R.id.pn);
-        //textView3 = findViewById(R.id.textView3);
 
 
-        new getName().execute();//상품명 가져오기
-        new getCategory().execute();//상품 카테고리 가져오기
-        new getPhoto1().execute();
-        new getKANcode().execute();
-
-
-
-
-
-        System.out.println(Category);
-
-
-
+        new getAll().execute();//상품명 가져오기
+        
     }
 
-    private class getName extends AsyncTask<String, Void, String> //상품명 가져오기
+    private class getAll extends AsyncTask<String, Void, String> //상품명 가져오기
     {
 
         @Override
         protected String doInBackground(String... params)
         {
             try {
+                //기본 코드
                 Connection.Response response = Jsoup.connect(url).method(Connection.Method.GET).execute();
                 Document document = response.parse();
+                
+                
+                //상품명 가져오기 => nameNew에 저장
+                Element name = document.select("h3").first();
+                System.out.println(name);
+                String nameNew = name.toString();
+                nameNew = nameNew.replace("<h3>", "").replace("</h3>", "");
 
 
-                Element category = document.select("h3").first();
-                System.out.println(category);
+                //KAN코드 가져오기 => kanNew에 저장
+                Element kan = document.select("tr").first();
+                String kanNew = kan.toString();
+                kanNew = kanNew.replace("<tr>", "").replace("<th>KAN 상품분류코드</th>", "").replace("&gt;", ">").replace("</tr>", "").replace("<td>", "").replace("</td>", "");
+
+
+                //상품 카테고리 가져오기 => categoryNew에 저장
+                Element category = document.select("tr[class=b_line]").first();
                 String categoryNew = category.toString();
-                String categoryNew2 = categoryNew.replace("<h3>", "").replace("</h3>", "");
-                return categoryNew2;
+                categoryNew = categoryNew.replace("<tr class=\"b_line\">", "").replace("<th>KAN 상품분류</th>", "").replace("&gt;", ">").replace("</tr>", "").replace("<td>", "").replace("</td>", "");
+
+                
+                //사진 가져오기 => photoNew에 저장
+                Element photo = document.select("ul[class=btn_img]").first();
+                String photoNew = photo.toString();
+
+                String target = "/pr/";
+                int target_num = photoNew.indexOf(target);
+                photoNew = Shorturl + photoNew.substring(target_num,(photoNew.substring(target_num).indexOf("\',\'")+target_num));
+                photoNew = photoNew.replace("&amp;", "&");
+                
+                return nameNew + "★" + kanNew + "★" + categoryNew + "★" + photoNew;
 
 
             }
@@ -219,165 +231,50 @@ public class AfterScanActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result)
-        {// 결과값을 화면에 표시함.
-
-            productName.setText(result);
-            System.out.println("★" + result);
-            Category = result;
-            if(result=="")
+        {
+            // 결과값을 화면에 표시함.
+            int name = 0;
+            int kan = 1;
+            int category = 2;
+            int photo = 3;
+            
+            String[] results = result.split("★");
+            
+            //이름 설정
+            if(results[name]=="" || results[name] == null)
             {
                 prodName = false;
                 Toast.makeText(getApplicationContext(), "상품 정보가 없습니다.", Toast.LENGTH_LONG).show();
-            }
-            else
-            {
-                prodName = true;
-
-            }
-
-        }
-    }
-
-    private class getKANcode extends AsyncTask<String, Void, String> //KANcode 가져오기
-    {
-
-        @Override
-        protected String doInBackground(String... params)
-        {
-            try {
-                Connection.Response response = Jsoup.connect(url).method(Connection.Method.GET).execute();
-                Document document = response.parse();
-
-                Element product = document.select("tr").first();
-                System.out.println(product);
-                String productNew = product.toString();
-                String productNew2 = productNew.replace("<tr>", "").replace("<th>KAN 상품분류코드</th>", "").replace("&gt;", ">").replace("</tr>", "").replace("<td>", "").replace("</td>", "");
-                return productNew2;
-
-
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result)
-        {//kancode 저장
-
-            if(prodName == false)
-            {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
             else
             {
-                KANcode=result.substring(7, 14);
-                System.out.println("KAN : " + KANcode);
-                saveData = saveData + KANcode + "@";
+                prodName = true;
+                productName.setText(results[0]);
+
+
+                KANcode=results[kan].substring(7, 14);
                 loadDb();
+
+
+                productCategory.setText(results[category]);
+
+                
+                TextView textView = findViewById(R.id.debug);
+                textView.setText(results[photo]);
+                new LoadImage().execute(results[photo]);
+                saveData = "★" + results[photo] + "@" + results[name] + "@" + results[category] + "@" + currentDate + "@" + results[kan] + "@";
+                saveData = saveData.replaceAll("  ", "");
+                
             }
+            
+           
+            
 
         }
     }
 
-
-    private class getCategory extends AsyncTask<String, Void, String> //상품 카테고리 가져오기
-    {
-
-        @Override
-        protected String doInBackground(String... params)
-        {
-            try {
-                Connection.Response response = Jsoup.connect(url).method(Connection.Method.GET).execute();
-                Document document = response.parse();
-
-
-
-                    Element product = document.select("tr[class=b_line]").first();
-                    System.out.println(product);
-                    String productNew = product.toString();
-                    String productNew2 = productNew.replace("<tr class=\"b_line\">", "").replace("<th>KAN 상품분류</th>", "").replace("&gt;", ">").replace("</tr>", "").replace("<td>", "").replace("</td>", "");
-                    return productNew2;
-
-
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result)
-        {// 결과값을 화면에 표시함.
-
-                productCategory.setText(result);
-                System.out.println(result);
-
-        }
-    }
-
-    private class getPhoto1 extends AsyncTask<String, Void, String> //상품 사진 링크 가져오기
-    {
-
-
-        @Override
-        protected String doInBackground(String... params)
-        {
-            try {
-                Connection.Response response = Jsoup.connect(url).method(Connection.Method.GET).execute();
-                Document document = response.parse();
-
-                Element product = document.select("ul[class=btn_img]").first();
-                System.out.println(product);
-                String productNew = product.toString();
-
-                String target = "/pr/";
-
-                int target_num = productNew.indexOf(target);
-                String result;
-                result = Shorturl + productNew.substring(target_num,(productNew.substring(target_num).indexOf("\',\'")+target_num));
-                result = result.replace("&amp;", "&");
-                System.out.println(result);
-
-
-
-                return result;
-
-
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result)
-        {
-            TextView textView = findViewById(R.id.debug);
-            textView.setText(result);
-            new LoadImage().execute(result);
-            saveData = saveData + "★" + result + "@" + productName.getText().toString() + "@" + productCategory.getText().toString() + "@" + currentDate + "@";
-
-            System.out.println(saveData);
-
-            //이미지가 띄워야 할 것 중 가장 마지막에 load되므로 image를 띄운 후 해당 데이터를 SharedPreference에 저장함
-            //SharedPreference에 String형으로 저장하기 위해 String 3개 -> ArrayList -> JSON -> String으로 저장하는 코드임.
-            // setData : 클래스, SetData : ArrayList
-            setData setData = new setData(productName.getText().toString(), productCategory.getText().toString(), textView.getText().toString(), "추후 수정");
-            //String 3개 -> ArrayList
-            SetData.add(setData);
-
-
-            // ArrayList -> JSON -> String -> 저장완료
-            setStringArrayPref("settings_item_json", SetData);
-
-
-        }
-    }
 
     private class LoadImage extends AsyncTask<String, String, Bitmap> {
         @Override
@@ -414,10 +311,6 @@ public class AfterScanActivity extends AppCompatActivity {
     private void NotConnected_showAlert() //네트워크 연결 오류 시 어플리케이션 종료
     {
         Toast.makeText(getApplicationContext(), "네트워크 연결 오류", Toast.LENGTH_LONG).show();
-
-       // moveTaskToBack(true);						// 태스크를 백그라운드로 이동
-       // finishAndRemoveTask();						// 액티비티 종료 + 태스크 리스트에서 지우기
-        //android.os.Process.killProcess(android.os.Process.myPid());	// 앱 프로세스 종료
         finish();
 
 
@@ -527,59 +420,15 @@ public class AfterScanActivity extends AppCompatActivity {
                 });
 
 
-
-
-
-
-
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
-                // Failed to read value
-//                Log.w(TAG, "Failed to read value.", error.toException());
+
             }
         });
 
     }
 
-
-
-
-    private void setStringArrayPref(String key, ArrayList<setData> values) {
-
-        SharedPreferences.Editor editor = preferences1.edit();
-        JSONArray a = new JSONArray();
-        for (int i = 0; i < values.size(); i++) {
-            a.put(values.get(i));
-        }
-        if (!values.isEmpty()) {
-            editor.putString(key, a.toString());
-        } else {
-            editor.putString(key, null);
-        }
-        editor.apply();
-    }
-
-    /*
-    private ArrayList<setData> getStringArrayPref(Context context, String key) { // 연구중
-        SharedPreferences prefs = getSharedPreferences("RecentData", 0);
-        String json = prefs.getString(key, null);
-        ArrayList<setData> urls = new ArrayList<setData>();
-        if (json != null) {
-            try {
-                JSONArray a = new JSONArray(json);
-                for (int i = 0; i < a.length(); i++) {
-                    String url = a.optString(i);
-                    urls.add(url);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        return urls;
-    }
-
-    */
 
 }
