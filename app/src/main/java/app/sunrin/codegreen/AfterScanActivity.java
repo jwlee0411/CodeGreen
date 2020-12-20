@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.journeyapps.barcodescanner.CaptureActivity;
 
 import org.json.JSONArray;
 import org.jsoup.Connection;
@@ -47,7 +48,7 @@ public class AfterScanActivity extends AppCompatActivity {
     String[] check_how;
     TextView productName, productCategory;
     String url, Shorturl;
-    String Category, db_category, KANcode;
+    String db_category, KANcode;
     String shareString = "";
     Boolean prodName;
     Bitmap bitmap;
@@ -154,18 +155,10 @@ public class AfterScanActivity extends AppCompatActivity {
         progressDialog.show();
 
 
-
-
         preferences = getSharedPreferences("BarcodeResult", 0);
         result = preferences.getString("result", "");
         Shorturl = "http://gs1.koreannet.or.kr";
         url = Shorturl + "/pr/" + result; //바코드를 통한 url 가져오기
-
-       
-
-
-
-        img = findViewById(R.id.product_img);
 
 
 
@@ -197,6 +190,7 @@ public class AfterScanActivity extends AppCompatActivity {
     }
     private void initView() {
 
+        img = findViewById(R.id.product_img);
         productName = findViewById(R.id.product_name);
         productCategory = findViewById(R.id.pn);
 
@@ -400,7 +394,7 @@ public class AfterScanActivity extends AppCompatActivity {
                         switch (check_how[i])
                         {
 
-                            //플라스틱 1,종이 2,비닐 3,캔 4,스티로폼 5,페트병 6,유리 7,일반쓰레기 8
+                            //플라스틱 1,종이 2,비닐 3,캔 4,스티로폼 5,페트병 6,유리 7,일반쓰레기 8, 가전제품 9
                             case "1": addPlastic(); break;
                             case "2": addPaper(); break;
                             case "3" : addVinyl(); break;
@@ -446,8 +440,6 @@ public class AfterScanActivity extends AppCompatActivity {
                     sharingIntent.putExtra(Intent.EXTRA_TEXT, "[상품명]\n"+productName.getText().toString() + "\n\n[카테고리]"+productCategory.getText().toString().substring(2) + "\n[분리배출 방법]" + shareString);
                     startActivity(sharingIntent);
                 });
-
-
                 progressDialog.dismiss();
 
 
@@ -460,6 +452,7 @@ public class AfterScanActivity extends AppCompatActivity {
         });
 
     }
+
 
 
 }
