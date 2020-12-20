@@ -1,6 +1,7 @@
 package app.sunrin.codegreen;
 
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Debug;
@@ -106,7 +107,8 @@ public class SignUpActivity extends AppCompatActivity {
             boolean passwordExist = false;
             for(int i = 0; i<newValue.length; i++)
             {
-                if(finalValue[i][0].equals(input_id)){
+                if(finalValue[i][0].equals(input_id))
+                {
                     passwordExist = true;
                     break;
                 }
@@ -120,16 +122,18 @@ public class SignUpActivity extends AppCompatActivity {
 
                     long time = System.currentTimeMillis();
                     String strTime = Long.toString(time);
-                    myRef = database.getReference("user/" + strTime + "/userID");
+                    myRef = database.getReference("user/" + input_id + "/userID");
                     myRef.setValue(input_id);
 
-                    myRef = database.getReference("user/" + strTime + "/userPW");
+                    myRef = database.getReference("user/" + input_id + "/userPW");
                     myRef.setValue(input_pw);
 
-                    myRef = database.getReference("user/" + strTime + "/value");
+                    myRef = database.getReference("user/" + input_id + "/value");
                     myRef.setValue("");
 
                     Toast.makeText(SignUpActivity.this, "새 아이디를 생성했습니다!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(intent);
                     finish();
                 }
             }

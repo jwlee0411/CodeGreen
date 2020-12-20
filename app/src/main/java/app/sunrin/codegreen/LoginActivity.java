@@ -110,17 +110,36 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-            if (!idExist) {   // ID가 존재하지 않을 때
+            if (!idExist)
+            {   // ID가 존재하지 않을 때
                 id_Layout.setError("'" + input_id + "' is not existed");
-            }else{
+            }
+            else
+                {
                 id_Layout.setErrorEnabled(false);
-                if (finalValue[idIndex][1].equals(input_pw)) {  // 두 String 비교
+                if (finalValue[idIndex][1].equals(input_pw))
+                {  // 두 String 비교
                     pw_Layout.setErrorEnabled(false);
                     Toast.makeText(LoginActivity.this, input_id + "님, 환영합니다!", Toast.LENGTH_SHORT).show();
+
+
+
+                    SharedPreferences preferences = getSharedPreferences("ID", 0);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("id", input_id);
+                    editor.commit();
+
+                    SharedPreferences preferences1 = getSharedPreferences("PW", 0);
+                    SharedPreferences.Editor editor1 = preferences1.edit();
+                    editor1.putString("pw", input_pw);
+                    editor1.commit();
+
 
                     Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
                     startActivity(intent);
                     finish();
+
+
 
                 }
                 else{
@@ -134,6 +153,9 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // sign up 버튼 누르면 화면 이동
-        sign_up_btn.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, SignUpActivity.class)));
+        sign_up_btn.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+            finish();
+        });
     }
 }

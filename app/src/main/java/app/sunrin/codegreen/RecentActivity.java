@@ -6,6 +6,9 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class RecentActivity extends AppCompatActivity {
     //메인화면(카메라로 바코드 스캔하는 곳)에서 설정 버튼 누르면 들어오는 화면임
 
@@ -28,6 +31,9 @@ public class RecentActivity extends AppCompatActivity {
         SharedPreferences dataSave = getSharedPreferences("saveAll", 0);
         String dataAll = dataSave.getString("saveAll", "");
         System.out.println(dataAll);
+
+
+
 
         dataAll = dataAll.substring(1);
 

@@ -418,9 +418,19 @@ public class AfterScanActivity extends AppCompatActivity {
                 dataSave = getSharedPreferences("saveAll", 0);
                 String result = dataSave.getString("saveAll", "");
                 saveData = result + saveData;
+
+
                 SharedPreferences.Editor editor = dataSave.edit();
                 editor.putString("saveAll", saveData);
                 editor.commit();
+
+                SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
+
+                String user_id = sharedPreferences.getString("id", "");
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference("user/" + user_id + "/value");
+                myRef.setValue(saveData);
 
                 System.out.println(saveData);
 
@@ -468,14 +478,16 @@ public class AfterScanActivity extends AppCompatActivity {
 
                 //상품명 가져오기 => nameNew에 저장
                 Element name = (Element) document.select("li[class=basicList_item__2XT81]").first();
-                if (name == null) {
+                if (name == null)
+                {
                     return null;
-                } else {
+                }
+                else
+                    {
                     String nameNew = name.toString();
                     nameNew = nameNew.substring(nameNew.indexOf("<a"), nameNew.indexOf("target=\"_blank\"")).replace("<a href=", "").replace("\"", "");
                     System.out.println(nameNew);
                     //nameNew = nameNew.replace("<h3>", "").replace("</h3>", "");
-
 
                     return nameNew;
                 }
