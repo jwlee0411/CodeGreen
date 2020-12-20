@@ -195,8 +195,19 @@ public class AfterScanActivity extends AppCompatActivity {
         productName = findViewById(R.id.product_name);
         productCategory = findViewById(R.id.pn);
 
+        if(result.equals(""))
+        {
+            Toast.makeText(getApplicationContext(), "상품 정보가 없습니다.", Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
+            finish();
+        }
+        else
+        {
+            new getAll().execute();//상품명 가져오기
+        }
 
-        new getAll().execute();//상품명 가져오기
+
+
         
     }
 
@@ -239,7 +250,6 @@ public class AfterScanActivity extends AppCompatActivity {
                 int target_num = photoNew.indexOf(target);
                 photoNew = Shorturl + photoNew.substring(target_num,(photoNew.substring(target_num).indexOf("\',\'")+target_num));
                 photoNew = photoNew.replace("&amp;", "&");
-                
                 return nameNew + "★" + kanNew + "★" + categoryNew + "★" + photoNew;
 
 
@@ -262,7 +272,7 @@ public class AfterScanActivity extends AppCompatActivity {
             String[] results = result.split("★");
             
             //이름 설정
-            if(results[name]=="" || results[name] == null)
+            if(results[name].equals("") || results[name].equals(null))
             {
                 prodName = false;
                 progressDialog.dismiss();
@@ -477,14 +487,21 @@ public class AfterScanActivity extends AppCompatActivity {
 
                 //상품명 가져오기 => nameNew에 저장
                 Element name = (Element) document.select("li[class=basicList_item__2XT81]").first();
+                if(name==null)
+                {
+                    return null;
+                }
+                else
+                {
+                    String nameNew = name.toString();
+                    nameNew = nameNew.substring(nameNew.indexOf("<a"), nameNew.indexOf("target=\"_blank\"")).replace("<a href=", "").replace("\"", "");
+                    System.out.println(nameNew);
+                    //nameNew = nameNew.replace("<h3>", "").replace("</h3>", "");
 
-                String nameNew = name.toString();
-                nameNew = nameNew.substring(nameNew.indexOf("<a"), nameNew.indexOf("target=\"_blank\"")).replace("<a href=", "").replace("\"", "");
-                System.out.println(nameNew);
-                //nameNew = nameNew.replace("<h3>", "").replace("</h3>", "");
 
+                    return nameNew;
+                }
 
-                return nameNew;
 
 
             }
@@ -498,9 +515,18 @@ public class AfterScanActivity extends AppCompatActivity {
         protected void onPostExecute(String result)
         {
             // 결과값을 화면에 표시함.
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(result));
-            intent.setPackage("com.nhn.android.search");
-            startActivity(intent);
+            System.out.println(result);
+            if(result==null)
+            {
+                Toast.makeText(AfterScanActivity.this, "상품 정보가 없습니다.", Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(result));
+                intent.setPackage("com.nhn.android.search");
+                startActivity(intent);
+            }
+
 
 
         }
