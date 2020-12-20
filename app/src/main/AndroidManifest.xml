@@ -14,15 +14,27 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.CodeGreen">
 
-        <activity android:name=".SplashActivity"
+        <activity android:name=".LoginActivity"
             android:theme="@style/Theme.CodeGreen"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+        </activity>
+
+        <activity android:name=".SignUpActivity"
+            android:theme="@style/Theme.CodeGreen"
+            android:screenOrientation="portrait"/>
+
+
+        <activity android:name=".SplashActivity"
+            android:theme="@style/Theme.CodeGreen"
+            android:screenOrientation="portrait"
+            >
+
         </activity>
 
 

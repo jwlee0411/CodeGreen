@@ -10,7 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 public class SplashActivity  extends AppCompatActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceStare) {
+    protected void onCreate(Bundle savedInstanceStare)
+    {
         super.onCreate(savedInstanceStare);
         setContentView(R.layout.activity_splash);
         // 어플리케이션을 열면 처음에 실행됨.(SpalshActivity -> MainActivity로 실행되는 구조)
@@ -19,6 +20,7 @@ public class SplashActivity  extends AppCompatActivity {
         Button buttonBarcode = findViewById(R.id.buttonBarcode);
         Button buttonPhoto = findViewById(R.id.buttonPhoto);
         Button buttonRecent = findViewById(R.id.buttonRecent);
+        Button buttonLogout = findViewById(R.id.buttonLogout);
 
         buttonBarcode.setOnClickListener(v ->
         {
@@ -26,13 +28,18 @@ public class SplashActivity  extends AppCompatActivity {
             finish();
         });
 
-        buttonPhoto.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), NewScannerActivity.class)));
+        buttonPhoto.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), MainActivity.class))); //TODO
 
         buttonRecent.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), RecentActivity.class)));
 
-
+        buttonLogout.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            finish();
+        });
 
     }
 
 
 }
+
+

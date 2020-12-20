@@ -55,6 +55,18 @@
         app:layout_constraintBottom_toTopOf="@+id/buttonPhoto"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/jua"
+        android:text="로그아웃"
+        android:textColor="#FFFFFF"
+        android:textSize="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonBarcode" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
