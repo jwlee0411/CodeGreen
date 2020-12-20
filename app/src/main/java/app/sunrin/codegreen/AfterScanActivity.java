@@ -16,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -62,6 +65,7 @@ public class AfterScanActivity extends AppCompatActivity {
 
     String currentDate = format.format(calendar.getTime());
 
+    ProgressDialog progressDialog;
 
     SharedPreferences preferences;
     // data arraylist에 데이터를 넣는 함수
@@ -123,10 +127,32 @@ public class AfterScanActivity extends AppCompatActivity {
         saveData = saveData + "9 - ";
     }
 
+    private class ProgressDialog extends AlertDialog {
+
+        public ProgressDialog(@NonNull Context context) {
+            super(context);
+        }
+
+        public ProgressDialog(@NonNull Context context, int themeResId) {
+            super(context, themeResId);
+        }
+
+        protected ProgressDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
+            super(context, cancelable, cancelListener);
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_after_scan);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("검색 중...");
+        progressDialog.setMessage("검색 중입니다. 잠시만 기다려 주세요.");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
 
 
 
@@ -244,6 +270,7 @@ public class AfterScanActivity extends AppCompatActivity {
             if(results[name]=="" || results[name] == null)
             {
                 prodName = false;
+                progressDialog.dismiss();
                 Toast.makeText(getApplicationContext(), "상품 정보가 없습니다.", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
@@ -311,6 +338,7 @@ public class AfterScanActivity extends AppCompatActivity {
     private void NotConnected_showAlert() //네트워크 연결 오류 시 어플리케이션 종료
     {
         Toast.makeText(getApplicationContext(), "네트워크 연결 오류", Toast.LENGTH_LONG).show();
+        progressDialog.dismiss();
         finish();
 
 
@@ -420,11 +448,14 @@ public class AfterScanActivity extends AppCompatActivity {
                 });
 
 
+                progressDialog.dismiss();
+
+
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
-
+                progressDialog.dismiss();
             }
         });
 
