@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -56,7 +57,7 @@ public class AfterScanActivity extends AppCompatActivity {
     String result;
     RecyclerView recyclerView;
     ArrayList<Item> data = new ArrayList<>(); //분리배출 방법의 recyclerView에 넣는 arraylist
-
+    String link;
     String saveData = "";
 
     SharedPreferences dataSave;
@@ -443,6 +444,15 @@ public class AfterScanActivity extends AppCompatActivity {
                 progressDialog.dismiss();
 
 
+                Button buttonShopping = findViewById(R.id.buttonShopping);
+                buttonShopping.setVisibility(View.VISIBLE);
+
+                buttonShopping.setOnClickListener(v ->{
+                    link = "https://search.shopping.naver.com/search/all?query=" + productName.getText().toString();
+                    new getLink().execute();
+                } );
+
+
             }
 
             @Override
@@ -451,6 +461,49 @@ public class AfterScanActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private class getLink extends AsyncTask<String, Void, String> //상품명 가져오기
+    {
+
+        @Override
+        protected String doInBackground(String... params)
+        {
+            try {
+                //기본 코드
+                Connection.Response response = Jsoup.connect(link).method(Connection.Method.GET).execute();
+                Document document = (Document) response.parse();
+
+
+                //상품명 가져오기 => nameNew에 저장
+                Element name = (Element) document.select("li[class=basicList_item__2XT81]").first();
+
+                String nameNew = name.toString();
+                nameNew = nameNew.substring(nameNew.indexOf("<a"), nameNew.indexOf("target=\"_blank\"")).replace("<a href=", "").replace("\"", "");
+                System.out.println(nameNew);
+                //nameNew = nameNew.replace("<h3>", "").replace("</h3>", "");
+
+
+                return nameNew;
+
+
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            // 결과값을 화면에 표시함.
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(result));
+            intent.setPackage("com.nhn.android.search");
+            startActivity(intent);
+
+
+        }
     }
 
 
