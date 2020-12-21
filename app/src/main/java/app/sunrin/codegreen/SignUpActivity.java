@@ -58,8 +58,8 @@ public class SignUpActivity extends AppCompatActivity {
 
 
 
-         database = FirebaseDatabase.getInstance();
-      myRef = database.getReference("user");
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("user");
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

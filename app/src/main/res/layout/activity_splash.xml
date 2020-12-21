@@ -84,6 +84,19 @@
             android:layout_marginBottom="32dp"/>
 
         <Button
+            android:id="@+id/buttonJumin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/btn_background"
+            android:drawableTop="@drawable/settings"
+            android:fontFamily="@font/jua"
+            android:text="배출방법문의"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
+        <Button
             android:id="@+id/buttonLogout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
