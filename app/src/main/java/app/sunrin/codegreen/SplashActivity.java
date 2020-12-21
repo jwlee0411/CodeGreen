@@ -110,12 +110,10 @@ public class SplashActivity  extends AppCompatActivity {
             location = location.substring(location.indexOf("구 ")+2, location.indexOf("동")+1);
             System.out.println(location);
 
-
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("geo:0,0?q=" + location + "주민센터"));
             startActivity(intent);
-
         });
 
 

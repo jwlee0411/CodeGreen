@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Space;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
@@ -39,125 +40,140 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
+        SharedPreferences sharedPreferences = getSharedPreferences("getLogined", 0);
+        Boolean getLogined = sharedPreferences.getBoolean("getLogined", false);
 
-        final TextInputLayout id_Layout = findViewById(R.id.TextInput_ID);
-        final TextInputLayout pw_Layout = findViewById(R.id.TextInput_PW);
-        final TextInputEditText id_ET = findViewById(R.id.edit_id);
-        final TextInputEditText pw_ET = findViewById(R.id.edit_pw);
-        MaterialButton sign_in_btn = findViewById(R.id.signInBtn);
-        MaterialButton sign_up_btn = findViewById(R.id.signUpBtn);
-
-
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("user");
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                String value = dataSnapshot.getValue().toString();
-                System.out.println(value);
-                value = value.substring(0, value.length()-2);
-                value = value.replace("}, ", "☆");
-                //굳이 별로 바꾼 이유는 split에서 정규식을 사용하기 때문에 이렇게 안 하면 에러가 발생하기 때문
-                //자세한 것은 이 링크 참고 : https://mytory.net/archives/285
-                System.out.println(value);
+        if(getLogined)
+        {
+            Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+        else
+        {
+            final TextInputLayout id_Layout = findViewById(R.id.TextInput_ID);
+            final TextInputLayout pw_Layout = findViewById(R.id.TextInput_PW);
+            final TextInputEditText id_ET = findViewById(R.id.edit_id);
+            final TextInputEditText pw_ET = findViewById(R.id.edit_pw);
+            MaterialButton sign_in_btn = findViewById(R.id.signInBtn);
+            MaterialButton sign_up_btn = findViewById(R.id.signUpBtn);
 
 
-                newValue = value.split("☆");
-                System.out.println(newValue.length);
+            database = FirebaseDatabase.getInstance();
+            myRef = database.getReference("user");
+            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    String value = dataSnapshot.getValue().toString();
+                    System.out.println(value);
+                    value = value.substring(0, value.length()-2);
+                    value = value.replace("}, ", "☆");
+                    //굳이 별로 바꾼 이유는 split에서 정규식을 사용하기 때문에 이렇게 안 하면 에러가 발생하기 때문
+                    //자세한 것은 이 링크 참고 : https://mytory.net/archives/285
+                    System.out.println(value);
 
 
-                finalValue = new String[newValue.length][3];
+                    newValue = value.split("☆");
+                    System.out.println(newValue.length);
+
+
+                    finalValue = new String[newValue.length][3];
+
+                    for(int i = 0; i<newValue.length; i++)
+                    {
+                        finalValue[i][0] = newValue[i].substring(newValue[i].indexOf("D=")+2, newValue[i].lastIndexOf(", "));
+                        finalValue[i][1] = newValue[i].substring(newValue[i].indexOf("W=")+2, newValue[i].indexOf(", "));
+                        finalValue[i][2] = newValue[i].substring(newValue[i].indexOf("e=")+2);
+
+                        System.out.println("가" + finalValue[i][0]);
+                        System.out.println("나" + finalValue[i][1]);
+                        System.out.println("다" + finalValue[i][2]);
+
+                    }
+
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error)
+                {
+                    System.out.println("ERROR");
+
+                }
+            });
+
+
+            sign_in_btn.setOnClickListener(v -> {
+                String input_id = id_ET.getText().toString().replaceAll(" ", "");
+                String input_pw = pw_ET.getText().toString().replaceAll(" ", "");  // 공백 처리
+
+
+                boolean idExist = false;
 
                 for(int i = 0; i<newValue.length; i++)
                 {
-                    finalValue[i][0] = newValue[i].substring(newValue[i].indexOf("D=")+2, newValue[i].lastIndexOf(", "));
-                    finalValue[i][1] = newValue[i].substring(newValue[i].indexOf("W=")+2, newValue[i].indexOf(", "));
-                    finalValue[i][2] = newValue[i].substring(newValue[i].indexOf("e=")+2);
-
-                    System.out.println("가" + finalValue[i][0]);
-                    System.out.println("나" + finalValue[i][1]);
-                    System.out.println("다" + finalValue[i][2]);
+                    if(finalValue[i][0].equals(input_id)){
+                        idExist = true;
+                        idIndex = i;
+                        break;
+                    }
 
                 }
 
 
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error)
-            {
-                System.out.println("ERROR");
-
-            }
-        });
-
-
-        sign_in_btn.setOnClickListener(v -> {
-            String input_id = id_ET.getText().toString().replaceAll(" ", "");
-            String input_pw = pw_ET.getText().toString().replaceAll(" ", "");  // 공백 처리
-
-
-            boolean idExist = false;
-
-            for(int i = 0; i<newValue.length; i++)
-            {
-                if(finalValue[i][0].equals(input_id)){
-                    idExist = true;
-                    idIndex = i;
-                    break;
+                if (!idExist)
+                {   // ID가 존재하지 않을 때
+                    id_Layout.setError("'" + input_id + "' is not existed");
                 }
-
-            }
-
-
-
-            if (!idExist)
-            {   // ID가 존재하지 않을 때
-                id_Layout.setError("'" + input_id + "' is not existed");
-            }
-            else
+                else
                 {
-                id_Layout.setErrorEnabled(false);
-                if (finalValue[idIndex][1].equals(input_pw))
-                {  // 두 String 비교
-                    pw_Layout.setErrorEnabled(false);
-                    Toast.makeText(LoginActivity.this, input_id + "님, 환영합니다!", Toast.LENGTH_SHORT).show();
+                    id_Layout.setErrorEnabled(false);
+                    if (finalValue[idIndex][1].equals(input_pw))
+                    {  // 두 String 비교
+                        pw_Layout.setErrorEnabled(false);
+                        Toast.makeText(LoginActivity.this, input_id + "님, 환영합니다!", Toast.LENGTH_SHORT).show();
 
 
 
-                    SharedPreferences preferences = getSharedPreferences("ID", 0);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("id", input_id);
-                    editor.commit();
+                        SharedPreferences preferences = getSharedPreferences("ID", 0);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("id", input_id);
+                        editor.commit();
 
-                    SharedPreferences preferences1 = getSharedPreferences("PW", 0);
-                    SharedPreferences.Editor editor1 = preferences1.edit();
-                    editor1.putString("pw", input_pw);
-                    editor1.commit();
-
-
-                    Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
-                    startActivity(intent);
-                    finish();
+                        SharedPreferences preferences1 = getSharedPreferences("PW", 0);
+                        SharedPreferences.Editor editor1 = preferences1.edit();
+                        editor1.putString("pw", input_pw);
+                        editor1.commit();
 
 
+                        Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
+                        startActivity(intent);
+                        finish();
 
+
+
+                    }
+                    else{
+                        pw_Layout.setError("PW is wrong");
+                    }
                 }
-                else{
-                    pw_Layout.setError("PW is wrong");
-                }
-            }
-            if (input_id.length() <= 0)
-                id_Layout.setError("ID is NULL");
-            if (input_pw.length() <= 0)
-                pw_Layout.setError("PW is NULL");
-        });
+                if (input_id.length() <= 0)
+                    id_Layout.setError("ID is NULL");
+                if (input_pw.length() <= 0)
+                    pw_Layout.setError("PW is NULL");
+            });
 
-        // sign up 버튼 누르면 화면 이동
-        sign_up_btn.setOnClickListener(v -> {
-            startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
-            finish();
-        });
+            // sign up 버튼 누르면 화면 이동
+            sign_up_btn.setOnClickListener(v -> {
+                startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+                finish();
+            });
+        }
+
+
+
     }
 }
