@@ -21,6 +21,7 @@ public class SplashActivity  extends AppCompatActivity {
         Button buttonPhoto = findViewById(R.id.buttonPhoto);
         Button buttonRecent = findViewById(R.id.buttonRecent);
         Button buttonLogout = findViewById(R.id.buttonLogout);
+        Button buttonSetting = findViewById(R.id.buttonSetting);
 
         buttonBarcode.setOnClickListener(v ->
         {
@@ -39,6 +40,10 @@ public class SplashActivity  extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+
+        buttonSetting.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), SettingActivity.class)));
+
+
 
     }
 
