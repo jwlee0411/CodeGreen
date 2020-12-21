@@ -119,7 +119,7 @@ public class SplashActivity  extends AppCompatActivity {
         });
 
 
-        buttonSetting.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), SplashActivity.class)));
+    buttonSetting.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), SettingActivity.class)));
 
 
 
