@@ -94,9 +94,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
         sign_in_btn.setOnClickListener(v -> {
-            String input_id = id_ET.getText().toString().replace(" ", "");
-            String input_pw = pw_ET.getText().toString().replace(" ", "");  // 공백 처리
-
+            String input_id = id_ET.getText().toString().replaceAll(" ", "");
+            String input_pw = pw_ET.getText().toString().replaceAll(" ", "");  // 공백 처리
 
 
             boolean idExist = false;
