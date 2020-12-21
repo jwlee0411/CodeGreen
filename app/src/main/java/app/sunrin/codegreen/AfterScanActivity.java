@@ -46,6 +46,7 @@ import java.util.Calendar;
 
 public class AfterScanActivity extends AppCompatActivity {
 
+
     String[] check_how;
     TextView productName, productCategory;
     String url, Shorturl;
@@ -146,6 +147,7 @@ public class AfterScanActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_after_scan);
+
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("검색 중...");

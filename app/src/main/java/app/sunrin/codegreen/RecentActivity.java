@@ -13,6 +13,7 @@ public class RecentActivity extends AppCompatActivity {
     //메인화면(카메라로 바코드 스캔하는 곳)에서 설정 버튼 누르면 들어오는 화면임
 
 
+
     String[] data;
     String[][] newData;
 
@@ -26,6 +27,8 @@ public class RecentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recent);
+
+
 
         //sharedpreference : 이름 saveAll, 키 saveAll에 String형으로 모든 데이터를 때려박음
         SharedPreferences dataSave = getSharedPreferences("saveAll", 0);
@@ -115,7 +118,7 @@ public class RecentActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    recycle[j][j+2] = 0;
+                    recycle[i][j+2] = 0;
                 }
 
                 System.out.println(recycle[i][j+2]);
@@ -123,13 +126,6 @@ public class RecentActivity extends AppCompatActivity {
 
             }
         }
-
-
-
-
-
-
-
 
     }
 

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,6 +20,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class LoginActivity extends AppCompatActivity {
 
     String[][] finalValue;
@@ -27,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
 
     FirebaseDatabase database;
     DatabaseReference myRef;
+
 
 
     @Override
@@ -44,7 +48,6 @@ public class LoginActivity extends AppCompatActivity {
         MaterialButton sign_up_btn = findViewById(R.id.signUpBtn);
 
 
-
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("user");
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -54,13 +57,13 @@ public class LoginActivity extends AppCompatActivity {
                 String value = dataSnapshot.getValue().toString();
                 System.out.println(value);
                 value = value.substring(0, value.length()-2);
-                value = value.replace("}, ", "★");
+                value = value.replace("}, ", "☆");
                 //굳이 별로 바꾼 이유는 split에서 정규식을 사용하기 때문에 이렇게 안 하면 에러가 발생하기 때문
                 //자세한 것은 이 링크 참고 : https://mytory.net/archives/285
                 System.out.println(value);
 
 
-                newValue = value.split("★");
+                newValue = value.split("☆");
                 System.out.println(newValue.length);
 
 

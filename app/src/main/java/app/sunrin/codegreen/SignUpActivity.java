@@ -38,6 +38,9 @@ public class SignUpActivity extends AppCompatActivity {
     DatabaseReference myRef;
 
 
+    public static SignUpActivity signUpActivity;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +53,8 @@ public class SignUpActivity extends AppCompatActivity {
         final TextInputEditText pw_ET = findViewById(R.id.text_PW);
 
         MaterialButton makeBtn = findViewById(R.id.makeBtn);
+
+        signUpActivity = SignUpActivity.this;
 
 
 
