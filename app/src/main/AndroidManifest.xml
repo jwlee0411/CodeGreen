@@ -79,10 +79,6 @@
             android:theme="@style/Theme.CodeGreen"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".JuminActivity"
-            android:theme="@style/Theme.CodeGreen"
-            android:screenOrientation="portrait"/>
-
     </application>
 
 
