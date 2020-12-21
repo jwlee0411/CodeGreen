@@ -86,7 +86,10 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
-            startActivity(new Intent(MainActivity.this, SplashActivity.class));
+            intent = new Intent(MainActivity.this, SplashActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
             finish();
         }
     }

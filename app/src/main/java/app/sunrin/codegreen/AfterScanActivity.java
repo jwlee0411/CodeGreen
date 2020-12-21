@@ -76,6 +76,34 @@ public class AfterScanActivity extends AppCompatActivity {
 
     SharedPreferences preferences;
 
+
+//    public void shareKakao()
+//    {
+//        try{
+//            final KakaoLink kakaoLink = KakaoLink.getKakaoLink(this);
+//            final KakaoTalkLinkMessageBuilder kakaoBuilder = kakaoLink.createKakaoTalkLinkMessageBuilder();
+//
+//            /*메시지 추가*/
+//            kakaoBuilder.addText("카카오링크 테스트입니다.");
+//
+//            /*이미지 가로/세로 사이즈는 80px 보다 커야하며, 이미지 용량은 500kb 이하로 제한된다.*/
+//            String url = "https://lh3.googleusercontent.com/4FMghyiNYU73ECn5bHOKG0X1Nv_A5J7z2eRjHGIGxtQtK7L-fyNVuqcvyq6C1vIUxgPP=w300-rw";
+//            kakaoBuilder.addImage(url, 160, 160);
+//
+//            /*앱 실행버튼 추가*/
+//            kakaoBuilder.addAppButton("앱 실행 혹은 다운로드");
+//
+//            /*메시지 발송*/
+//            kakaoLink.sendMessage(kakaoBuilder, this);
+//
+//        }catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
+//    }
+
+
+
     // data arraylist에 데이터를 넣는 함수
     //플라스틱 1,종이 2,비닐 3,캔 4,스티로폼 5,페트병 6,유리 7,일반쓰레기 8, 전자제품 9
     public void addPlastic() {
@@ -587,8 +615,10 @@ public class AfterScanActivity extends AppCompatActivity {
                 {
                     Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                     sharingIntent.setType("text/plain");
+                   // sharingIntent.putExtra(Intent.EXTRA_TEXT, result);
+
                     sharingIntent.putExtra(Intent.EXTRA_TEXT, "[상품명]\n" + productName.getText().toString() + "\n\n[카테고리]" + productCategory.getText().toString().substring(2) + "\n[분리배출 방법]" + shareString + "\n\n[구매링크]" + result);
-                    startActivity(sharingIntent);
+                    startActivity(sharingIntent.createChooser(sharingIntent, "공유하기"));
                 }
 
             }
