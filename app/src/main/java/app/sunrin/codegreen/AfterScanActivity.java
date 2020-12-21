@@ -61,6 +61,8 @@ public class AfterScanActivity extends AppCompatActivity {
     String link;
     String saveData = "";
 
+    Button buttonEco;
+    String stringEco;
     boolean goShopping;
 
     SharedPreferences dataSave;
@@ -163,6 +165,8 @@ public class AfterScanActivity extends AppCompatActivity {
         Shorturl = "http://gs1.koreannet.or.kr";
         url = Shorturl + "/pr/" + result; //바코드를 통한 url 가져오기
 
+
+        buttonEco = findViewById(R.id.buttonEco);
 
         // 네트워크 연결상태 체크
         if (NetworkConnection() == false) {
@@ -270,6 +274,7 @@ public class AfterScanActivity extends AppCompatActivity {
 
                 KANcode = results[kan].substring(7, 14);
                 loadDb();
+                loadEco();
 
 
                 productCategory.setText(results[category]);
@@ -462,12 +467,56 @@ public class AfterScanActivity extends AppCompatActivity {
                     new getLink().execute();
                 });
 
+//                Button buttonShopping2 = findViewById(R.id.buttonShopping2);
+//                buttonShopping2.setVisibility(View.VISIBLE);
+//                buttonShopping2.setOnClickListener(v -> {
+//                    link = "http://search.danawa.com/dsearch.php?query=" + productName.getText().toString();
+//                    new getLink2().execute();
+//                });
 
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
                 progressDialog.dismiss();
+            }
+        });
+
+    }
+
+
+    public void loadEco()
+    {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        DatabaseReference db_eco = database.getReference("eco/" + KANcode);
+
+        db_eco.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                stringEco = dataSnapshot.getValue(String.class);
+
+                if(stringEco!=null)
+                {
+                    buttonEco.setVisibility(View.VISIBLE);
+                    buttonEco.setOnClickListener(v -> {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(stringEco));
+                        startActivity(intent);
+
+                    });
+                }
+                else
+                {
+                    buttonEco.setVisibility(View.INVISIBLE);
+                }
+
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
@@ -541,6 +590,61 @@ public class AfterScanActivity extends AppCompatActivity {
                     sharingIntent.putExtra(Intent.EXTRA_TEXT, "[상품명]\n" + productName.getText().toString() + "\n\n[카테고리]" + productCategory.getText().toString().substring(2) + "\n[분리배출 방법]" + shareString + "\n\n[구매링크]" + result);
                     startActivity(sharingIntent);
                 }
+
+            }
+
+
+        }
+    }
+
+    private class getLink2 extends AsyncTask<String, Void, String> //상품명 가져오기
+    {
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                //기본 코드
+                Connection.Response response = Jsoup.connect(link).method(Connection.Method.GET).execute();
+                Document document = (Document) response.parse();
+
+
+                //상품명 가져오기 => nameNew에 저장
+                Element name = (Element) document.select("p[class=prod_name]").first();
+                if (name == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    String nameNew = name.toString();
+                    //nameNew = nameNew.substring(nameNew.indexOf("<a"), nameNew.indexOf("target=\"_blank\"")).replace("<a href=", "").replace("\"", "");
+                    System.out.println(nameNew);
+                    //nameNew = nameNew.replace("<h3>", "").replace("</h3>", "");
+
+                    return nameNew;
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            // 결과값을 화면에 표시함.
+            System.out.println(result);
+            if (result == null) {
+
+                    Toast.makeText(AfterScanActivity.this, "상품 정보가 없습니다.", Toast.LENGTH_LONG).show();
+
+
+            } else {
+                Toast.makeText(AfterScanActivity.this, result, Toast.LENGTH_LONG).show();
+
+//                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(result));
+//                    startActivity(intent);
 
             }
 
