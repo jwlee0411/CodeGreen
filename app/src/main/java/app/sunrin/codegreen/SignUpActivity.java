@@ -67,13 +67,13 @@ public class SignUpActivity extends AppCompatActivity {
                 String value = dataSnapshot.getValue().toString();
                 System.out.println(value);
                 value = value.substring(0, value.length()-2);
-                value = value.replace("}, ", "★");
+                value = value.replace("}, ", "☆");
                 //굳이 별로 바꾼 이유는 split에서 정규식을 사용하기 때문에 이렇게 안 하면 에러가 발생하기 때문
                 //자세한 것은 이 링크 참고 : https://mytory.net/archives/285
                 System.out.println(value);
 
 
-                newValue = value.split("★");
+                newValue = value.split("☆");
                 System.out.println(newValue.length);
 
 

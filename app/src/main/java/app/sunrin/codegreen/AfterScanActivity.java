@@ -61,6 +61,8 @@ public class AfterScanActivity extends AppCompatActivity {
     String link;
     String saveData = "";
 
+    boolean goShopping;
+
     SharedPreferences dataSave;
 
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -437,13 +439,16 @@ public class AfterScanActivity extends AppCompatActivity {
                 System.out.println(saveData);
 
 
+
+
                 Button button = findViewById(R.id.button);
                 button.setVisibility(View.VISIBLE);
                 button.setOnClickListener(v -> {
-                    Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-                    sharingIntent.setType("text/plain");
-                    sharingIntent.putExtra(Intent.EXTRA_TEXT, "[상품명]\n" + productName.getText().toString() + "\n\n[카테고리]" + productCategory.getText().toString().substring(2) + "\n[분리배출 방법]" + shareString);
-                    startActivity(sharingIntent);
+                    link = "https://search.shopping.naver.com/search/all?query=" + productName.getText().toString();
+                    goShopping = false;
+                    new getLink().execute();
+
+
                 });
                 progressDialog.dismiss();
 
@@ -453,6 +458,7 @@ public class AfterScanActivity extends AppCompatActivity {
 
                 buttonShopping.setOnClickListener(v -> {
                     link = "https://search.shopping.naver.com/search/all?query=" + productName.getText().toString();
+                    goShopping = true;
                     new getLink().execute();
                 });
 
@@ -506,11 +512,36 @@ public class AfterScanActivity extends AppCompatActivity {
             // 결과값을 화면에 표시함.
             System.out.println(result);
             if (result == null) {
-                Toast.makeText(AfterScanActivity.this, "상품 정보가 없습니다.", Toast.LENGTH_LONG).show();
+                if(goShopping)
+                {
+                    Toast.makeText(AfterScanActivity.this, "상품 정보가 없습니다.", Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+
+                        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                        sharingIntent.setType("text/plain");
+                        sharingIntent.putExtra(Intent.EXTRA_TEXT, "[상품명]\n" + productName.getText().toString() + "\n\n[카테고리]" + productCategory.getText().toString().substring(2) + "\n[분리배출 방법]" + shareString );
+                        startActivity(sharingIntent);
+
+                }
+
             } else {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(result));
-                intent.setPackage("com.nhn.android.search");
-                startActivity(intent);
+
+                if(goShopping)
+                {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(result));
+                    intent.setPackage("com.nhn.android.search");
+                    startActivity(intent);
+                }
+                else
+                {
+                    Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                    sharingIntent.setType("text/plain");
+                    sharingIntent.putExtra(Intent.EXTRA_TEXT, "[상품명]\n" + productName.getText().toString() + "\n\n[카테고리]" + productCategory.getText().toString().substring(2) + "\n[분리배출 방법]" + shareString + "\n\n[구매링크]" + result);
+                    startActivity(sharingIntent);
+                }
+
             }
 
 
