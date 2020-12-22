@@ -57,8 +57,9 @@ public class SettingActivity extends AppCompatActivity{
 
         Button buttonChangeBirth = findViewById(R.id.buttonChangeBirth);
         buttonChangeBirth.setOnClickListener(v -> {
-            Intent picker = new Intent(getApplicationContext(), BirthDialog.class);
-            startActivityForResult(picker,1000);
+            BirthDialog birthDialog = new BirthDialog(SettingActivity.this);
+            birthDialog.callFunction();
+
 
         });
 
