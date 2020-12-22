@@ -63,7 +63,7 @@
             android:id="@+id/text_PW"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="numberPassword"
+            android:inputType="textPassword"
             android:hint="PW" />
     </com.google.android.material.textfield.TextInputLayout>
 

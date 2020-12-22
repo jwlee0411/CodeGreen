@@ -135,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (finalValue[idIndex][1].equals(input_pw))
                     {  // 두 String 비교
                         pw_Layout.setErrorEnabled(false);
-                        Toast.makeText(LoginActivity.this, input_id + "님, 환영합니다!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "환영합니다!", Toast.LENGTH_SHORT).show();
                         sharedPreferences.edit().putBoolean("getLogined", true).commit();
 
                         SharedPreferences preferences = getSharedPreferences("ID", 0);
@@ -157,13 +157,13 @@ public class LoginActivity extends AppCompatActivity {
 
                     }
                     else{
-                        pw_Layout.setError("PW is wrong");
+                        pw_Layout.setError("비밀번호가 다릅니다.");
                     }
                 }
                 if (input_id.length() <= 0)
-                    id_Layout.setError("ID is NULL");
+                    id_Layout.setError("아이디를 입력해주세요.");
                 if (input_pw.length() <= 0)
-                    pw_Layout.setError("PW is NULL");
+                    pw_Layout.setError("비밀번호를 입력해주세요.");
             });
 
             // sign up 버튼 누르면 화면 이동

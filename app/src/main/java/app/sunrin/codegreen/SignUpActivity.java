@@ -122,7 +122,7 @@ public class SignUpActivity extends AppCompatActivity {
             // 입력한 ID에 따른 비밀번호 존재 여부 확인
             if (!passwordExist) { // 없을 때
                 id_Layout.setErrorEnabled(false);
-                if (input_pw.length() >= 4) {
+                if (input_pw.length() >= 8) {
 
 
                     long time = System.currentTimeMillis();
@@ -143,17 +143,16 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
             else
-                {
-                Toast.makeText(SignUpActivity.this, "아이디가 이미 있습니다.", Toast.LENGTH_SHORT).show();
-                id_Layout.setError("ID has already existed");
+            {
+                id_Layout.setError("이미 존재하는 아이디입니다.");
             }
             // 에러 처리
             if (input_id.length() <= 0)
-                id_Layout.setError("ID is NULL");
+                id_Layout.setError("아이디를 입력해주세요.");
             if (input_pw.length() <= 0)
-                pw_Layout.setError("PW is NULL");
-            else if (input_pw.length() < 4)
-                pw_Layout.setError("PW must be at least 4");
+                pw_Layout.setError("비밀번호를 입력해주세요.");
+            else if (input_pw.length() < 8)
+                pw_Layout.setError("비밀번호는 8자 이상입니다.");
             else
                 pw_Layout.setErrorEnabled(false);
         });
