@@ -452,24 +452,32 @@ public class AfterScanActivity extends AppCompatActivity {
                 saveData = saveData.replace("\n", "");
 
 
-                dataSave = getSharedPreferences("saveAll", 0);
-                String result = dataSave.getString("saveAll", "");
-                saveData = result + saveData;
+                Button buttonSave = findViewById(R.id.buttonSave);
+                buttonSave.setOnClickListener(v -> {
+                    dataSave = getSharedPreferences("saveAll", 0);
+                    String result = dataSave.getString("saveAll", "");
+                    saveData = result + saveData;
 
 
-                SharedPreferences.Editor editor = dataSave.edit();
-                editor.putString("saveAll", saveData);
-                editor.commit();
+                    SharedPreferences.Editor editor = dataSave.edit();
+                    editor.putString("saveAll", saveData);
+                    editor.commit();
 
-                SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
+                    SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
 
-                String user_id = sharedPreferences.getString("id", "");
+                    String user_id = sharedPreferences.getString("id", "");
 
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("user/" + user_id + "/value");
-                myRef.setValue(saveData);
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference("user/" + user_id + "/value");
+                    myRef.setValue(saveData);
 
-                System.out.println(saveData);
+                    System.out.println(saveData);
+
+                    Toast.makeText(getApplicationContext(), "저장되었습니다.", Toast.LENGTH_LONG).show();
+                    buttonSave.setVisibility(View.INVISIBLE);
+
+
+                });
 
 
 

@@ -148,6 +148,23 @@ public class LoginActivity extends AppCompatActivity {
                         editor1.putString("pw", input_pw);
                         editor1.commit();
 
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference myRef = database.getReference("user/"+input_id+"/value");
+                        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                SharedPreferences dataSave = getSharedPreferences("saveAll", 0);
+                                SharedPreferences.Editor editor2 = dataSave.edit();
+                                editor2.putString("saveAll", snapshot.getValue(String.class));
+                                editor2.commit();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
 
                         Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
                         startActivity(intent);
