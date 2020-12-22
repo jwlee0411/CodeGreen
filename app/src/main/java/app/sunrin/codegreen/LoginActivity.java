@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
 
     FirebaseDatabase database;
     DatabaseReference myRef;
-
+    SharedPreferences sharedPreferences;
 
 
     @Override
@@ -40,11 +40,12 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
-        SharedPreferences sharedPreferences = getSharedPreferences("getLogined", 0);
+        sharedPreferences = getSharedPreferences("getLogined", 0);
         Boolean getLogined = sharedPreferences.getBoolean("getLogined", false);
 
         if(getLogined)
         {
+            Toast.makeText(LoginActivity.this, "자동 로그인 되었습니다!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -135,8 +136,7 @@ public class LoginActivity extends AppCompatActivity {
                     {  // 두 String 비교
                         pw_Layout.setErrorEnabled(false);
                         Toast.makeText(LoginActivity.this, input_id + "님, 환영합니다!", Toast.LENGTH_SHORT).show();
-
-
+                        sharedPreferences.edit().putBoolean("getLogined", true).commit();
 
                         SharedPreferences preferences = getSharedPreferences("ID", 0);
                         SharedPreferences.Editor editor = preferences.edit();
