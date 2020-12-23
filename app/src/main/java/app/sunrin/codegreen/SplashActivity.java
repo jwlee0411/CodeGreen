@@ -101,19 +101,15 @@ public class SplashActivity  extends AppCompatActivity {
         });
 
         buttonJumin.setOnClickListener(v -> {
-            
-            
-            
-            
 
-            String location = address;
-            location = location.substring(location.indexOf("구 ")+2, location.indexOf("동")+1);
-            System.out.println(location);
-
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("geo:0,0?q=" + location + "주민센터"));
+            Intent intent = new Intent(this, TrashActivity.class);
             startActivity(intent);
+            
+            //배출방법문의 기능 비활성화
+
+
+
+
         });
 
 
