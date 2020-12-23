@@ -47,6 +47,7 @@ public class SignUpActivity extends AppCompatActivity {
     public static SignUpActivity signUpActivity;
     Boolean radioChecked = false;
 
+    boolean childCalled = false;
     Boolean sex;
     SharedPreferences preferencesBirth, preferencesSex;
 
@@ -143,27 +144,36 @@ public class SignUpActivity extends AppCompatActivity {
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                String valueAll = snapshot.getValue().toString();
-                valueAll = valueAll.replace("{", "").replace("}", "")
-                        .replace("userSex=", "")
-                        .replace("userYear=", "")
-                        .replace("userMonth=", "")
-                        .replace("userPW=", "")
-                        .replace("userDay=", "")
-                        .replace("userID=", "")
-                        .replace("value=", "")
-                        .replace("userAge=", "");
-                String[] newValue = valueAll.split(", ");
-                System.out.println(valueAll + "★");
-                System.out.println(newValue[0] + newValue[1] + newValue[2]);
-
-                for(int j = 0; j<newValue.length; j++)
+                if(childCalled)
                 {
-                    finalValue[totalLength][j] = newValue[j];
-                    System.out.println(newValue[j]);
+
                 }
-                totalLength++;
+                else
+                {
+                    childCalled = true;
+                    String valueAll = snapshot.getValue().toString();
+                    valueAll = valueAll.replace("{", "").replace("}", "")
+                            .replace("userSex=", "")
+                            .replace("userYear=", "")
+                            .replace("userMonth=", "")
+                            .replace("userPW=", "")
+                            .replace("userDay=", "")
+                            .replace("userID=", "")
+                            .replace("value=", "")
+                            .replace("userAge=", "");
+                    String[] newValue = valueAll.split(", ");
+                    System.out.println(valueAll + "★");
+                    System.out.println(newValue[0] + newValue[1] + newValue[2]);
+
+                    for(int j = 0; j<newValue.length; j++)
+                    {
+                        finalValue[totalLength][j] = newValue[j];
+                        System.out.println(newValue[j]);
+                    }
+                    totalLength++;
+                }
+
+
 
             }
 
@@ -293,6 +303,20 @@ public class SignUpActivity extends AppCompatActivity {
 
                         myRef = database.getReference("user/" + input_id + "/userAge");
                         myRef.setValue(age);
+
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        database.getReference("/userNum").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                int value = snapshot.getValue(Integer.class);
+                                database.getReference("/userNum").setValue(value + 1);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
 
                         Toast.makeText(SignUpActivity.this, "새 아이디를 생성했습니다!", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);

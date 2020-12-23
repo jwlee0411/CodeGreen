@@ -79,7 +79,8 @@ public class RecentActivity extends AppCompatActivity {
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //기타 나이
 
 
-    }; //총 쓰레기 수 + 재활용 관련 정보(1~9)
+    }; //0번째 인덱스 => 총 쓰레기 수
+    // 1~9번째 인덱스 => 재활용 관련 정보(1~9)
 
 
     //메인화면(카메라로 바코드 스캔하는 곳)에서 설정 버튼 누르면 들어오는 화면임
@@ -87,9 +88,9 @@ public class RecentActivity extends AppCompatActivity {
 //    PieChart pieChart;
 
 
-    //TODO: 로그인 방식 변경으로 소스코드 수정 필요
     String[] data;
     String[][] newData;
+    String[][] myData;
 
     int[] recycleCategory = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
@@ -102,7 +103,6 @@ public class RecentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recent);
 
-
         //sharedpreference : 이름 saveAll, 키 saveAll에 String형으로 모든 데이터를 때려박음
         SharedPreferences dataSave = getSharedPreferences("saveAll", 0);
         dataAll = dataSave.getString("saveAll", "");
@@ -110,7 +110,7 @@ public class RecentActivity extends AppCompatActivity {
         System.out.println(dataAll);
 
 
-        dataAll = dataAll.substring(1);
+        dataAll = dataAll.substring(dataAll.indexOf("★")+1);
 
 
         //데이터를 차곡차곡 배열로 바꿔줄거에염♥
@@ -118,96 +118,28 @@ public class RecentActivity extends AppCompatActivity {
         data = dataAll.split("★");
 
 
-        //newData[i][0] => 상품 사진 링크
-        //newData[i][1] => 상품명
-        //newData[i][2] => 상품 카테고리
-        //newData[i][3] => 스캔한 날짜
-        //newData[i][4] => KAN코드
-        //newData[i][5] => 분리배출방법(하이픈으로 연결되어 있음)
+        //myData[i][0] => 상품 사진 링크
+        //myData[i][1] => 상품명
+        //myData[i][2] => 상품 카테고리
+        //myData[i][3] => 스캔한 날짜
+        //myData[i][4] => KAN코드
+        //myData[i][5] => 분리배출방법(하이픈으로 연결되어 있음)
 
-
-
-
-        //전체 상품 정보
-        newData = new String[data.length][intRecycle + 1];
+        //내 상품 정보
+        myData = new String[data.length][intRecycle + 1];
         System.out.println("data.length");
         System.out.println(data.length);
-//
-//        for(int i = 0; i<data.length; i++)
-//        {
-//            System.out.println("data[i]");
-//            System.out.println(data[i]);
-//            String[] tempData = data[i].split("@");
-//            System.out.println("newData[i][j]");
-//            for(int j = 0; j<6; j++)
-//            {
-//                newData[i][j] = tempData[j];
-//
-//                System.out.println(newData[i][j]);
-//            }
-//        }
-//
-//        Calendar today = Calendar.getInstance ( );
-//        SimpleDateFormat Format = new SimpleDateFormat("YYYY-MM");
-//        Date date = today.getTime ( );
-//        String thisMonth = Format.format(date);
-//
-//        //전체 상품의 재활용 정보
-//        //혹시 필요할 수도 있을까봐 남겨둠
-//        for(int i = 0; i<data.length; i++)
-//        {
-//            if(newData[i][intScanDate].contains(thisMonth)) {
-//                for (int j = 1; j <= 9; j++) {
-//                    if (newData[i][intRecycle].contains(Integer.toString(j))) {
-//                        recycleCategory[j - 1]++;
-//                    }
-//                }
-//            }
-//        }
-//
-//
-//
-//        //전체 재활용 정보(일자별)
-//        recycle = new int[data.length][12];
-//        for(int i = 0; i<data.length; i++)
-//        {
-//            String getYear = newData[i][intScanDate].substring(0, 4);
-//            String getMonth = newData[i][intScanDate].substring(5, 7);
-//            String getDay = newData[i][intScanDate].substring(8, 10);
-//
-//            recycle[i][0] = Integer.parseInt(getYear);
-//            recycle[i][1] = Integer.parseInt(getMonth);
-//            recycle[i][2] = Integer.parseInt(getDay);
-//
-//            System.out.println("recycle[i][0]");
-//
-//            System.out.println(recycle[i][0]);
-//            System.out.println("recycle[i][1]");
-//            System.out.println(recycle[i][1]);
-//            System.out.println("recycle[i][2]");
-//            System.out.println(recycle[i][2]);
-//
-//            System.out.println("recycle[i][j+2]");
-//            for(int j = 1; j<=9; j++)
-//            {
-//                if(newData[i][intRecycle].contains(Integer.toString(j)))
-//                {
-//                    recycle[i][j+2] = 1;
-//
-//                }
-//                else
-//                {
-//                    recycle[i][j+2] = 0;
-//                }
-//
-//                System.out.println(recycle[i][j+2]);
-//
-//
-//            }
-//        }
+
+        for(int i = 0; i<data.length; i++)
+        {
+            myData[i] = data[i].split("@");
+            System.out.println("@" + Arrays.toString(myData[i]));
+        }
 
 
-        //TODO : 모든 유저의 재활용 정보 불러오기
+
+
+        //모든 유저의 재활용 정보 불러오기
 
 
         database = FirebaseDatabase.getInstance();
@@ -225,12 +157,9 @@ public class RecentActivity extends AppCompatActivity {
 
 
                 myRef = database.getReference("user");
-
-
                 myRef.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
                         String valueAll = snapshot.getValue().toString();
                         valueAll = valueAll.replace("{", "").replace("}", "")
                                 .replace("userSex=", "")
