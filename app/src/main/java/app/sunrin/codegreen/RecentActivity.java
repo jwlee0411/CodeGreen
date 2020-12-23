@@ -133,7 +133,10 @@ public class RecentActivity extends AppCompatActivity {
         for(int i = 0; i<data.length; i++)
         {
             myData[i] = data[i].split("@");
+            myData[i][3] = myData[i][3].substring(5, 7);
+            System.out.println("12345" + myData[i][3]);
             System.out.println("@" + Arrays.toString(myData[i]));
+
         }
 
 
