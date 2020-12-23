@@ -24,8 +24,8 @@ public class CustomScannerActivity extends Activity implements DecoratedBarcodeV
 
         switchFlashlightButtonCheck = true;
 
-        setting_btn = (ImageButton)findViewById(R.id.setting_btn);
-        switchFlashlightButton = (ImageButton)findViewById(R.id.switch_flashlight);
+        setting_btn = findViewById(R.id.setting_btn);
+        switchFlashlightButton = findViewById(R.id.switch_flashlight);
 
         if (!hasFlash()) {
             switchFlashlightButton.setVisibility(View.GONE);
@@ -35,7 +35,7 @@ public class CustomScannerActivity extends Activity implements DecoratedBarcodeV
             startActivity(intent);
         });
 
-        barcodeScannerView = (DecoratedBarcodeView)findViewById(R.id.zxing_barcode_scanner);
+        barcodeScannerView = findViewById(R.id.zxing_barcode_scanner);
         barcodeScannerView.setTorchListener(this);
         capture = new CaptureManager(this, barcodeScannerView);
         capture.initializeFromIntent(getIntent(), savedInstanceState);

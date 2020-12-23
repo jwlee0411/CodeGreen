@@ -63,6 +63,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
             database = FirebaseDatabase.getInstance();
+
+            //TODO : 로그인 관련 알고리즘 갈아엎어야 함.
             myRef = database.getReference("user");
             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -85,9 +87,9 @@ public class LoginActivity extends AppCompatActivity {
 
                     for(int i = 0; i<newValue.length; i++)
                     {
-                        finalValue[i][0] = newValue[i].substring(newValue[i].indexOf("D=")+2, newValue[i].lastIndexOf(", "));
-                        finalValue[i][1] = newValue[i].substring(newValue[i].indexOf("W=")+2, newValue[i].indexOf(", "));
-                        finalValue[i][2] = newValue[i].substring(newValue[i].indexOf("e=")+2);
+                        finalValue[i][0] = newValue[i].substring(newValue[i].indexOf("userID=")+7, newValue[i].lastIndexOf(", "));
+                        finalValue[i][1] = newValue[i].substring(newValue[i].indexOf("userPW=")+7, newValue[i].indexOf(", "));
+                        finalValue[i][2] = newValue[i].substring(newValue[i].indexOf("value=")+6);
 
                         System.out.println("가" + finalValue[i][0]);
                         System.out.println("나" + finalValue[i][1]);

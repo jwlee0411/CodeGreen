@@ -8,6 +8,8 @@ import android.os.Debug;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -33,19 +36,28 @@ public class SignUpActivity extends AppCompatActivity {
 
     String[][] finalValue;
     String[] newValue;
-
+    public static String yy,mm,dd;
     FirebaseDatabase database;
     DatabaseReference myRef;
-
+    int age;
+    RadioGroup radioGroup;
 
     public static SignUpActivity signUpActivity;
+    Boolean radioChecked = false;
 
+    Boolean sex;
+    SharedPreferences preferencesBirth, preferencesSex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+
+
+
+        preferencesSex = getSharedPreferences("sex", 0);
+        SharedPreferences.Editor editorSex = preferencesSex.edit();
 
         final TextInputLayout id_Layout = findViewById(R.id.TextInput_ID);
         final TextInputLayout pw_Layout = findViewById(R.id.TextInput_PW);
@@ -56,7 +68,64 @@ public class SignUpActivity extends AppCompatActivity {
 
         signUpActivity = SignUpActivity.this;
 
+        radioGroup = findViewById(R.id.radioGroup);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId == R.id.radioButton)
+                {
+                    editorSex.putBoolean("sex", true);
+                    sex = true;
+                    radioChecked = true;
+                }
+                else if(checkedId == R.id.radioButton2)
+                {
+                    editorSex.putBoolean("sex", false);
+                    sex = false;
+                    radioChecked = true;
+                }
+                else
+                {
+                    radioChecked = false;
+                }
 
+            }
+        });
+
+
+        DatePicker datepicker = findViewById(R.id.signupDatePicker);
+
+        datepicker.init(datepicker.getYear(), datepicker.getMonth(), datepicker.getDayOfMonth(),
+
+                new DatePicker.OnDateChangedListener() {
+
+                    @Override
+                    public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        age = getAge(year, monthOfYear, dayOfMonth);
+                        yy=Integer.toString(year);
+                        if(monthOfYear+1<10)
+                        {
+                            mm=Integer.toString(monthOfYear+1);
+                            mm = "0" + mm;
+                        }
+                        else
+                        {
+                            mm=Integer.toString(monthOfYear+1);
+                        }
+
+                        if(dayOfMonth<10)
+                        {
+                            dd=Integer.toString(dayOfMonth);
+                            dd = "0"+dd;
+                        }
+                        else
+                        {
+                            dd=Integer.toString(dayOfMonth);
+                        }
+
+
+                    }
+                });
 
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("user");
@@ -125,21 +194,58 @@ public class SignUpActivity extends AppCompatActivity {
                 if (input_pw.length() >= 8) {
 
 
-                    long time = System.currentTimeMillis();
-                    String strTime = Long.toString(time);
-                    myRef = database.getReference("user/" + input_id + "/userID");
-                    myRef.setValue(input_id);
+                    if(radioChecked)
+                    {
 
-                    myRef = database.getReference("user/" + input_id + "/userPW");
-                    myRef.setValue(input_pw);
+                        preferencesBirth = getSharedPreferences("birth", 0);
+                        preferencesBirth.edit().putInt("year", Integer.parseInt(yy));
+                        preferencesBirth.edit().putInt("month", Integer.parseInt(mm));
+                        System.out.println(Integer.parseInt(mm));
+                        preferencesBirth.edit().putInt("day", Integer.parseInt(dd));
+                        preferencesBirth.edit().putInt("age", age);
+                        preferencesBirth.edit().commit();
 
-                    myRef = database.getReference("user/" + input_id + "/value");
-                    myRef.setValue("");
 
-                    Toast.makeText(SignUpActivity.this, "새 아이디를 생성했습니다!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(intent);
-                    finish();
+
+
+                        long time = System.currentTimeMillis();
+                        String strTime = Long.toString(time);
+                        myRef = database.getReference("user/" + input_id + "/userID");
+                        myRef.setValue(input_id);
+
+                        myRef = database.getReference("user/" + input_id + "/userPW");
+                        myRef.setValue(input_pw);
+
+                        myRef = database.getReference("user/" + input_id + "/value");
+                        myRef.setValue("");
+
+                        myRef = database.getReference("user/" + input_id + "/userSex");
+                        myRef.setValue(sex);
+
+                        myRef = database.getReference("user/" + input_id + "/userYear");
+                        myRef.setValue(Integer.parseInt(yy));
+
+                        myRef = database.getReference("user/" + input_id + "/userMonth");
+                        myRef.setValue(Integer.parseInt(mm));
+
+                        myRef = database.getReference("user/" + input_id + "/userDay");
+                        myRef.setValue(Integer.parseInt(dd));
+
+                        myRef = database.getReference("user/" + input_id + "/userAge");
+                        myRef.setValue(age);
+
+                        Toast.makeText(SignUpActivity.this, "새 아이디를 생성했습니다!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                    else
+                    {
+                        Toast.makeText(this, "성별을 입력해주세요.", Toast.LENGTH_LONG).show();
+                    }
+
+
+
                 }
             }
             else
@@ -167,5 +273,20 @@ public class SignUpActivity extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public int getAge(int birthYear, int birthMonth, int birthDay)
+    {
+        Calendar current = Calendar.getInstance();
+        int currentYear  = current.get(Calendar.YEAR);
+        int currentMonth = current.get(Calendar.MONTH) + 1;
+        int currentDay   = current.get(Calendar.DAY_OF_MONTH);
+
+        int age = currentYear - birthYear;
+        // 생일 안 지난 경우 -1
+        if (birthMonth * 100 + birthDay > currentMonth * 100 + currentDay)
+            age--;
+
+        return age;
     }
 }
