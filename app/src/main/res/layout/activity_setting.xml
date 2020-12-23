@@ -6,6 +6,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RadioGroup
+        android:id="@+id/radioGroupSetting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="@+id/buttonChangeSex"
+        app:layout_constraintTop_toBottomOf="@+id/buttonChangeSex">
+
+        <RadioButton
+            android:id="@+id/radioButtonSetting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="남" />
+
+        <RadioButton
+            android:id="@+id/radioButtonSetting2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="여" />
+    </RadioGroup>
+
     <Button
         android:id="@+id/buttonNewLogout"
         android:layout_width="wrap_content"

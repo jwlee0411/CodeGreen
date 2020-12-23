@@ -51,16 +51,19 @@ public class LoginActivity extends AppCompatActivity {
         preferencesPW = getSharedPreferences("PW", 0);
         Boolean getLogined = this.preferencesGetLogined.getBoolean("getLogined", false);
 
-        if(getLogined)
-        {
-            Toast.makeText(LoginActivity.this, "자동 로그인 되었습니다!", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        }
-        else
-        {
+
+        //TODO:자동로그인 사용 중지(오류 해결을 위해)
+
+//        if(getLogined)
+//        {
+//            Toast.makeText(LoginActivity.this, "자동 로그인 되었습니다!", Toast.LENGTH_SHORT).show();
+//            Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            startActivity(intent);
+//        }
+//        else
+//        {
             id_Layout = findViewById(R.id.TextInput_ID);
             pw_Layout = findViewById(R.id.TextInput_PW);
             id_ET = findViewById(R.id.edit_id);
@@ -256,7 +259,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
                 finish();
             });
-        }
+//        }
 
 
 

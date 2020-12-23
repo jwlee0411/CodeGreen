@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,12 +24,15 @@ public class SettingActivity extends AppCompatActivity{
 
     SharedPreferences preferences;
     SharedPreferences preferencesBirth;
+    SharedPreferences preferencesID;
+    SharedPreferences preferencesSex;
 
     TextView textYear;
     TextView textMonth;
     TextView textDay;
     TextView textAge;
 
+    String id;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,7 +40,8 @@ public class SettingActivity extends AppCompatActivity{
         setContentView(R.layout.activity_setting);
 
         preferencesBirth = getSharedPreferences("birth", 0);
-
+        preferencesID = getSharedPreferences("id", 0);
+        preferencesSex = getSharedPreferences("sex", 0);
 
 
         textYear = findViewById(R.id.textYear);
@@ -45,6 +50,9 @@ public class SettingActivity extends AppCompatActivity{
         textAge = findViewById(R.id.textAge);
 
        preferences = getSharedPreferences("getLogined", 0);
+
+       id = preferencesID.getString("id", "");
+       System.out.println(id);
 
         Button buttonLogout = findViewById(R.id.buttonNewLogout);
         buttonLogout.setOnClickListener(v -> {
@@ -94,6 +102,29 @@ public class SettingActivity extends AppCompatActivity{
         Button buttonChangeSex = findViewById(R.id.buttonChangeSex);
         buttonChangeSex.setOnClickListener(v -> {
 
+
+        });
+        RadioGroup radioGroup = findViewById(R.id.radioGroupSetting);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+
+                if(checkedId==R.id.radioButtonSetting)
+                {
+                    preferencesSex.edit().putBoolean("sex", true).commit();
+                    FirebaseDatabase.getInstance().getReference("user/"+id+"/userSex").setValue(true);
+                    Toast.makeText(SettingActivity.this, "성별이 성공적으로 변경되었습니다.", Toast.LENGTH_SHORT).show();
+                }
+                else if(checkedId==R.id.radioButtonSetting2)
+                {
+                    preferencesSex.edit().putBoolean("sex", false).commit();
+                    FirebaseDatabase.getInstance().getReference("user/"+id+"/userSex").setValue(false);
+                    Toast.makeText(SettingActivity.this, "성별이 성공적으로 변경되었습니다.", Toast.LENGTH_SHORT).show();
+                }
+
+
+            }
         });
 
         Button buttonQuit = findViewById(R.id.buttonQuit);
