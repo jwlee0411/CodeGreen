@@ -29,9 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.journeyapps.barcodescanner.CaptureActivity;
 
-import org.json.JSONArray;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -46,35 +44,25 @@ import java.util.Calendar;
 
 public class AfterScanActivity extends AppCompatActivity {
 
-
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    Calendar calendar = Calendar.getInstance();
     String[] check_how;
     TextView productName, productCategory;
-    String url, Shorturl;
-    String db_category, KANcode;
-    String shareString = "";
+    String url, Shorturl, db_category, KANcode, result, link, stringEco, shareString = "", saveData = "", currentDate = format.format(calendar.getTime());
     Boolean prodName;
     Bitmap bitmap;
     ImageView img;
-    String result;
     RecyclerView recyclerView;
     ArrayList<Item> data = new ArrayList<>(); //분리배출 방법의 recyclerView에 넣는 arraylist
-    String link;
-    String saveData = "";
-
     Button buttonEco;
-    String stringEco;
     boolean goShopping;
+    SharedPreferences preferencesSaveAll, preferencesBarcodeResult;
 
-    SharedPreferences dataSave;
 
-    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-    Calendar calendar = Calendar.getInstance();
-
-    String currentDate = format.format(calendar.getTime());
 
     ProgressDialog progressDialog;
 
-    SharedPreferences preferences;
+
 
 
 //    public void shareKakao()
@@ -188,8 +176,8 @@ public class AfterScanActivity extends AppCompatActivity {
         progressDialog.show();
 
 
-        preferences = getSharedPreferences("BarcodeResult", 0);
-        result = preferences.getString("result", "");
+        preferencesBarcodeResult = getSharedPreferences("BarcodeResult", 0);
+        result = preferencesBarcodeResult.getString("result", "");
         Shorturl = "http://gs1.koreannet.or.kr";
         url = Shorturl + "/pr/" + result; //바코드를 통한 url 가져오기
 
@@ -454,12 +442,12 @@ public class AfterScanActivity extends AppCompatActivity {
 
                 Button buttonSave = findViewById(R.id.buttonSave);
                 buttonSave.setOnClickListener(v -> {
-                    dataSave = getSharedPreferences("saveAll", 0);
-                    String result = dataSave.getString("saveAll", "");
+                    preferencesSaveAll = getSharedPreferences("saveAll", 0);
+                    String result = preferencesSaveAll.getString("saveAll", "");
                     saveData = result + saveData;
 
 
-                    SharedPreferences.Editor editor = dataSave.edit();
+                    SharedPreferences.Editor editor = preferencesSaveAll.edit();
                     editor.putString("saveAll", saveData);
                     editor.commit();
 

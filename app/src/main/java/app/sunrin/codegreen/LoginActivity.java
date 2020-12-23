@@ -1,15 +1,11 @@
 package app.sunrin.codegreen;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Space;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
@@ -21,8 +17,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-
 public class LoginActivity extends AppCompatActivity {
 
     String[][] finalValue;
@@ -31,7 +25,11 @@ public class LoginActivity extends AppCompatActivity {
 
     FirebaseDatabase database;
     DatabaseReference myRef;
-    SharedPreferences sharedPreferences;
+    SharedPreferences preferencesGetLogined, preferencesSaveAll, preferencesID, preferencesPW;
+
+    TextInputLayout id_Layout, pw_Layout;
+    TextInputEditText id_ET, pw_ET;
+    MaterialButton sign_in_btn, sign_up_btn;
 
 
     @Override
@@ -40,8 +38,11 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
-        sharedPreferences = getSharedPreferences("getLogined", 0);
-        Boolean getLogined = sharedPreferences.getBoolean("getLogined", false);
+        preferencesGetLogined = getSharedPreferences("getLogined", 0);
+        preferencesSaveAll = getSharedPreferences("saveAll", 0);
+        preferencesID = getSharedPreferences("ID", 0);
+        preferencesPW = getSharedPreferences("PW", 0);
+        Boolean getLogined = this.preferencesGetLogined.getBoolean("getLogined", false);
 
         if(getLogined)
         {
@@ -53,12 +54,12 @@ public class LoginActivity extends AppCompatActivity {
         }
         else
         {
-            final TextInputLayout id_Layout = findViewById(R.id.TextInput_ID);
-            final TextInputLayout pw_Layout = findViewById(R.id.TextInput_PW);
-            final TextInputEditText id_ET = findViewById(R.id.edit_id);
-            final TextInputEditText pw_ET = findViewById(R.id.edit_pw);
-            MaterialButton sign_in_btn = findViewById(R.id.signInBtn);
-            MaterialButton sign_up_btn = findViewById(R.id.signUpBtn);
+            id_Layout = findViewById(R.id.TextInput_ID);
+            pw_Layout = findViewById(R.id.TextInput_PW);
+            id_ET = findViewById(R.id.edit_id);
+            pw_ET = findViewById(R.id.edit_pw);
+            sign_in_btn = findViewById(R.id.signInBtn);
+            sign_up_btn = findViewById(R.id.signUpBtn);
 
 
             database = FirebaseDatabase.getInstance();
@@ -136,27 +137,25 @@ public class LoginActivity extends AppCompatActivity {
                     {  // 두 String 비교
                         pw_Layout.setErrorEnabled(false);
                         Toast.makeText(LoginActivity.this, "환영합니다!", Toast.LENGTH_SHORT).show();
-                        sharedPreferences.edit().putBoolean("getLogined", true).commit();
+                        this.preferencesGetLogined.edit().putBoolean("getLogined", true).commit();
 
-                        SharedPreferences preferences = getSharedPreferences("ID", 0);
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString("id", input_id);
-                        editor.commit();
 
-                        SharedPreferences preferences1 = getSharedPreferences("PW", 0);
-                        SharedPreferences.Editor editor1 = preferences1.edit();
-                        editor1.putString("pw", input_pw);
-                        editor1.commit();
+                        SharedPreferences.Editor editorID = preferencesID.edit();
+                        editorID.putString("id", input_id);
+                        editorID.commit();
+
+                        SharedPreferences.Editor editorPW = preferencesPW.edit();
+                        editorPW.putString("pw", input_pw);
+                        editorPW.commit();
 
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference myRef = database.getReference("user/"+input_id+"/value");
                         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                SharedPreferences dataSave = getSharedPreferences("saveAll", 0);
-                                SharedPreferences.Editor editor2 = dataSave.edit();
-                                editor2.putString("saveAll", snapshot.getValue(String.class));
-                                editor2.commit();
+                                SharedPreferences.Editor editorSaveAll = preferencesSaveAll.edit();
+                                editorSaveAll.putString("saveAll", snapshot.getValue(String.class));
+                                editorSaveAll.commit();
                             }
 
                             @Override

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -14,13 +15,34 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.w3c.dom.Text;
+
+import java.util.Calendar;
+
 public class SettingActivity extends AppCompatActivity{
 
     SharedPreferences preferences;
+    SharedPreferences preferencesBirth;
+
+    TextView textYear;
+    TextView textMonth;
+    TextView textDay;
+    TextView textAge;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+
+        preferencesBirth = getSharedPreferences("birth", 0);
+
+
+
+        textYear = findViewById(R.id.textYear);
+        textMonth = findViewById(R.id.textMonth);
+        textDay = findViewById(R.id.textDay);
+        textAge = findViewById(R.id.textAge);
 
        preferences = getSharedPreferences("getLogined", 0);
 
@@ -58,8 +80,8 @@ public class SettingActivity extends AppCompatActivity{
         Button buttonChangeBirth = findViewById(R.id.buttonChangeBirth);
         buttonChangeBirth.setOnClickListener(v -> {
             BirthDialog birthDialog = new BirthDialog(SettingActivity.this);
-            birthDialog.callFunction();
 
+            birthDialog.callFunction(textYear, textMonth, textDay, textAge);
 
         });
 
@@ -76,55 +98,58 @@ public class SettingActivity extends AppCompatActivity{
 
         Button buttonQuit = findViewById(R.id.buttonQuit);
         buttonQuit.setOnClickListener(v -> {
-            show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("정말로 탈퇴하시겠습니까?");
+            builder.setMessage("탈퇴 시 모든 개인정보가 삭제되며, 이 작업은 되돌릴 수 없습니다.");
+            builder.setPositiveButton("예",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            preferences.edit().putBoolean("getLogined", false).commit();
+                            Toast.makeText(getApplicationContext(),"회원 탈퇴가 완료되었습니다.",Toast.LENGTH_LONG).show();
+
+
+
+                            SharedPreferences preferences = getSharedPreferences("ID", 0);
+                            String id = preferences.getString("id", "");
+
+
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference myRef = database.getReference("user/"+id);
+                            myRef.removeValue();
+
+                            getSharedPreferences("ID", 0).edit().clear();
+                            getSharedPreferences("PW", 0).edit().clear();
+
+                            SharedPreferences dataSave = getSharedPreferences("saveAll", 0);
+                            dataSave.edit().clear();
+
+
+
+                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+
+                        }
+                    });
+            builder.setNegativeButton("아니오",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+            builder.show();
 
         });
 
 
     }
 
-    private void show()
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("정말로 탈퇴하시겠습니까?");
-        builder.setMessage("탈퇴 시 모든 개인정보가 삭제되며, 이 작업은 되돌릴 수 없습니다.");
-        builder.setPositiveButton("예",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        preferences.edit().putBoolean("getLogined", false).commit();
-                        Toast.makeText(getApplicationContext(),"회원 탈퇴가 완료되었습니다.",Toast.LENGTH_LONG).show();
 
 
 
-                        SharedPreferences preferences = getSharedPreferences("ID", 0);
-                        String id = preferences.getString("id", "");
-
-
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        DatabaseReference myRef = database.getReference("user/"+id);
-                        myRef.removeValue();
-
-                        getSharedPreferences("ID", 0).edit().clear();
-                        getSharedPreferences("PW", 0).edit().clear();
-
-                        SharedPreferences dataSave = getSharedPreferences("saveAll", 0);
-                        dataSave.edit().clear();
 
 
 
-                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
 
-                    }
-                });
-        builder.setNegativeButton("아니오",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-        builder.show();
-    }
 }

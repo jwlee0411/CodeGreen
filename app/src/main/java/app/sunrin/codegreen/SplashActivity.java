@@ -74,10 +74,10 @@ public class SplashActivity  extends AppCompatActivity {
         double longitude = gpstracker.getLongitude();
 
         String address = getCurrentAddress(latitude, longitude);
-        SharedPreferences preferences = getSharedPreferences("location", 0);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("location", address);
-        editor.commit();
+        SharedPreferences preferencesLocation = getSharedPreferences("location", 0);
+        SharedPreferences.Editor editorLocation = preferencesLocation.edit();
+        editorLocation.putString("location", address);
+        editorLocation.commit();
 
         //Toast.makeText(SettingActivity.this, "현재위치 \n위도 " + latitude + "\n경도 " + longitude, Toast.LENGTH_LONG).show();
 

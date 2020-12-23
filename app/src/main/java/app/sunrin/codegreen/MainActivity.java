@@ -68,10 +68,10 @@ public class MainActivity extends AppCompatActivity {
             if(output)
             {
 
-                SharedPreferences preferences = getSharedPreferences("BarcodeResult", 0);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("result", re);
-                editor.commit();
+                SharedPreferences preferencesBarcodeResult = getSharedPreferences("BarcodeResult", 0);
+                SharedPreferences.Editor editorBarcodeResult = preferencesBarcodeResult.edit();
+                editorBarcodeResult.putString("result", re);
+                editorBarcodeResult.commit();
 
                 Intent intent1 = new Intent(getApplicationContext(), AfterScanActivity.class);
                 startActivity(intent1); //새 창(상품정보 띄울 창) 띄우기

@@ -3,6 +3,7 @@ package app.sunrin.codegreen;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -14,17 +15,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-public class BirthDialog {
+
+import org.w3c.dom.Text;
+
+import java.util.Calendar;
+
+public class BirthDialog extends AppCompatActivity{
     public static String yy,mm,dd;
     private Context context;
     public static boolean check=false;
+    int age;
+
+    SharedPreferences preferencesBirth;
+
 
     public BirthDialog(Context context) {
         this.context = context;
     }
 
     // 호출할 다이얼로그 함수를 정의한다.
-    public void callFunction() {
+    public void callFunction(TextView textYear, TextView textMonth, TextView textDay, TextView textAge) {
 
         // 커스텀 다이얼로그를 정의하기위해 Dialog클래스를 생성한다.
         final Dialog dlg = new Dialog(context);
@@ -48,18 +58,49 @@ public class BirthDialog {
 
                     @Override
                     public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        age = getAge(year, monthOfYear, dayOfMonth);
                         yy=Integer.toString(year);
-                        mm=Integer.toString(monthOfYear+1);
-                        dd=Integer.toString(dayOfMonth);
+                        if(monthOfYear+1<10)
+                        {
+                            mm=Integer.toString(monthOfYear+1);
+                            mm = "0" + mm;
+                        }
+                        else
+                        {
+                            mm=Integer.toString(monthOfYear+1);
+                        }
+
+                        if(dayOfMonth<10)
+                        {
+                            dd=Integer.toString(dayOfMonth);
+                            dd = "0"+dd;
+                        }
+                        else
+                        {
+                            dd=Integer.toString(dayOfMonth);
+                        }
+
+
                         check=true;
                     }
                 });
-        pickerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //yy, mm, dd를 뭐 넘기던가 해야지
-                dlg.dismiss();
-            }
+        pickerBtn.setOnClickListener(view -> {
+            textYear.setText(yy);
+            textMonth.setText(mm);
+            textDay.setText(dd);
+            textAge.setText(Integer.toString(age));
+
+             preferencesBirth = view.getContext().getSharedPreferences("birth", 0);
+            preferencesBirth.edit().putInt("year", Integer.parseInt(yy));
+            preferencesBirth.edit().putInt("month", Integer.parseInt(mm));
+            System.out.println(Integer.parseInt(mm));
+            preferencesBirth.edit().putInt("day", Integer.parseInt(dd));
+            preferencesBirth.edit().putInt("age", age);
+            preferencesBirth.edit().commit();
+
+
+
+            dlg.dismiss();
         });
 
 
@@ -71,5 +112,21 @@ public class BirthDialog {
         // 커스텀 다이얼로그를 노출한다.
         dlg.show();
 
+    }
+
+
+    public int getAge(int birthYear, int birthMonth, int birthDay)
+    {
+        Calendar current = Calendar.getInstance();
+        int currentYear  = current.get(Calendar.YEAR);
+        int currentMonth = current.get(Calendar.MONTH) + 1;
+        int currentDay   = current.get(Calendar.DAY_OF_MONTH);
+
+        int age = currentYear - birthYear;
+        // 생일 안 지난 경우 -1
+        if (birthMonth * 100 + birthDay > currentMonth * 100 + currentDay)
+            age--;
+
+        return age;
     }
 }
