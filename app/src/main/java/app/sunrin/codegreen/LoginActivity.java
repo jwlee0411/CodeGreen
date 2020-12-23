@@ -1,6 +1,7 @@
 package app.sunrin.codegreen;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,17 +12,23 @@ import android.widget.Toast;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class LoginActivity extends AppCompatActivity {
 
     String[][] finalValue;
     String[] newValue;
     int idIndex;
+    int i = 0;
 
     FirebaseDatabase database;
     DatabaseReference myRef;
@@ -64,49 +71,107 @@ public class LoginActivity extends AppCompatActivity {
 
             database = FirebaseDatabase.getInstance();
 
+
+            int maxVal = 8;
+            finalValue = new String[10000][8];
+
             //TODO : 로그인 관련 알고리즘 갈아엎어야 함.
             myRef = database.getReference("user");
-            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+            myRef.addChildEventListener(new ChildEventListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-                    String value = dataSnapshot.getValue().toString();
-                    System.out.println(value);
-                    value = value.substring(0, value.length()-2);
-                    value = value.replace("}, ", "☆");
-                    //굳이 별로 바꾼 이유는 split에서 정규식을 사용하기 때문에 이렇게 안 하면 에러가 발생하기 때문
-                    //자세한 것은 이 링크 참고 : https://mytory.net/archives/285
-                    System.out.println(value);
+                    String valueAll = snapshot.getValue().toString();
+                    valueAll = valueAll.replace("{", "").replace("}", "")
+                            .replace("userSex=", "")
+                            .replace("userYear=", "")
+                            .replace("userMonth=", "")
+                            .replace("userPW=", "")
+                            .replace("userDay=", "")
+                            .replace("userID=", "")
+                            .replace("value=", "")
+                            .replace("userAge=", "");
+                    String[] newValue = valueAll.split(", ");
+                    System.out.println(valueAll + "★");
+                    //System.out.println(newValue[0] + newValue[1] + newValue[2]);
 
-
-                    newValue = value.split("☆");
-                    System.out.println(newValue.length);
-
-
-                    finalValue = new String[newValue.length][3];
-
-                    for(int i = 0; i<newValue.length; i++)
+                    for(int j = 0; j<newValue.length; j++)
                     {
-                        finalValue[i][0] = newValue[i].substring(newValue[i].indexOf("userID=")+7, newValue[i].lastIndexOf(", "));
-                        finalValue[i][1] = newValue[i].substring(newValue[i].indexOf("userPW=")+7, newValue[i].indexOf(", "));
-                        finalValue[i][2] = newValue[i].substring(newValue[i].indexOf("value=")+6);
-
-                        System.out.println("가" + finalValue[i][0]);
-                        System.out.println("나" + finalValue[i][1]);
-                        System.out.println("다" + finalValue[i][2]);
-
+                        finalValue[i][j] = newValue[j];
+                        System.out.println(newValue[j]);
                     }
-
+                    i++;
 
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError error)
-                {
-                    System.out.println("ERROR");
+                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
                 }
             });
+
+
+//            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                    String valueAll = dataSnapshot.getValue().toString();
+//
+//
+//                    String value = dataSnapshot.getValue().toString();
+//                    System.out.println(value);
+//                    value = value.substring(0, value.length()-2);
+//                    value = value.replace("}, ", "☆");
+//                    //굳이 별로 바꾼 이유는 split에서 정규식을 사용하기 때문에 이렇게 안 하면 에러가 발생하기 때문
+//                    //자세한 것은 이 링크 참고 : https://mytory.net/archives/285
+//                    System.out.println(value);
+//
+//
+//                    newValue = value.split("☆");
+//                    System.out.println(newValue.length);
+//
+//
+//                    finalValue = new String[newValue.length][3];
+//
+//                    for(int i = 0; i<newValue.length; i++)
+//                    {
+//                        finalValue[i][0] = newValue[i].substring(newValue[i].indexOf("userID=")+7, newValue[i].lastIndexOf(", "));
+//                        finalValue[i][1] = newValue[i].substring(newValue[i].indexOf("userPW=")+7, newValue[i].indexOf(", "));
+//                        finalValue[i][2] = newValue[i].substring(newValue[i].indexOf("value=")+6);
+//
+//                        System.out.println("가" + finalValue[i][0]);
+//                        System.out.println("나" + finalValue[i][1]);
+//                        System.out.println("다" + finalValue[i][2]);
+//
+//                    }
+//
+//
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error)
+//                {
+//                    System.out.println("ERROR");
+//
+//                }
+//            });
 
 
             sign_in_btn.setOnClickListener(v -> {
@@ -115,12 +180,14 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 boolean idExist = false;
+                int id = 5;
+                int pw = 3;
 
-                for(int i = 0; i<newValue.length; i++)
+                for(int k = 0; k<i; k++)
                 {
-                    if(finalValue[i][0].equals(input_id)){
+                    if(finalValue[k][id].equals(input_id)){
                         idExist = true;
-                        idIndex = i;
+                        idIndex = k;
                         break;
                     }
 
@@ -135,7 +202,7 @@ public class LoginActivity extends AppCompatActivity {
                 else
                 {
                     id_Layout.setErrorEnabled(false);
-                    if (finalValue[idIndex][1].equals(input_pw))
+                    if (finalValue[idIndex][pw].equals(input_pw))
                     {  // 두 String 비교
                         pw_Layout.setErrorEnabled(false);
                         Toast.makeText(LoginActivity.this, "환영합니다!", Toast.LENGTH_SHORT).show();

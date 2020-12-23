@@ -13,12 +13,14 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,7 +43,7 @@ public class SignUpActivity extends AppCompatActivity {
     DatabaseReference myRef;
     int age;
     RadioGroup radioGroup;
-
+    int totalLength = 0;
     public static SignUpActivity signUpActivity;
     Boolean radioChecked = false;
 
@@ -129,47 +131,103 @@ public class SignUpActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("user");
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        int maxVal = 8;
+
+        finalValue = new String[10000][maxVal];
+
+
+        myRef = database.getReference("user");
+
+
+        myRef.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-                String value = dataSnapshot.getValue().toString();
-                System.out.println(value);
-                value = value.substring(0, value.length()-2);
-                value = value.replace("}, ", "☆");
-                //굳이 별로 바꾼 이유는 split에서 정규식을 사용하기 때문에 이렇게 안 하면 에러가 발생하기 때문
-                //자세한 것은 이 링크 참고 : https://mytory.net/archives/285
-                System.out.println(value);
+                String valueAll = snapshot.getValue().toString();
+                valueAll = valueAll.replace("{", "").replace("}", "")
+                        .replace("userSex=", "")
+                        .replace("userYear=", "")
+                        .replace("userMonth=", "")
+                        .replace("userPW=", "")
+                        .replace("userDay=", "")
+                        .replace("userID=", "")
+                        .replace("value=", "")
+                        .replace("userAge=", "");
+                String[] newValue = valueAll.split(", ");
+                System.out.println(valueAll + "★");
+                System.out.println(newValue[0] + newValue[1] + newValue[2]);
 
-
-                newValue = value.split("☆");
-                System.out.println(newValue.length);
-
-
-                finalValue = new String[newValue.length][3];
-
-                for(int i = 0; i<newValue.length; i++)
+                for(int j = 0; j<newValue.length; j++)
                 {
-                    finalValue[i][0] = newValue[i].substring(newValue[i].indexOf("D=")+2, newValue[i].lastIndexOf(", "));
-                    finalValue[i][1] = newValue[i].substring(newValue[i].indexOf("W=")+2, newValue[i].indexOf(", "));
-                    finalValue[i][2] = newValue[i].substring(newValue[i].indexOf("e=")+2);
-
-                    System.out.println("가" + finalValue[i][0]);
-                    System.out.println("나" + finalValue[i][1]);
-                    System.out.println("다" + finalValue[i][2]);
-
+                    finalValue[totalLength][j] = newValue[j];
+                    System.out.println(newValue[j]);
                 }
-
+                totalLength++;
 
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error)
-            {
-                System.out.println("ERROR");
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
+//        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                String value = dataSnapshot.getValue().toString();
+//                System.out.println(value);
+//                value = value.substring(0, value.length()-2);
+//                value = value.replace("}, ", "☆");
+//                //굳이 별로 바꾼 이유는 split에서 정규식을 사용하기 때문에 이렇게 안 하면 에러가 발생하기 때문
+//                //자세한 것은 이 링크 참고 : https://mytory.net/archives/285
+//                System.out.println(value);
+//
+//
+//                newValue = value.split("☆");
+//                System.out.println(newValue.length);
+//
+//
+//                finalValue = new String[newValue.length][3];
+//
+//                for(int i = 0; i<newValue.length; i++)
+//                {
+//                    finalValue[i][0] = newValue[i].substring(newValue[i].indexOf("D=")+2, newValue[i].lastIndexOf(", "));
+//                    finalValue[i][1] = newValue[i].substring(newValue[i].indexOf("W=")+2, newValue[i].indexOf(", "));
+//                    finalValue[i][2] = newValue[i].substring(newValue[i].indexOf("e=")+2);
+//
+//                    System.out.println("가" + finalValue[i][0]);
+//                    System.out.println("나" + finalValue[i][1]);
+//                    System.out.println("다" + finalValue[i][2]);
+//
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error)
+//            {
+//                System.out.println("ERROR");
+//
+//            }
+//        });
 
 
 
@@ -177,11 +235,13 @@ public class SignUpActivity extends AppCompatActivity {
             String input_id = id_ET.getText().toString().replace(" ", "");
             String input_pw = pw_ET.getText().toString().replace(" ", "");
 
+            int id = 5;
+            int pw = 3;
 
             boolean passwordExist = false;
-            for(int i = 0; i<newValue.length; i++)
+            for(int i = 0; i<totalLength; i++)
             {
-                if(finalValue[i][0].equals(input_id))
+                if(finalValue[i][id].equals(input_id))
                 {
                     passwordExist = true;
                     break;
@@ -198,6 +258,7 @@ public class SignUpActivity extends AppCompatActivity {
                     {
 
                         preferencesBirth = getSharedPreferences("birth", 0);
+                        System.out.println(yy);
                         preferencesBirth.edit().putInt("year", Integer.parseInt(yy));
                         preferencesBirth.edit().putInt("month", Integer.parseInt(mm));
                         System.out.println(Integer.parseInt(mm));
@@ -208,8 +269,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 
 
-                        long time = System.currentTimeMillis();
-                        String strTime = Long.toString(time);
+
                         myRef = database.getReference("user/" + input_id + "/userID");
                         myRef.setValue(input_id);
 
@@ -217,7 +277,7 @@ public class SignUpActivity extends AppCompatActivity {
                         myRef.setValue(input_pw);
 
                         myRef = database.getReference("user/" + input_id + "/value");
-                        myRef.setValue("");
+                        myRef.setValue(" ");
 
                         myRef = database.getReference("user/" + input_id + "/userSex");
                         myRef.setValue(sex);
