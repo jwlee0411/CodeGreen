@@ -48,7 +48,6 @@ public class LoginActivity extends AppCompatActivity {
         Boolean getLogined = this.preferencesGetLogined.getBoolean("getLogined", false);
 
 
-        //TODO:자동로그인 사용 중지(오류 해결을 위해)
 
         if(getLogined)
         {
@@ -74,7 +73,6 @@ public class LoginActivity extends AppCompatActivity {
             int maxVal = 8;
             finalValue = new String[10000][8];
 
-            //TODO : 로그인 관련 알고리즘 갈아엎어야 함.
             myRef = database.getReference("user");
 
 
