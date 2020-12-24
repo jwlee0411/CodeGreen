@@ -19,10 +19,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class LoginActivity extends AppCompatActivity {
 
     String[][] finalValue;
@@ -54,20 +50,20 @@ public class LoginActivity extends AppCompatActivity {
 
         //TODO:자동로그인 사용 중지(오류 해결을 위해)
 
-//        if(getLogined)
-//        {
-//            Toast.makeText(LoginActivity.this, "자동 로그인 되었습니다!", Toast.LENGTH_SHORT).show();
-//            Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//            startActivity(intent);
-//        }
-//        else
-//        {
+        if(getLogined)
+        {
+            Toast.makeText(LoginActivity.this, "자동 로그인 되었습니다!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+        else
+        {
             id_Layout = findViewById(R.id.TextInput_ID);
-            pw_Layout = findViewById(R.id.TextInput_PW);
+            pw_Layout = findViewById(R.id.TextInputChangePassword);
             id_ET = findViewById(R.id.edit_id);
-            pw_ET = findViewById(R.id.edit_pw);
+            pw_ET = findViewById(R.id.editPassword);
             sign_in_btn = findViewById(R.id.signInBtn);
             sign_up_btn = findViewById(R.id.signUpBtn);
 
@@ -259,7 +255,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
                 finish();
             });
-//        }
+        }
 
 
 

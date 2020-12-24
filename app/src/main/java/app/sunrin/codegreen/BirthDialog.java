@@ -16,6 +16,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import org.w3c.dom.Text;
 
 import java.util.Calendar;
@@ -27,6 +30,10 @@ public class BirthDialog extends AppCompatActivity{
     int age;
 
     SharedPreferences preferencesBirth;
+    FirebaseDatabase database;
+    DatabaseReference reference;
+
+    SharedPreferences preferencesID;
 
 
     public BirthDialog(Context context) {
@@ -90,13 +97,31 @@ public class BirthDialog extends AppCompatActivity{
             textDay.setText(dd);
             textAge.setText(Integer.toString(age));
 
-             preferencesBirth = view.getContext().getSharedPreferences("birth", 0);
-            preferencesBirth.edit().putInt("year", Integer.parseInt(yy));
-            preferencesBirth.edit().putInt("month", Integer.parseInt(mm));
-            System.out.println(Integer.parseInt(mm));
-            preferencesBirth.edit().putInt("day", Integer.parseInt(dd));
-            preferencesBirth.edit().putInt("age", age);
-            preferencesBirth.edit().commit();
+            //이거 왜 안되는지 모르겠어서 SplashActivity로 이동해서 거기서 처리할 예정
+
+//             preferencesBirth = view.getContext().getSharedPreferences("birth", 0);
+//            preferencesBirth.edit().putInt("year", Integer.parseInt(yy));
+//            preferencesBirth.edit().putInt("month", Integer.parseInt(mm));
+//            System.out.println(Integer.parseInt(mm));
+//            preferencesBirth.edit().putInt("day", Integer.parseInt(dd));
+//            preferencesBirth.edit().putInt("age", age);
+//            preferencesBirth.edit().apply();
+
+            preferencesID = view.getContext().getSharedPreferences("ID", 0);
+            String id = preferencesID.getString("id", "");
+
+            database = FirebaseDatabase.getInstance();
+            reference = database.getReference("user/" + id + "/userAge" );
+            reference.setValue(age);
+
+            reference = database.getReference("user/" + id + "/userYear" );
+            reference.setValue(Integer.parseInt(yy));
+
+            reference = database.getReference("user/" + id + "/userMonth" );
+            reference.setValue(Integer.parseInt(mm));
+
+            reference = database.getReference("user/" + id + "/userDay" );
+            reference.setValue(Integer.parseInt(dd));
 
 
 

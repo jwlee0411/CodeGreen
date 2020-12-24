@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -25,6 +27,7 @@ public class SettingActivity extends AppCompatActivity{
     SharedPreferences preferences;
     SharedPreferences preferencesBirth;
     SharedPreferences preferencesID;
+    SharedPreferences preferencesPW;
     SharedPreferences preferencesSex;
 
     TextView textYear;
@@ -32,7 +35,9 @@ public class SettingActivity extends AppCompatActivity{
     TextView textDay;
     TextView textAge;
 
-    String id;
+    SharedPreferences.Editor editPW;
+
+    String id, pw;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,8 +45,9 @@ public class SettingActivity extends AppCompatActivity{
         setContentView(R.layout.activity_setting);
 
         preferencesBirth = getSharedPreferences("birth", 0);
-        preferencesID = getSharedPreferences("id", 0);
+        preferencesID = getSharedPreferences("ID", 0);
         preferencesSex = getSharedPreferences("sex", 0);
+        preferencesPW = getSharedPreferences("PW", 0);
 
 
         textYear = findViewById(R.id.textYear);
@@ -52,7 +58,12 @@ public class SettingActivity extends AppCompatActivity{
        preferences = getSharedPreferences("getLogined", 0);
 
        id = preferencesID.getString("id", "");
+       pw = preferencesPW.getString("pw", "");
+       editPW = preferencesPW.edit();
        System.out.println(id);
+
+       TextView myID = findViewById(R.id.textView3); //TODO : 레이아웃 파일 받으면 id 바꾸기
+       myID.setText(id);
 
         Button buttonLogout = findViewById(R.id.buttonNewLogout);
         buttonLogout.setOnClickListener(v -> {
@@ -95,15 +106,29 @@ public class SettingActivity extends AppCompatActivity{
 
         Button buttonChangePassword = findViewById(R.id.buttonChangePassword);
         buttonChangePassword.setOnClickListener(v -> {
+            TextInputLayout textInputLayout = findViewById(R.id.TextInputChangePassword);
+
+            TextInputEditText textInputEditText = findViewById(R.id.editPassword);
+
+            String input_pw = textInputEditText.getText().toString().replace(" ", "");
+
+            if (input_pw.length() >= 8) {
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference("user/" + id + "/userPW");
+                myRef.setValue(input_pw);
+                editPW.putString("pw", input_pw).commit();
+                Toast.makeText(SettingActivity.this, "비밀번호가 성공적으로 변경되었습니다.", Toast.LENGTH_SHORT).show();
+
+            }
+            else
+            {
+               //Toast.makeText(this, "비밀번호는 8자 이상입니다.", Toast.LENGTH_SHORT).show();
+                textInputLayout.setError("비밀번호는 8자 이상입니다.");
+            }
 
         });
 
 
-        Button buttonChangeSex = findViewById(R.id.buttonChangeSex);
-        buttonChangeSex.setOnClickListener(v -> {
-
-
-        });
         RadioGroup radioGroup = findViewById(R.id.radioGroupSetting);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override

@@ -1,6 +1,8 @@
 package app.sunrin.codegreen;
 
 import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,10 +19,17 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,6 +38,12 @@ import java.util.Locale;
 public class SplashActivity  extends AppCompatActivity {
 
     private Gpstracker gpstracker;
+    SharedPreferences preferencesID;
+    FirebaseDatabase database;
+    DatabaseReference myRef;
+
+    SharedPreferences preferencesBirth;
+    String id;
 
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
@@ -51,9 +66,71 @@ public class SplashActivity  extends AppCompatActivity {
         Button buttonSetting = findViewById(R.id.buttonSetting);
         Button buttonJumin = findViewById(R.id.buttonJumin);
 
+        preferencesID = getSharedPreferences("ID", 0);
+        id = preferencesID.getString("id", "");
 
+        preferencesBirth = getSharedPreferences("birth", 0);
 
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("user/" + id + "/userYear");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int value = snapshot.getValue(Integer.class);
+                preferencesBirth.edit().putInt("year", value).commit();
 
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        myRef = database.getReference("user/" + id + "/userMonth");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int value = snapshot.getValue(Integer.class);
+                preferencesBirth.edit().putInt("month", value).commit();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        myRef = database.getReference("user/" + id + "/userDay");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int value = snapshot.getValue(Integer.class);
+                preferencesBirth.edit().putInt("day", value).commit();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        myRef = database.getReference("user/" + id + "/userAge");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int value = snapshot.getValue(Integer.class);
+                preferencesBirth.edit().putInt("age", value).commit();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
         if (!checkLocationServicesStatus()) {
@@ -115,6 +192,7 @@ public class SplashActivity  extends AppCompatActivity {
 
 
     buttonSetting.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), SettingActivity.class)));
+
 
 
 
@@ -299,6 +377,9 @@ public class SplashActivity  extends AppCompatActivity {
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
                 || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
+
+
+
 
 
 

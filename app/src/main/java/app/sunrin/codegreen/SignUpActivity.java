@@ -4,17 +4,13 @@ package app.sunrin.codegreen;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Debug;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.DatePicker;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
@@ -29,10 +25,6 @@ import com.google.firebase.database.ValueEventListener;
 
 
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Iterator;
-
-import org.apache.commons.lang3.StringUtils;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -63,7 +55,7 @@ public class SignUpActivity extends AppCompatActivity {
         SharedPreferences.Editor editorSex = preferencesSex.edit();
 
         final TextInputLayout id_Layout = findViewById(R.id.TextInput_ID);
-        final TextInputLayout pw_Layout = findViewById(R.id.TextInput_PW);
+        final TextInputLayout pw_Layout = findViewById(R.id.TextInputChangePassword);
         final TextInputEditText id_ET = findViewById(R.id.text_ID);
         final TextInputEditText pw_ET = findViewById(R.id.text_PW);
 
