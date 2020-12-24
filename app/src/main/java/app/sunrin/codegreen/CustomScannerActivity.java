@@ -31,8 +31,9 @@ public class CustomScannerActivity extends Activity implements DecoratedBarcodeV
             switchFlashlightButton.setVisibility(View.GONE);
         }
         setting_btn.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), RecentActivity.class);
-            startActivity(intent);
+            AddDialog addDialog = new AddDialog(CustomScannerActivity.this);
+            addDialog.callFunction();
+
         });
 
         barcodeScannerView = findViewById(R.id.zxing_barcode_scanner);

@@ -62,7 +62,6 @@ public class SplashActivity  extends AppCompatActivity {
         Button buttonBarcode = findViewById(R.id.buttonBarcode);
         Button buttonPhoto = findViewById(R.id.buttonPhoto);
         Button buttonRecent = findViewById(R.id.buttonRecent);
-        Button buttonLogout = findViewById(R.id.buttonLogout);
         Button buttonSetting = findViewById(R.id.buttonSetting);
         Button buttonJumin = findViewById(R.id.buttonJumin);
 
@@ -170,23 +169,11 @@ public class SplashActivity  extends AppCompatActivity {
 
         buttonRecent.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), RecentActivity.class)));
 
-        buttonLogout.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
-        });
 
         buttonJumin.setOnClickListener(v -> {
 
             Intent intent = new Intent(this, TrashActivity.class);
             startActivity(intent);
-            
-            //배출방법문의 기능 비활성화
-
-
-
 
         });
 

@@ -90,24 +90,24 @@
             android:layout_marginRight="16dp"
             android:layout_marginBottom="32dp"
             android:background="@drawable/btn_background"
-            android:drawableTop="@drawable/settings"
+            android:drawableTop="@drawable/help"
             android:fontFamily="@font/jua"
-            android:text="배출방법문의"
+            android:text="배출 방법"
             android:textColor="#FFFFFF"
             android:textSize="18sp" />
 
-        <Button
-            android:id="@+id/buttonLogout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/jua"
-            android:text="로그아웃"
-            android:drawableTop="@drawable/person_off"
-            android:background="@drawable/btn_background"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:visibility="invisible"
-            android:layout_marginBottom="16dp"/>
+        <!--        <Button-->
+        <!--            android:id="@+id/buttonLogout"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:fontFamily="@font/jua"-->
+        <!--            android:text="로그아웃"-->
+        <!--            android:drawableTop="@drawable/person_off"-->
+        <!--            android:background="@drawable/btn_background"-->
+        <!--            android:textColor="#FFFFFF"-->
+        <!--            android:textSize="16sp"-->
+        <!--            android:visibility="invisible"-->
+        <!--            android:layout_marginBottom="16dp"/>-->
 
     </GridLayout>
 

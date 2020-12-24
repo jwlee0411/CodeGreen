@@ -69,8 +69,17 @@ public class TrashActivity extends AppCompatActivity {
         buttonLocationJumin.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("geo:0,0?q=" + locationSet[2] + "주민센터"));
-            startActivity(intent);
+            if(locationSet[3].contains("동"))
+            {
+                intent.setData(Uri.parse("geo:0,0?q=" + locationSet[3] + " 주민센터"));
+                startActivity(intent);
+            }
+            else
+            {
+                intent.setData(Uri.parse("geo:0,0?q=" + locationSet[4] + " 주민센터"));
+                startActivity(intent);
+            }
+
         });
 
 

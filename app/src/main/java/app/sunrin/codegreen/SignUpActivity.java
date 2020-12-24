@@ -54,7 +54,7 @@ public class SignUpActivity extends AppCompatActivity {
         preferencesSex = getSharedPreferences("sex", 0);
         SharedPreferences.Editor editorSex = preferencesSex.edit();
 
-        final TextInputLayout id_Layout = findViewById(R.id.TextInput_ID);
+        final TextInputLayout id_Layout = findViewById(R.id.textProductName);
         final TextInputLayout pw_Layout = findViewById(R.id.TextInputChangePassword);
         final TextInputEditText id_ET = findViewById(R.id.text_ID);
         final TextInputEditText pw_ET = findViewById(R.id.text_PW);

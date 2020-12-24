@@ -59,7 +59,7 @@ public class AfterScanActivity extends AppCompatActivity {
     SharedPreferences preferencesSaveAll, preferencesBarcodeResult;
 
 
-
+    DatabaseReference myRef;
     ProgressDialog progressDialog;
 
 
@@ -278,11 +278,102 @@ public class AfterScanActivity extends AppCompatActivity {
 
             //이름 설정
             if (results[name].equals("") || results[name].equals(null)) {
-                prodName = false;
-                progressDialog.dismiss();
-                Toast.makeText(getApplicationContext(), "상품 정보가 없습니다.", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                 myRef = database.getReference("product/" + preferencesBarcodeResult.getString("result", "") + "/name"); //name을 기준으로 있는지 없는지 판단
+                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String value = snapshot.getValue(String.class);
+                        if(value.equals(null))
+                        {
+                            prodName = false;
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(), "상품 정보가 없습니다.", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                        }
+                        else
+                        {
+
+                            productName.setText(value);
+
+                               myRef = database.getReference("product/" + preferencesBarcodeResult.getString("result", "") + "/category");
+                               myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                   @Override
+                                   public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                       productCategory.setText(snapshot.getValue(String.class));
+                                       saveData = "★" + "@" + value + "@" + snapshot.getValue(String.class) + "@" + currentDate + "@" + "@";
+                                   }
+
+                                   @Override
+                                   public void onCancelled(@NonNull DatabaseError error) {
+
+                                   }
+                               });
+
+                            myRef = database.getReference("product/" + preferencesBarcodeResult.getString("result", "") + "/recycle");
+                            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    String recycle = snapshot.getValue(String.class);
+
+                                    //플라스틱 1,종이 2,비닐 3,캔 4,스티로폼 5,페트병 6,유리 7,일반쓰레기 8, 전자제품 9
+
+                                    if(recycle.contains("1")) {
+                                        addPlastic();
+                                    }
+                                    if(recycle.contains("2")) {
+                                        addPaper();
+                                    }
+                                    if(recycle.contains("3")) {
+                                        addVinyl();
+                                    }
+                                    if(recycle.contains("4")) {
+                                        addCan();
+                                    }
+                                    if(recycle.contains("5")) {
+                                        addStrph();
+                                    }
+                                    if(recycle.contains("6")) {
+                                        addPet();
+                                    }
+                                    if(recycle.contains("7")) {
+                                        addGlass();
+                                    }
+                                    if(recycle.contains("8")) {
+                                        addTrash();
+                                    }
+                                    if(recycle.contains("9")) {
+                                        addElec();
+                                    }
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
+
+
+                            prodName = true;
+
+
+
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
+
             } else {
                 prodName = true;
                 productName.setText(results[0]);

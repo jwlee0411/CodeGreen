@@ -34,6 +34,7 @@ public class SettingActivity extends AppCompatActivity{
     TextView textMonth;
     TextView textDay;
     TextView textAge;
+    TextView textID;
 
     SharedPreferences.Editor editPW;
 
@@ -55,6 +56,11 @@ public class SettingActivity extends AppCompatActivity{
         textDay = findViewById(R.id.textDay);
         textAge = findViewById(R.id.textAge);
 
+
+        textYear.setText(Integer.toString(preferencesBirth.getInt("year", 0)));
+        textMonth.setText(Integer.toString(preferencesBirth.getInt("month", 0)));
+        textDay.setText(Integer.toString(preferencesBirth.getInt("day", 0)));
+
        preferences = getSharedPreferences("getLogined", 0);
 
        id = preferencesID.getString("id", "");
@@ -62,8 +68,9 @@ public class SettingActivity extends AppCompatActivity{
        editPW = preferencesPW.edit();
        System.out.println(id);
 
-       TextView myID = findViewById(R.id.textView3); //TODO : 레이아웃 파일 받으면 id 바꾸기
-       myID.setText(id);
+       textID = findViewById(R.id.textID);
+       textID.setText(id);
+
 
         Button buttonLogout = findViewById(R.id.buttonNewLogout);
         buttonLogout.setOnClickListener(v -> {

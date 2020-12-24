@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         else
         {
-            id_Layout = findViewById(R.id.TextInput_ID);
+            id_Layout = findViewById(R.id.textProductName);
             pw_Layout = findViewById(R.id.TextInputChangePassword);
             id_ET = findViewById(R.id.edit_id);
             pw_ET = findViewById(R.id.editPassword);

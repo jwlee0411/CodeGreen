@@ -109,153 +109,169 @@ public class RecentActivity extends AppCompatActivity {
         System.out.println("dataAll");
         System.out.println(dataAll);
 
-
-        dataAll = dataAll.substring(dataAll.indexOf("★")+1);
-
-
-        //데이터를 차곡차곡 배열로 바꿔줄거에염♥
-        //처음에 있는 별을 없애야 제대로 작동되므로 위에서 substring을 해줬어영
-        data = dataAll.split("★");
-
-
-        //myData[i][0] => 상품 사진 링크
-        //myData[i][1] => 상품명
-        //myData[i][2] => 상품 카테고리
-        //myData[i][3] => 스캔한 날짜
-        //myData[i][4] => KAN코드
-        //myData[i][5] => 분리배출방법(하이픈으로 연결되어 있음)
-
-        //내 상품 정보
-        myData = new String[data.length][intRecycle + 1];
-        System.out.println("data.length");
-        System.out.println(data.length);
-
-        for(int i = 0; i<data.length; i++)
+        if(dataAll.equals("") || dataAll.equals(" ")||dataAll.equals(null))
         {
-            myData[i] = data[i].split("@");
-            myData[i][3] = myData[i][3].substring(5, 7);
-            System.out.println("12345" + myData[i][3]);
-            System.out.println("@" + Arrays.toString(myData[i]));
-
+            Toast.makeText(this, "조회 내역이 없습니다. 바코드 인식 후 다시 시도해주세요!", Toast.LENGTH_SHORT).show();
+            finish();
         }
+        else
+        {
+            dataAll = dataAll.substring(dataAll.indexOf("★")+1);
+
+
+
+            //데이터를 차곡차곡 배열로 바꿔줄거에염♥
+            //처음에 있는 별을 없애야 제대로 작동되므로 위에서 substring을 해줬어영
+            data = dataAll.split("★");
 
 
 
 
-        //모든 유저의 재활용 정보 불러오기
+            //myData[i][0] => 상품 사진 링크
+            //myData[i][1] => 상품명
+            //myData[i][2] => 상품 카테고리
+            //myData[i][3] => 스캔한 날짜
+            //myData[i][4] => KAN코드
+            //myData[i][5] => 분리배출방법(하이픈으로 연결되어 있음)
+
+            //내 상품 정보
+            myData = new String[data.length][intRecycle + 1];
+            System.out.println("data.length");
+            System.out.println(data.length);
+            System.out.println(data[0]);
 
 
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("user");
 
-        DatabaseReference referenceUserNum = database.getReference("userNum");
+            for(int i = 0; i<data.length; i++)
+            {
+                myData[i] = data[i].split("@");
+                myData[i][3] = myData[i][3].substring(5, 7);
+                System.out.println("12345" + myData[i][3]);
+                System.out.println("@" + Arrays.toString(myData[i]));
 
-        referenceUserNum.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userNum = snapshot.getValue(Integer.class);
-                int maxVal = 8;
-
-                finalValue = new String[10000][maxVal];
+            }
 
 
-                myRef = database.getReference("user");
-                myRef.addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                        String valueAll = snapshot.getValue().toString();
-                        valueAll = valueAll.replace("{", "").replace("}", "")
-                                .replace("userSex=", "")
-                                .replace("userYear=", "")
-                                .replace("userMonth=", "")
-                                .replace("userPW=", "")
-                                .replace("userDay=", "")
-                                .replace("userID=", "")
-                                .replace("value=", "")
-                                .replace("userAge=", "");
-                        String[] newValue = valueAll.split(", ");
-                        System.out.println(valueAll + "★");
-                        //System.out.println(newValue[0] + newValue[1] + newValue[2]);
-
-                        for (int j = 0; j < newValue.length; j++) {
-                            finalValue[totalLength][j] = newValue[j];
-                            System.out.println(newValue[j]);
-                        }
-                        totalLength++;
-
-                        System.out.println("::::" + userNum);
-                        System.out.println(":::::" + totalLength);
-
-                        if(totalLength == userNum)
-                        {
-                            for (int i = 0; i < totalLength; i++) {
-                                System.out.println(Arrays.toString(finalValue[i]));
-                                if(!finalValue[i][value].contains("★"))
-                                {
-
-                                }
-                                else {
-                                    dataAll = finalValue[i][value].substring(2);
 
 
-                                    //데이터를 차곡차곡 배열로 바꿔줄거에염♥
-                                    //처음에 있는 별을 없애야 제대로 작동되므로 위에서 substring을 해줬어영
-                                    data = dataAll.split("★");
+            //모든 유저의 재활용 정보 불러오기
 
-                                    newData = new String[data.length][intRecycle + 1];
-                                    System.out.println("data.length");
-                                    System.out.println(data.length);
 
-                                    for (int j = 0; j < data.length; j++) {
-                                        System.out.println(data[j]);
-                                        tempData = data[j].split("@");
-                                        checkWhoTrash(i);
+            database = FirebaseDatabase.getInstance();
+            myRef = database.getReference("user");
+
+            DatabaseReference referenceUserNum = database.getReference("userNum");
+
+            referenceUserNum.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    userNum = snapshot.getValue(Integer.class);
+                    int maxVal = 8;
+
+                    finalValue = new String[10000][maxVal];
+
+
+                    myRef = database.getReference("user");
+                    myRef.addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                            String valueAll = snapshot.getValue().toString();
+                            valueAll = valueAll.replace("{", "").replace("}", "")
+                                    .replace("userSex=", "")
+                                    .replace("userYear=", "")
+                                    .replace("userMonth=", "")
+                                    .replace("userPW=", "")
+                                    .replace("userDay=", "")
+                                    .replace("userID=", "")
+                                    .replace("value=", "")
+                                    .replace("userAge=", "");
+                            String[] newValue = valueAll.split(", ");
+                            System.out.println(valueAll + "★");
+                            //System.out.println(newValue[0] + newValue[1] + newValue[2]);
+
+                            for (int j = 0; j < newValue.length; j++) {
+                                finalValue[totalLength][j] = newValue[j];
+                                System.out.println(newValue[j]);
+                            }
+                            totalLength++;
+
+                            System.out.println("::::" + userNum);
+                            System.out.println(":::::" + totalLength);
+
+                            if(totalLength == userNum)
+                            {
+                                for (int i = 0; i < totalLength; i++) {
+                                    System.out.println(Arrays.toString(finalValue[i]));
+                                    if(!finalValue[i][value].contains("★"))
+                                    {
+
+                                    }
+                                    else {
+                                        dataAll = finalValue[i][value].substring(2);
+
+
+                                        //데이터를 차곡차곡 배열로 바꿔줄거에염♥
+                                        //처음에 있는 별을 없애야 제대로 작동되므로 위에서 substring을 해줬어영
+                                        data = dataAll.split("★");
+
+                                        newData = new String[data.length][intRecycle + 1];
+                                        System.out.println("data.length");
+                                        System.out.println(data.length);
+
+                                        for (int j = 0; j < data.length; j++) {
+                                            System.out.println(data[j]);
+                                            tempData = data[j].split("@");
+                                            checkWhoTrash(i);
+                                        }
+
+                                        //플라스틱 1,종이 2,비닐 3,캔 4,스티로폼 5,페트병 6,유리 7,일반쓰레기 8, 전자제품 9
                                     }
 
-                                    //플라스틱 1,종이 2,비닐 3,캔 4,스티로폼 5,페트병 6,유리 7,일반쓰레기 8, 전자제품 9
                                 }
+
+
+                                showArray();
+
 
                             }
 
 
-                            showArray();
 
 
                         }
 
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
 
 
 
-                    }
-
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
 
 

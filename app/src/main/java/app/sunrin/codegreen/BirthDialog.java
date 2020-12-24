@@ -124,6 +124,7 @@ public class BirthDialog extends AppCompatActivity{
             reference.setValue(Integer.parseInt(dd));
 
 
+            Toast.makeText(context, "생년월일이 성공적으로 변경되었습니다!", Toast.LENGTH_SHORT).show();
 
             dlg.dismiss();
         });
