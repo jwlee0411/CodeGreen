@@ -91,7 +91,6 @@
         android:fontFamily="@font/nanum_regular"
         android:text="공유하기"
         android:textColor="@color/white"
-        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/buttonShopping" />
@@ -103,7 +102,6 @@
         android:fontFamily="@font/nanum_regular"
         android:text="구매하기(네이버쇼핑)"
         android:textColor="@color/white"
-        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button"
         app:layout_constraintStart_toStartOf="parent" />

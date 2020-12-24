@@ -285,7 +285,7 @@ public class AfterScanActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         String value = snapshot.getValue(String.class);
-                        if(value.equals(null))
+                        if(value==null)
                         {
                             prodName = false;
                             progressDialog.dismiss();
@@ -348,6 +348,70 @@ public class AfterScanActivity extends AppCompatActivity {
                                         addElec();
                                     }
 
+                                    prodName = true;
+                                    recyclerView = findViewById(R.id.recycling);
+                                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                                    ReAdapter reAdapter = new ReAdapter(data);
+                                    recyclerView.setAdapter(reAdapter);
+                                    loadEco();
+
+                                    Button button = findViewById(R.id.button);
+                                    button.setVisibility(View.VISIBLE);
+                                    button.setOnClickListener(v -> {
+                                        link = "https://search.shopping.naver.com/search/all?query=" + productName.getText().toString();
+                                        goShopping = false;
+                                        new getLink().execute();
+
+
+                                    });
+                                    progressDialog.dismiss();
+
+
+                                    Button buttonShopping = findViewById(R.id.buttonShopping);
+                                    buttonShopping.setVisibility(View.VISIBLE);
+
+                                    buttonShopping.setOnClickListener(v -> {
+                                        link = "https://search.shopping.naver.com/search/all?query=" + productName.getText().toString();
+                                        goShopping = true;
+                                        new getLink().execute();
+                                    });
+
+
+                                    Button buttonSave = findViewById(R.id.buttonSave);
+                                    buttonSave.setOnClickListener(v -> {
+                                        preferencesSaveAll = getSharedPreferences("saveAll", 0);
+                                        String result = preferencesSaveAll.getString("saveAll", "");
+                                        saveData = result + saveData;
+
+
+                                        SharedPreferences.Editor editor = preferencesSaveAll.edit();
+                                        editor.putString("saveAll", saveData);
+                                        editor.commit();
+
+                                        SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
+
+                                        String user_id = sharedPreferences.getString("id", "");
+
+                                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                        DatabaseReference myRef = database.getReference("user/" + user_id + "/value");
+                                        myRef.setValue(saveData);
+
+                                        System.out.println(saveData);
+
+                                        Toast.makeText(getApplicationContext(), "저장되었습니다.", Toast.LENGTH_LONG).show();
+                                        buttonSave.setVisibility(View.INVISIBLE);
+
+
+                                    });
+
+                                    progressDialog.dismiss();
+
+
+
+
+
+
+
                                 }
 
                                 @Override
@@ -358,7 +422,7 @@ public class AfterScanActivity extends AppCompatActivity {
 
 
 
-                            prodName = true;
+
 
 
 

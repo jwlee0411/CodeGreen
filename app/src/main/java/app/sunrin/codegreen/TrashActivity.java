@@ -178,7 +178,7 @@ public class TrashActivity extends AppCompatActivity {
             });
 
 
-            if(trashLocationCount-1==trashLocationCount)
+            if(trashLocationCount-1==i)
             {
                 checkView(getValue_count);
                 break;
@@ -220,7 +220,7 @@ public class TrashActivity extends AppCompatActivity {
                     progressDialog.dismiss();
 
                 }
-            }, 7000);
+            }, 1000);
 
         }
     }

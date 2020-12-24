@@ -28,7 +28,6 @@ public class AddDialog extends AppCompatActivity {
     Button buttonConfirm;
 
     String recycle = "";
-
     DatabaseReference myRef;
 
 
@@ -121,7 +120,7 @@ public class AddDialog extends AppCompatActivity {
                                 myRef.setValue(editProductCategory.getText().toString());
 
                                 myRef = database.getReference("product/"+ editBarcodeNumber.getText().toString() + "/name");
-                                myRef.setValue(editProductCategory.getText().toString());
+                                myRef.setValue(editProductName.getText().toString());
 
                                 myRef = database.getReference("product/"+ editBarcodeNumber.getText().toString() + "/recycle");
                                 myRef.setValue(recycle.substring(0, recycle.length()-1));
