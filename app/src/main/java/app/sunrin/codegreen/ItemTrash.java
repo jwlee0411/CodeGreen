@@ -4,7 +4,10 @@ import android.graphics.drawable.Drawable;
 
 public class ItemTrash {
 
-    private String[] recycle;
+    int viewCount = 21;
+    int trashLocationCount = 2725;
+
+    private String[] recycle = new String[viewCount];
 
     public String getRecycle(int index){
         return recycle[index];
@@ -17,7 +20,7 @@ public class ItemTrash {
 
 
     public ItemTrash() {
-        for(int i = 0; i<25; i++)
+        for(int i = 0; i<viewCount; i++)
         {
             this.recycle[i] = recycle[i];
         }

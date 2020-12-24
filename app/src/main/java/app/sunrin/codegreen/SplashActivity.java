@@ -77,6 +77,7 @@ public class SplashActivity  extends AppCompatActivity {
         SharedPreferences preferencesLocation = getSharedPreferences("location", 0);
         SharedPreferences.Editor editorLocation = preferencesLocation.edit();
         editorLocation.putString("location", address);
+        System.out.println(address);
         editorLocation.commit();
 
         //Toast.makeText(SettingActivity.this, "현재위치 \n위도 " + latitude + "\n경도 " + longitude, Toast.LENGTH_LONG).show();

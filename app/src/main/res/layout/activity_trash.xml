@@ -34,15 +34,17 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/textSiDo"
-        tools:layout_editor_absoluteX="120dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLocationJumin" />
 
     <Button
         android:id="@+id/buttonLocationJumin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="주민센터 위치찾기 "
-        tools:layout_editor_absoluteX="93dp"
-        tools:layout_editor_absoluteY="313dp" />
+        app:layout_constraintStart_toEndOf="@+id/textView10"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,16 +30,23 @@ public class TrashActivity extends AppCompatActivity {
     DatabaseReference reference;
     RecyclerView recyclerView;
     int temp;
-    int getValue_count = 0;
+    boolean getValue_count = false;
     int viewCount = 21;
     int trashLocationCount = 2725;
     String[] path = new String[viewCount];
     String[] locationSet;
     ProgressDialog progressDialog;
 
+    int firebaseCount = 0;
+
+
+    int i = 1;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_trash);
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("검색 중...");
@@ -54,6 +61,7 @@ public class TrashActivity extends AppCompatActivity {
         SharedPreferences preferencesLocation = getSharedPreferences("location", 0);
 
         locationSet = preferencesLocation.getString("location", "").split(" ");
+        System.out.println(locationSet[0]);
         textSiDo.setText(locationSet[1]);
         textSiGunGu.setText(locationSet[2]);
 
@@ -69,19 +77,91 @@ public class TrashActivity extends AppCompatActivity {
 
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        for(int i = 1; i<trashLocationCount; i++)
+        for(i = 1; i<trashLocationCount; i++)
         {
+
+
 
             reference = database.getReference("trash/records/" + i + "/시군구명");
             reference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     String value = snapshot.getValue(String.class);
+
+                    firebaseCount++;
+                   //System.out.println(value);
                     if(value.contains(locationSet[1]) || value.contains(locationSet[2]))//TODO
                     {
+                        System.out.println("이거 된거임");
                         getValue = true;
-                        getValue_count++;
+                        getValue_count = true;
+
+                        if(getValue)
+                        {
+
+                            ItemTrash itemTrash = new ItemTrash();
+
+                            temp = 0;
+
+                            path[0] = "trash/records/" + i + "/관리구역대상지역명";
+                            path[1] = "trash/records/" + i + "/관리부서전화번호";
+                            path[2] = "trash/records/" + i + "/데이터기준일자";
+                            path[3] = "trash/records/" + i + "/미수거일";
+                            path[4] = "trash/records/" + i + "/배출장소";
+                            path[5] = "trash/records/" + i + "/생활쓰레기배출방법";
+                            path[6] = "trash/records/" + i + "/생활쓰레기배출시작시각";
+                            path[7] = "trash/records/" + i + "/생활쓰레기배출요일";
+                            path[8] = "trash/records/" + i + "/생활쓰레기배출종료시각";
+
+                            path[9] = "trash/records/" + i + "/음식물쓰레기배출방법";
+                            path[10] = "trash/records/" + i + "/음식물쓰레기배출시작시각";
+                            path[11] = "trash/records/" + i + "/음식물쓰레기배출요일";
+                            path[12] = "trash/records/" + i + "/음식물쓰레기배출종료시각";
+
+                            path[13] = "trash/records/" + i + "/일시적다량폐기물배출방법";
+                            path[14] = "trash/records/" + i + "/일시적다량폐기물배출시작시각";
+                            path[15] = "trash/records/" + i + "/일시적다량폐기물배출요일";
+                            path[16] = "trash/records/" + i + "/일시적다량폐기물배출종료시각";
+
+                            path[17] = "trash/records/" + i + "/재활용품배출방법";
+                            path[18] = "trash/records/" + i + "/재활용품배출시작시간";
+                            path[19] = "trash/records/" + i + "/재활용품배출요일";
+                            path[20] = "trash/records/" + i + "/재활용품배출종료시각";
+
+
+                            for(int k = 0; k<viewCount; k++)
+                            {
+                                reference = database.getReference(path[k]);
+                                int finalK = k;
+                                reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        String value = snapshot.getValue(String.class);
+                                        itemTrash.setRecycle(value, finalK);
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
+
+
+                            data.add(itemTrash);
+                            getValue = false;
+                            getValue_count = true;
+
+                        }
                     }
+
+                    if(value!="" && trashLocationCount-1==firebaseCount)
+                    {
+                        checkView(getValue_count);
+                    }
+
+
                 }
 
                 @Override
@@ -90,68 +170,21 @@ public class TrashActivity extends AppCompatActivity {
                 }
             });
 
-            if(getValue)
-            {
-
-                ItemTrash itemTrash = new ItemTrash();
-
-                temp = 0;
-
-                path[0] = "trash/records/" + i + "/관리구역대상지역명";
-                path[1] = "trash/records/" + i + "/관리부서전화번호";
-                path[2] = "trash/records/" + i + "/데이터기준일자";
-                path[3] = "trash/records/" + i + "/미수거일";
-                path[4] = "trash/records/" + i + "/배출장소";
-                path[5] = "trash/records/" + i + "/생활쓰레기배출방법";
-                path[6] = "trash/records/" + i + "/생활쓰레기배출시작시각";
-                path[7] = "trash/records/" + i + "/생활쓰레기배출요일";
-                path[8] = "trash/records/" + i + "/생활쓰레기배출종료시각";
-
-                path[9] = "trash/records/" + i + "/음식물쓰레기배출방법";
-                path[10] = "trash/records/" + i + "/음식물쓰레기배출시작시각";
-                path[11] = "trash/records/" + i + "/음식물쓰레기배출요일";
-                path[12] = "trash/records/" + i + "/음식물쓰레기배출종료시각";
-
-                path[13] = "trash/records/" + i + "/일시적다량폐기물배출방법";
-                path[14] = "trash/records/" + i + "/일시적다량폐기물배출시작시각";
-                path[15] = "trash/records/" + i + "/일시적다량폐기물배출요일";
-                path[16] = "trash/records/" + i + "/일시적다량폐기물배출종료시각";
-
-                path[17] = "trash/records/" + i + "/재활용품배출방법";
-                path[18] = "trash/records/" + i + "/재활용품배출시작시간";
-                path[19] = "trash/records/" + i + "/재활용품배출요일";
-                path[20] = "trash/records/" + i + "/재활용품배출종료시각";
 
 
-                for(int k = 0; k<viewCount; k++)
-                {
-                    reference = database.getReference(path[k]);
-                    int finalK = k;
-                    reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            String value = snapshot.getValue(String.class);
-                            itemTrash.setRecycle(value, finalK);
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                }
-
-
-                data.add(itemTrash);
-                getValue = false;
-            }
         }
 
 
-        progressDialog.dismiss();
 
-        if(getValue_count==0)
+
+
+
+    }
+
+    private void checkView(Boolean value)
+    {
+        progressDialog.dismiss();
+        if(!value)
         {
             Toast.makeText(this, "재활용 관련 정보가 없습니다!", Toast.LENGTH_SHORT).show();
 
@@ -166,7 +199,6 @@ public class TrashActivity extends AppCompatActivity {
             ReAdapterTrash reAdapterTrash = new ReAdapterTrash(data);
             recyclerView.setAdapter(reAdapterTrash);
         }
-
     }
 
     private class ProgressDialog extends AlertDialog {

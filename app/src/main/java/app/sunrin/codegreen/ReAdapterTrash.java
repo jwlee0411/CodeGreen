@@ -26,7 +26,7 @@ public class ReAdapterTrash extends RecyclerView.Adapter<ReAdapterTrash.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_recycle,parent,false);
+                .inflate(R.layout.item_trash,parent,false);
         return new ViewHolder(view);
     }
 
@@ -38,7 +38,8 @@ public class ReAdapterTrash extends RecyclerView.Adapter<ReAdapterTrash.ViewHold
 
         for(int i = 0; i<viewCount; i++)
         {
-            holder.view[i].setText(item.getRecycle(i));
+            //TODO
+           // holder.view[i].setText(item.getRecycle(i));
         }
     }
 
