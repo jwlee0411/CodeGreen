@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class ReAdapterTrash extends RecyclerView.Adapter<ReAdapterTrash.ViewHolder> {
@@ -32,25 +34,44 @@ public class ReAdapterTrash extends RecyclerView.Adapter<ReAdapterTrash.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        //Item item = listdata.get(position);
         ItemTrash item = listdata.get(position);
 
 
         for(int i = 0; i<viewCount; i++)
         {
-            //TODO
-           // holder.view[i].setText(item.getRecycle(i));
+            holder.view[i].setText(item.getRecycle(i));
         }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        private TextView[] view;
+        private TextView[] view = new TextView[viewCount];
 
         ViewHolder(View v){
             super(v);
 
-          //  view[0] = v.findViewById(R.id.);
-            //TODO
+            view[0] = v.findViewById(R.id.textLocation);
+            view[1] = v.findViewById(R.id.textCall);
+            view[2] = v.findViewById(R.id.textDataDate);
+            view[3] = v.findViewById(R.id.textNoTrash);
+            view[4] = v.findViewById(R.id.textTrashLocation);
+            view[5] = v.findViewById(R.id.textLifeTrashWay);
+            view[6] = v.findViewById(R.id.textLifeTrashDay);
+            view[7] = v.findViewById(R.id.textLifeTrashStart);
+            view[8] = v.findViewById(R.id.textLifeTrashEnd);
+            view[9] = v.findViewById(R.id.textFoodTrashWay);
+            view[10] = v.findViewById(R.id.textFoodTrashDay);
+            view[11] = v.findViewById(R.id.textFoodTrashStart);
+            view[12] = v.findViewById(R.id.textFoodTrashEnd);
+            view[13] = v.findViewById(R.id.textManyTrashWay);
+            view[14] = v.findViewById(R.id.textManyTrashDay);
+            view[15] = v.findViewById(R.id.textManyTrashStart);
+            view[16] = v.findViewById(R.id.textManyTrashEnd);
+            view[17] = v.findViewById(R.id.textRecycleWay);
+            view[18] = v.findViewById(R.id.textRecycleDay);
+            view[19] = v.findViewById(R.id.textRecycleStart);
+            view[20] = v.findViewById(R.id.textRecycleEnd);
+
+
         }
 
     }

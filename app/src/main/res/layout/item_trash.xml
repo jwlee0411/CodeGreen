@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -11,72 +12,72 @@
         android:layout_height="wrap_content"
         android:text="재활용품"
         android:textSize="24dp"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="500dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView39" />
 
     <TextView
         android:id="@+id/textView41"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="배출 방법 : "
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="555dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView42" />
 
     <TextView
-        android:id="@+id/textView44"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/textRecycleDay"
+        android:layout_width="123dp"
+        android:layout_height="21dp"
         android:text="(관리구역대상지정명)"
-        tools:layout_editor_absoluteX="82dp"
-        tools:layout_editor_absoluteY="574dp" />
+        app:layout_constraintStart_toEndOf="@+id/textView45"
+        app:layout_constraintTop_toBottomOf="@+id/textRecycleWay" />
 
     <TextView
         android:id="@+id/textView45"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="배출 장소 : "
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="574dp" />
+        android:text="배출 요일 : "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView41" />
 
     <TextView
         android:id="@+id/textView46"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="배출 시작 시간 : "
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="593dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView45" />
 
     <TextView
-        android:id="@+id/textView47"
+        android:id="@+id/textRecycleStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="(관리구역대상지정명)"
-        tools:layout_editor_absoluteX="111dp"
-        tools:layout_editor_absoluteY="593dp" />
+        app:layout_constraintStart_toEndOf="@+id/textView46"
+        app:layout_constraintTop_toBottomOf="@+id/textRecycleDay" />
 
     <TextView
         android:id="@+id/textView48"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="배출 종료 시간 : "
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="612dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView46" />
 
     <TextView
-        android:id="@+id/textView49"
+        android:id="@+id/textRecycleEnd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="(관리구역대상지정명)"
-        tools:layout_editor_absoluteX="111dp"
-        tools:layout_editor_absoluteY="612dp" />
+        app:layout_constraintStart_toEndOf="@+id/textView48"
+        app:layout_constraintTop_toBottomOf="@+id/textRecycleStart" />
 
     <TextView
-        android:id="@+id/textView43"
+        android:id="@+id/textRecycleWay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="(관리구역대상지정명)"
-        tools:layout_editor_absoluteX="82dp"
-        tools:layout_editor_absoluteY="555dp" />
+        app:layout_constraintStart_toEndOf="@+id/textView41"
+        app:layout_constraintTop_toBottomOf="@+id/textView42" />
 
     <TextView
         android:id="@+id/textView33"
@@ -84,72 +85,72 @@
         android:layout_height="wrap_content"
         android:text="일시적다량폐기물"
         android:textSize="24dp"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="359dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView30" />
 
     <TextView
         android:id="@+id/textView32"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="배출 방법 : "
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="414dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView33" />
 
     <TextView
-        android:id="@+id/textView35"
+        android:id="@+id/textManyTrashDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="(관리구역대상지정명)"
-        tools:layout_editor_absoluteX="82dp"
-        tools:layout_editor_absoluteY="433dp" />
+        app:layout_constraintStart_toEndOf="@+id/textView36"
+        app:layout_constraintTop_toBottomOf="@+id/textManyTrashWay" />
 
     <TextView
         android:id="@+id/textView36"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="배출 장소 : "
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="433dp" />
+        android:text="배출 요일 : "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView32" />
 
     <TextView
         android:id="@+id/textView37"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="배출 시작 시간 : "
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="452dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView36" />
 
     <TextView
-        android:id="@+id/textView38"
+        android:id="@+id/textManyTrashStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="(관리구역대상지정명)"
-        tools:layout_editor_absoluteX="111dp"
-        tools:layout_editor_absoluteY="452dp" />
+        app:layout_constraintStart_toEndOf="@+id/textView37"
+        app:layout_constraintTop_toBottomOf="@+id/textManyTrashDay" />
 
     <TextView
         android:id="@+id/textView39"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="배출 종료 시간 : "
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="471dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView37" />
 
     <TextView
-        android:id="@+id/textView40"
+        android:id="@+id/textManyTrashEnd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="(관리구역대상지정명)"
-        tools:layout_editor_absoluteX="111dp"
-        tools:layout_editor_absoluteY="471dp" />
+        app:layout_constraintStart_toEndOf="@+id/textView39"
+        app:layout_constraintTop_toBottomOf="@+id/textManyTrashStart" />
 
     <TextView
-        android:id="@+id/textView34"
+        android:id="@+id/textManyTrashWay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="(관리구역대상지정명)"
-        tools:layout_editor_absoluteX="82dp"
-        tools:layout_editor_absoluteY="414dp" />
+        app:layout_constraintStart_toEndOf="@+id/textView32"
+        app:layout_constraintTop_toBottomOf="@+id/textView33" />
 
     <TextView
         android:id="@+id/textView24"
@@ -157,88 +158,88 @@
         android:layout_height="wrap_content"
         android:text="음식물쓰레기"
         android:textSize="24dp"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="207dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
     <TextView
         android:id="@+id/textView23"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="배출 방법 : "
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="262dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView24" />
 
     <TextView
-        android:id="@+id/textView26"
+        android:id="@+id/textFoodTrashDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="(관리구역대상지정명)"
-        tools:layout_editor_absoluteX="82dp"
-        tools:layout_editor_absoluteY="281dp" />
+        app:layout_constraintStart_toEndOf="@+id/textView27"
+        app:layout_constraintTop_toBottomOf="@+id/textFoodTrashWay" />
 
     <TextView
         android:id="@+id/textView27"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="배출 장소 : "
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="281dp" />
+        android:text="배출 요일 : "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
     <TextView
         android:id="@+id/textView28"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="배출 시작 시간 : "
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="300dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView27" />
 
     <TextView
-        android:id="@+id/textView29"
+        android:id="@+id/textFoodTrashStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="(관리구역대상지정명)"
-        tools:layout_editor_absoluteX="111dp"
-        tools:layout_editor_absoluteY="300dp" />
+        app:layout_constraintStart_toEndOf="@+id/textView28"
+        app:layout_constraintTop_toBottomOf="@+id/textFoodTrashDay" />
 
     <TextView
         android:id="@+id/textView30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="배출 종료 시간 : "
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="319dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView28" />
 
     <TextView
-        android:id="@+id/textView31"
+        android:id="@+id/textFoodTrashEnd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="(관리구역대상지정명)"
-        tools:layout_editor_absoluteX="111dp"
-        tools:layout_editor_absoluteY="319dp" />
+        app:layout_constraintStart_toEndOf="@+id/textView30"
+        app:layout_constraintTop_toBottomOf="@+id/textFoodTrashStart" />
 
     <TextView
-        android:id="@+id/textView25"
+        android:id="@+id/textFoodTrashWay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="(관리구역대상지정명)"
-        tools:layout_editor_absoluteX="82dp"
-        tools:layout_editor_absoluteY="262dp" />
+        app:layout_constraintStart_toEndOf="@+id/textView23"
+        app:layout_constraintTop_toTopOf="@+id/textView23" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/textLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="(관리구역대상지정명)"
-        tools:layout_editor_absoluteX="160dp"
-        tools:layout_editor_absoluteY="40dp" />
+        app:layout_constraintStart_toEndOf="@+id/textView9"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="해당 지역구 : "
-        tools:layout_editor_absoluteX="33dp"
-        tools:layout_editor_absoluteY="31dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView11"
@@ -246,103 +247,144 @@
         android:layout_height="wrap_content"
         android:text="생활쓰레기"
         android:textSize="24dp"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="69dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
     <TextView
-        android:id="@+id/textView16"
+        android:id="@+id/textLifeTrashWay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="(관리구역대상지정명)"
-        tools:layout_editor_absoluteX="82dp"
-        tools:layout_editor_absoluteY="124dp" />
+        app:layout_constraintStart_toEndOf="@+id/textView12"
+        app:layout_constraintTop_toTopOf="@+id/textView12" />
 
     <TextView
-        android:id="@+id/textView17"
+        android:id="@+id/textLifeTrashDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="(관리구역대상지정명)"
-        tools:layout_editor_absoluteX="82dp"
-        tools:layout_editor_absoluteY="143dp" />
+        app:layout_constraintStart_toEndOf="@+id/textView13"
+        app:layout_constraintTop_toTopOf="@+id/textView13" />
 
     <TextView
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="배출 장소 : "
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="143dp" />
+        android:text="배출 요일 : "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     <TextView
         android:id="@+id/textView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="배출 시작 시간 : "
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="162dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/textLifeTrashStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="(관리구역대상지정명)"
-        tools:layout_editor_absoluteX="111dp"
-        tools:layout_editor_absoluteY="162dp" />
+        app:layout_constraintStart_toEndOf="@+id/textView14"
+        app:layout_constraintTop_toBottomOf="@+id/textLifeTrashDay" />
 
     <TextView
         android:id="@+id/textView15"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="배출 종료 시간 : "
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="181dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
     <TextView
-        android:id="@+id/textView19"
+        android:id="@+id/textLifeTrashEnd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="(관리구역대상지정명)"
-        tools:layout_editor_absoluteX="111dp"
-        tools:layout_editor_absoluteY="181dp" />
+        app:layout_constraintStart_toEndOf="@+id/textView15"
+        app:layout_constraintTop_toBottomOf="@+id/textLifeTrashStart" />
 
     <TextView
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="배출 방법 : "
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="124dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
     <TextView
         android:id="@+id/textView20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="데이터 기준일 : "
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="680dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView48" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/buttonCall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="CALL"
-        tools:layout_editor_absoluteX="130dp"
-        tools:layout_editor_absoluteY="702dp" />
+        app:layout_constraintStart_toEndOf="@+id/textView22"
+        app:layout_constraintTop_toBottomOf="@+id/textDataDate" />
 
     <TextView
-        android:id="@+id/textView21"
+        android:id="@+id/textDataDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="(관리구역대상지정명)"
-        tools:layout_editor_absoluteX="107dp"
-        tools:layout_editor_absoluteY="680dp" />
+        app:layout_constraintStart_toEndOf="@+id/textView20"
+        app:layout_constraintTop_toBottomOf="@+id/textRecycleEnd" />
 
     <TextView
         android:id="@+id/textView22"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="관련 부서 전화하기"
-        tools:layout_editor_absoluteX="12dp"
-        tools:layout_editor_absoluteY="699dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView20" />
+
+    <TextView
+        android:id="@+id/textCall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="(phone-num)"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView22" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="미수거일 : "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textCall" />
+
+    <TextView
+        android:id="@+id/textNoTrash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="(미수거일)"
+        app:layout_constraintStart_toEndOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/textCall" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="배출장소 : "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <TextView
+        android:id="@+id/textTrashLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/textView16"
+        app:layout_constraintTop_toBottomOf="@+id/textNoTrash" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,6 +16,7 @@ public class ItemTrash {
     public void setRecycle(String value, int index)
     {
         this.recycle[index] = value;
+        System.out.println("＠" + value);
     }
 
 

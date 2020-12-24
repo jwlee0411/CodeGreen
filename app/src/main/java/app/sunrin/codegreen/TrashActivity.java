@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,11 +33,12 @@ public class TrashActivity extends AppCompatActivity {
     int temp;
     boolean getValue_count = false;
     int viewCount = 21;
-    int trashLocationCount = 2725;
+    int trashLocationCount = 2724;
     String[] path = new String[viewCount];
     String[] locationSet;
     ProgressDialog progressDialog;
 
+    boolean getOutLoop = false;
     int firebaseCount = 0;
 
 
@@ -53,6 +55,8 @@ public class TrashActivity extends AppCompatActivity {
         progressDialog.setMessage("검색 중입니다. 잠시만 기다려 주세요.");
         progressDialog.setCancelable(false);
         progressDialog.show();
+
+        ItemTrash itemTrash = new ItemTrash();
 
         TextView textSiDo = findViewById(R.id.textSiDo);
         TextView textSiGunGu = findViewById(R.id.textSiGunGu);
@@ -96,19 +100,15 @@ public class TrashActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     String value = snapshot.getValue(String.class);
+                    System.out.println("$" + value);
 
                     firebaseCount++;
                    //System.out.println(value);
-                    if(value.contains(locationSet[1]) || value.contains(locationSet[2]))//TODO
+                    System.out.print(value.equals(locationSet[1]) || value.equals(locationSet[2]) || value.equals(locationSet[3]));
+                    if(value.equals(locationSet[1]) || value.equals(locationSet[2]) || value.equals(locationSet[3]))//TODO
                     {
                         System.out.println("이거 된거임");
-                        getValue = true;
                         getValue_count = true;
-
-                        if(getValue)
-                        {
-
-                            ItemTrash itemTrash = new ItemTrash();
 
                             temp = 0;
 
@@ -141,11 +141,13 @@ public class TrashActivity extends AppCompatActivity {
                             for(int k = 0; k<viewCount; k++)
                             {
                                 reference = database.getReference(path[k]);
+                                System.out.println("$" + path[k]);
                                 int finalK = k;
                                 reference.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         String value = snapshot.getValue(String.class);
+                                        System.out.println("$" + value);
                                         itemTrash.setRecycle(value, finalK);
 
                                     }
@@ -159,16 +161,12 @@ public class TrashActivity extends AppCompatActivity {
 
 
                             data.add(itemTrash);
-                            getValue = false;
-                            getValue_count = true;
+                            System.out.println(data.toString());
 
-                        }
+
                     }
 
-                    if(value!="" && trashLocationCount-1==firebaseCount)
-                    {
-                        checkView(getValue_count);
-                    }
+
 
 
                 }
@@ -180,8 +178,15 @@ public class TrashActivity extends AppCompatActivity {
             });
 
 
+            if(trashLocationCount-1==trashLocationCount)
+            {
+                checkView(getValue_count);
+                break;
 
+            }
         }
+
+
 
 
 
@@ -192,9 +197,10 @@ public class TrashActivity extends AppCompatActivity {
 
     private void checkView(Boolean value)
     {
-        progressDialog.dismiss();
+
         if(!value)
         {
+            progressDialog.dismiss();
             Toast.makeText(this, "재활용 관련 정보가 없습니다!", Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(this, SplashActivity.class);
@@ -203,10 +209,19 @@ public class TrashActivity extends AppCompatActivity {
         }
         else
         {
-            recyclerView = findViewById(R.id.recyclerView);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-            ReAdapterTrash reAdapterTrash = new ReAdapterTrash(data);
-            recyclerView.setAdapter(reAdapterTrash);
+            Handler mHandler = new Handler();
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    recyclerView = findViewById(R.id.recyclerView);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    ReAdapterTrash reAdapterTrash = new ReAdapterTrash(data);
+                    recyclerView.setAdapter(reAdapterTrash);
+                    progressDialog.dismiss();
+
+                }
+            }, 7000);
+
         }
     }
 
