@@ -1,8 +1,11 @@
 package app.sunrin.codegreen;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -41,10 +44,16 @@ public class ReAdapterTrash extends RecyclerView.Adapter<ReAdapterTrash.ViewHold
         {
             holder.view[i].setText(item.getRecycle(i));
         }
+        holder.callButton.setOnClickListener(v -> {
+            v.getContext().startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + item.getRecycle(1))));
+
+
+        });
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView[] view = new TextView[viewCount];
+        private Button callButton;
 
         ViewHolder(View v){
             super(v);
@@ -70,6 +79,8 @@ public class ReAdapterTrash extends RecyclerView.Adapter<ReAdapterTrash.ViewHold
             view[18] = v.findViewById(R.id.textRecycleDay);
             view[19] = v.findViewById(R.id.textRecycleStart);
             view[20] = v.findViewById(R.id.textRecycleEnd);
+
+            callButton = v.findViewById(R.id.buttonCall);
 
 
         }

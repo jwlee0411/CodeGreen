@@ -9,6 +9,8 @@ public class ItemTrash {
 
     private String[] recycle = new String[viewCount];
 
+    private String call;
+
     public String getRecycle(int index){
         return recycle[index];
     }
@@ -20,11 +22,21 @@ public class ItemTrash {
     }
 
 
+    public String getCall()
+    {
+        return call;
+    }
+
+    public void setCall(String value){
+        this.call = value;
+    }
+
     public ItemTrash() {
         for(int i = 0; i<viewCount; i++)
         {
             this.recycle[i] = recycle[i];
         }
+        this.call = call;
 
     }
 }
