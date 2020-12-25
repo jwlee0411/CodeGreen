@@ -1,5 +1,7 @@
 package app.sunrin.codegreen;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -758,9 +760,19 @@ public class AfterScanActivity extends AppCompatActivity {
 
                 if(goShopping)
                 {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(result));
-                    intent.setPackage("com.nhn.android.search");
-                    startActivity(intent);
+
+
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(result));
+                        intent.setPackage("com.nhn.android.search");//네이버 앱으로 연결하기
+                        startActivity(intent);
+
+                    }catch(ActivityNotFoundException e) //네이버 앱이 없을 경우
+                    {
+                        Intent intent2 = new Intent(Intent.ACTION_VIEW, Uri.parse(result));
+                        startActivity(intent2); //아무 브라우저나 연결하기
+                    }
+
                 }
                 else
                 {
