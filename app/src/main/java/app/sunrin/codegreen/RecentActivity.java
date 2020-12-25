@@ -14,6 +14,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -92,6 +98,8 @@ public class RecentActivity extends AppCompatActivity {
     String[][] newData;
     String[][] myData;
 
+    int[] monthTotal= {0,0,0,0,0,0,0,0,0,0,0,0};
+
     int[] recycleCategory = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     int[][] recycle;
@@ -108,6 +116,8 @@ public class RecentActivity extends AppCompatActivity {
         dataAll = dataSave.getString("saveAll", "");
         System.out.println("dataAll");
         System.out.println(dataAll);
+
+
 
         if(dataAll.equals("") || dataAll.equals(" ")||dataAll.equals(null))
         {
@@ -270,14 +280,9 @@ public class RecentActivity extends AppCompatActivity {
             });
         }
 
+        checkMonth();
 
-
-
-
-
-
-
-
+        lineChart();
 
     }
 
@@ -285,308 +290,280 @@ public class RecentActivity extends AppCompatActivity {
 //        setPieChart();
 
 
-  private void showArray()
-  {
-      System.out.println(totalData[0][0]);
-      System.out.println(totalData[8][0]);
-  }
+    private void showArray()
+    {
+        System.out.println(totalData[0][0]);
+        System.out.println(totalData[8][0]);
+    }
 
-  private void checkWhoTrash(int i)
-  {
-      if (finalValue[i][userSex].equals("true")) {
-          System.out.println("boy");
-          totalData[0][0]++;
-          if (tempData[5].contains("1")) totalData[0][1]++;
-          if (tempData[5].contains("2")) totalData[0][2]++;
-          if (tempData[5].contains("3")) totalData[0][3]++;
-          if (tempData[5].contains("4")) totalData[0][4]++;
-          if (tempData[5].contains("5")) totalData[0][5]++;
-          if (tempData[5].contains("6")) totalData[0][6]++;
-          if (tempData[5].contains("7")) totalData[0][7]++;
-          if (tempData[5].contains("8")) totalData[0][8]++;
-          if (tempData[5].contains("9")) totalData[0][9]++;
-
-
-          if (Integer.parseInt(finalValue[i][userAge]) >= 70) {
-              totalData[7][0]++;
-              if (tempData[5].contains("1")) totalData[7][1]++;
-              if (tempData[5].contains("2")) totalData[7][2]++;
-              if (tempData[5].contains("3")) totalData[7][3]++;
-              if (tempData[5].contains("4")) totalData[7][4]++;
-              if (tempData[5].contains("5")) totalData[7][5]++;
-              if (tempData[5].contains("6")) totalData[7][6]++;
-              if (tempData[5].contains("7")) totalData[7][7]++;
-              if (tempData[5].contains("8")) totalData[7][8]++;
-              if (tempData[5].contains("9")) totalData[7][9]++;
-          } else if (Integer.parseInt(finalValue[i][userAge]) >= 60) {
-              totalData[6][0]++;
-              if (tempData[5].contains("1")) totalData[6][1]++;
-              if (tempData[5].contains("2")) totalData[6][2]++;
-              if (tempData[5].contains("3")) totalData[6][3]++;
-              if (tempData[5].contains("4")) totalData[6][4]++;
-              if (tempData[5].contains("5")) totalData[6][5]++;
-              if (tempData[5].contains("6")) totalData[6][6]++;
-              if (tempData[5].contains("7")) totalData[6][7]++;
-              if (tempData[5].contains("8")) totalData[6][8]++;
-              if (tempData[5].contains("9")) totalData[6][9]++;
-          } else if (Integer.parseInt(finalValue[i][userAge]) >= 50) {
-              totalData[5][0]++;
-              if (tempData[5].contains("1")) totalData[5][1]++;
-              if (tempData[5].contains("2")) totalData[5][2]++;
-              if (tempData[5].contains("3")) totalData[5][3]++;
-              if (tempData[5].contains("4")) totalData[5][4]++;
-              if (tempData[5].contains("5")) totalData[5][5]++;
-              if (tempData[5].contains("6")) totalData[5][6]++;
-              if (tempData[5].contains("7")) totalData[5][7]++;
-              if (tempData[5].contains("8")) totalData[5][8]++;
-              if (tempData[5].contains("9")) totalData[5][9]++;
-          } else if (Integer.parseInt(finalValue[i][userAge]) >= 40) {
-              totalData[4][0]++;
-              if (tempData[5].contains("1")) totalData[4][1]++;
-              if (tempData[5].contains("2")) totalData[4][2]++;
-              if (tempData[5].contains("3")) totalData[4][3]++;
-              if (tempData[5].contains("4")) totalData[4][4]++;
-              if (tempData[5].contains("5")) totalData[4][5]++;
-              if (tempData[5].contains("6")) totalData[4][6]++;
-              if (tempData[5].contains("7")) totalData[4][7]++;
-              if (tempData[5].contains("8")) totalData[4][8]++;
-              if (tempData[5].contains("9")) totalData[4][9]++;
-          } else if (Integer.parseInt(finalValue[i][userAge]) >= 30) {
-              totalData[3][0]++;
-              if (tempData[5].contains("1")) totalData[3][1]++;
-              if (tempData[5].contains("2")) totalData[3][2]++;
-              if (tempData[5].contains("3")) totalData[3][3]++;
-              if (tempData[5].contains("4")) totalData[3][4]++;
-              if (tempData[5].contains("5")) totalData[3][5]++;
-              if (tempData[5].contains("6")) totalData[3][6]++;
-              if (tempData[5].contains("7")) totalData[3][7]++;
-              if (tempData[5].contains("8")) totalData[3][8]++;
-              if (tempData[5].contains("9")) totalData[3][9]++;
-          } else if (Integer.parseInt(finalValue[i][userAge]) >= 20) {
-              totalData[2][0]++;
-              if (tempData[5].contains("1")) totalData[2][1]++;
-              if (tempData[5].contains("2")) totalData[2][2]++;
-              if (tempData[5].contains("3")) totalData[2][3]++;
-              if (tempData[5].contains("4")) totalData[2][4]++;
-              if (tempData[5].contains("5")) totalData[2][5]++;
-              if (tempData[5].contains("6")) totalData[2][6]++;
-              if (tempData[5].contains("7")) totalData[2][7]++;
-              if (tempData[5].contains("8")) totalData[2][8]++;
-              if (tempData[5].contains("9")) totalData[2][9]++;
-          } else if (Integer.parseInt(finalValue[i][userAge]) >= 10) {
-              totalData[1][0]++;
-              if (tempData[5].contains("1")) totalData[1][1]++;
-              if (tempData[5].contains("2")) totalData[1][2]++;
-              if (tempData[5].contains("3")) totalData[1][3]++;
-              if (tempData[5].contains("4")) totalData[1][4]++;
-              if (tempData[5].contains("5")) totalData[1][5]++;
-              if (tempData[5].contains("6")) totalData[1][6]++;
-              if (tempData[5].contains("7")) totalData[1][7]++;
-              if (tempData[5].contains("8")) totalData[1][8]++;
-              if (tempData[5].contains("9")) totalData[1][9]++;
-          } else {
-              totalData[7][0]++;
-              if (tempData[5].contains("1")) totalData[7][1]++;
-              if (tempData[5].contains("2")) totalData[7][2]++;
-              if (tempData[5].contains("3")) totalData[7][3]++;
-              if (tempData[5].contains("4")) totalData[7][4]++;
-              if (tempData[5].contains("5")) totalData[7][5]++;
-              if (tempData[5].contains("6")) totalData[7][6]++;
-              if (tempData[5].contains("7")) totalData[7][7]++;
-              if (tempData[5].contains("8")) totalData[7][8]++;
-              if (tempData[5].contains("9")) totalData[7][9]++;
-          }
+    private void checkWhoTrash(int i)
+    {
+        if (finalValue[i][userSex].equals("true")) {
+            System.out.println("boy");
+            totalData[0][0]++;
+            if (tempData[5].contains("1")) totalData[0][1]++;
+            if (tempData[5].contains("2")) totalData[0][2]++;
+            if (tempData[5].contains("3")) totalData[0][3]++;
+            if (tempData[5].contains("4")) totalData[0][4]++;
+            if (tempData[5].contains("5")) totalData[0][5]++;
+            if (tempData[5].contains("6")) totalData[0][6]++;
+            if (tempData[5].contains("7")) totalData[0][7]++;
+            if (tempData[5].contains("8")) totalData[0][8]++;
+            if (tempData[5].contains("9")) totalData[0][9]++;
 
 
-      } else {
-          System.out.println("girl");
-          totalData[8][0]++;
-          if (tempData[5].contains("1")) totalData[8][1]++;
-          if (tempData[5].contains("2")) totalData[8][2]++;
-          if (tempData[5].contains("3")) totalData[8][3]++;
-          if (tempData[5].contains("4")) totalData[8][4]++;
-          if (tempData[5].contains("5")) totalData[8][5]++;
-          if (tempData[5].contains("6")) totalData[8][6]++;
-          if (tempData[5].contains("7")) totalData[8][7]++;
-          if (tempData[5].contains("8")) totalData[8][8]++;
-          if (tempData[5].contains("9")) totalData[8][9]++;
+            if (Integer.parseInt(finalValue[i][userAge]) >= 70) {
+                totalData[7][0]++;
+                if (tempData[5].contains("1")) totalData[7][1]++;
+                if (tempData[5].contains("2")) totalData[7][2]++;
+                if (tempData[5].contains("3")) totalData[7][3]++;
+                if (tempData[5].contains("4")) totalData[7][4]++;
+                if (tempData[5].contains("5")) totalData[7][5]++;
+                if (tempData[5].contains("6")) totalData[7][6]++;
+                if (tempData[5].contains("7")) totalData[7][7]++;
+                if (tempData[5].contains("8")) totalData[7][8]++;
+                if (tempData[5].contains("9")) totalData[7][9]++;
+            } else if (Integer.parseInt(finalValue[i][userAge]) >= 60) {
+                totalData[6][0]++;
+                if (tempData[5].contains("1")) totalData[6][1]++;
+                if (tempData[5].contains("2")) totalData[6][2]++;
+                if (tempData[5].contains("3")) totalData[6][3]++;
+                if (tempData[5].contains("4")) totalData[6][4]++;
+                if (tempData[5].contains("5")) totalData[6][5]++;
+                if (tempData[5].contains("6")) totalData[6][6]++;
+                if (tempData[5].contains("7")) totalData[6][7]++;
+                if (tempData[5].contains("8")) totalData[6][8]++;
+                if (tempData[5].contains("9")) totalData[6][9]++;
+            } else if (Integer.parseInt(finalValue[i][userAge]) >= 50) {
+                totalData[5][0]++;
+                if (tempData[5].contains("1")) totalData[5][1]++;
+                if (tempData[5].contains("2")) totalData[5][2]++;
+                if (tempData[5].contains("3")) totalData[5][3]++;
+                if (tempData[5].contains("4")) totalData[5][4]++;
+                if (tempData[5].contains("5")) totalData[5][5]++;
+                if (tempData[5].contains("6")) totalData[5][6]++;
+                if (tempData[5].contains("7")) totalData[5][7]++;
+                if (tempData[5].contains("8")) totalData[5][8]++;
+                if (tempData[5].contains("9")) totalData[5][9]++;
+            } else if (Integer.parseInt(finalValue[i][userAge]) >= 40) {
+                totalData[4][0]++;
+                if (tempData[5].contains("1")) totalData[4][1]++;
+                if (tempData[5].contains("2")) totalData[4][2]++;
+                if (tempData[5].contains("3")) totalData[4][3]++;
+                if (tempData[5].contains("4")) totalData[4][4]++;
+                if (tempData[5].contains("5")) totalData[4][5]++;
+                if (tempData[5].contains("6")) totalData[4][6]++;
+                if (tempData[5].contains("7")) totalData[4][7]++;
+                if (tempData[5].contains("8")) totalData[4][8]++;
+                if (tempData[5].contains("9")) totalData[4][9]++;
+            } else if (Integer.parseInt(finalValue[i][userAge]) >= 30) {
+                totalData[3][0]++;
+                if (tempData[5].contains("1")) totalData[3][1]++;
+                if (tempData[5].contains("2")) totalData[3][2]++;
+                if (tempData[5].contains("3")) totalData[3][3]++;
+                if (tempData[5].contains("4")) totalData[3][4]++;
+                if (tempData[5].contains("5")) totalData[3][5]++;
+                if (tempData[5].contains("6")) totalData[3][6]++;
+                if (tempData[5].contains("7")) totalData[3][7]++;
+                if (tempData[5].contains("8")) totalData[3][8]++;
+                if (tempData[5].contains("9")) totalData[3][9]++;
+            } else if (Integer.parseInt(finalValue[i][userAge]) >= 20) {
+                totalData[2][0]++;
+                if (tempData[5].contains("1")) totalData[2][1]++;
+                if (tempData[5].contains("2")) totalData[2][2]++;
+                if (tempData[5].contains("3")) totalData[2][3]++;
+                if (tempData[5].contains("4")) totalData[2][4]++;
+                if (tempData[5].contains("5")) totalData[2][5]++;
+                if (tempData[5].contains("6")) totalData[2][6]++;
+                if (tempData[5].contains("7")) totalData[2][7]++;
+                if (tempData[5].contains("8")) totalData[2][8]++;
+                if (tempData[5].contains("9")) totalData[2][9]++;
+            } else if (Integer.parseInt(finalValue[i][userAge]) >= 10) {
+                totalData[1][0]++;
+                if (tempData[5].contains("1")) totalData[1][1]++;
+                if (tempData[5].contains("2")) totalData[1][2]++;
+                if (tempData[5].contains("3")) totalData[1][3]++;
+                if (tempData[5].contains("4")) totalData[1][4]++;
+                if (tempData[5].contains("5")) totalData[1][5]++;
+                if (tempData[5].contains("6")) totalData[1][6]++;
+                if (tempData[5].contains("7")) totalData[1][7]++;
+                if (tempData[5].contains("8")) totalData[1][8]++;
+                if (tempData[5].contains("9")) totalData[1][9]++;
+            } else {
+                totalData[7][0]++;
+                if (tempData[5].contains("1")) totalData[7][1]++;
+                if (tempData[5].contains("2")) totalData[7][2]++;
+                if (tempData[5].contains("3")) totalData[7][3]++;
+                if (tempData[5].contains("4")) totalData[7][4]++;
+                if (tempData[5].contains("5")) totalData[7][5]++;
+                if (tempData[5].contains("6")) totalData[7][6]++;
+                if (tempData[5].contains("7")) totalData[7][7]++;
+                if (tempData[5].contains("8")) totalData[7][8]++;
+                if (tempData[5].contains("9")) totalData[7][9]++;
+            }
 
 
-          if (Integer.parseInt(finalValue[i][userAge]) >= 70) {
-              totalData[15][0]++;
-              if (tempData[5].contains("1")) totalData[15][1]++;
-              if (tempData[5].contains("2")) totalData[15][2]++;
-              if (tempData[5].contains("3")) totalData[15][3]++;
-              if (tempData[5].contains("4")) totalData[15][4]++;
-              if (tempData[5].contains("5")) totalData[15][5]++;
-              if (tempData[5].contains("6")) totalData[15][6]++;
-              if (tempData[5].contains("7")) totalData[15][7]++;
-              if (tempData[5].contains("8")) totalData[15][8]++;
-              if (tempData[5].contains("9")) totalData[15][9]++;
-          } else if (Integer.parseInt(finalValue[i][userAge]) >= 60) {
-              totalData[14][0]++;
-              if (tempData[5].contains("1")) totalData[14][1]++;
-              if (tempData[5].contains("2")) totalData[14][2]++;
-              if (tempData[5].contains("3")) totalData[14][3]++;
-              if (tempData[5].contains("4")) totalData[14][4]++;
-              if (tempData[5].contains("5")) totalData[14][5]++;
-              if (tempData[5].contains("6")) totalData[14][6]++;
-              if (tempData[5].contains("7")) totalData[14][7]++;
-              if (tempData[5].contains("8")) totalData[14][8]++;
-              if (tempData[5].contains("9")) totalData[14][9]++;
-          } else if (Integer.parseInt(finalValue[i][userAge]) >= 50) {
-              totalData[13][0]++;
-              if (tempData[5].contains("1")) totalData[13][1]++;
-              if (tempData[5].contains("2")) totalData[13][2]++;
-              if (tempData[5].contains("3")) totalData[13][3]++;
-              if (tempData[5].contains("4")) totalData[13][4]++;
-              if (tempData[5].contains("5")) totalData[13][5]++;
-              if (tempData[5].contains("6")) totalData[13][6]++;
-              if (tempData[5].contains("7")) totalData[13][7]++;
-              if (tempData[5].contains("8")) totalData[13][8]++;
-              if (tempData[5].contains("9")) totalData[13][9]++;
-          } else if (Integer.parseInt(finalValue[i][userAge]) >= 40) {
-              totalData[12][0]++;
-              if (tempData[5].contains("1")) totalData[12][1]++;
-              if (tempData[5].contains("2")) totalData[12][2]++;
-              if (tempData[5].contains("3")) totalData[12][3]++;
-              if (tempData[5].contains("4")) totalData[12][4]++;
-              if (tempData[5].contains("5")) totalData[12][5]++;
-              if (tempData[5].contains("6")) totalData[12][6]++;
-              if (tempData[5].contains("7")) totalData[12][7]++;
-              if (tempData[5].contains("8")) totalData[12][8]++;
-              if (tempData[5].contains("9")) totalData[12][9]++;
-          } else if (Integer.parseInt(finalValue[i][userAge]) >= 30) {
-              totalData[11][0]++;
-              if (tempData[5].contains("1")) totalData[11][1]++;
-              if (tempData[5].contains("2")) totalData[11][2]++;
-              if (tempData[5].contains("3")) totalData[11][3]++;
-              if (tempData[5].contains("4")) totalData[11][4]++;
-              if (tempData[5].contains("5")) totalData[11][5]++;
-              if (tempData[5].contains("6")) totalData[11][6]++;
-              if (tempData[5].contains("7")) totalData[11][7]++;
-              if (tempData[5].contains("8")) totalData[11][8]++;
-              if (tempData[5].contains("9")) totalData[11][9]++;
-          } else if (Integer.parseInt(finalValue[i][userAge]) >= 20) {
-              totalData[10][0]++;
-              if (tempData[5].contains("1")) totalData[10][1]++;
-              if (tempData[5].contains("2")) totalData[10][2]++;
-              if (tempData[5].contains("3")) totalData[10][3]++;
-              if (tempData[5].contains("4")) totalData[10][4]++;
-              if (tempData[5].contains("5")) totalData[10][5]++;
-              if (tempData[5].contains("6")) totalData[10][6]++;
-              if (tempData[5].contains("7")) totalData[10][7]++;
-              if (tempData[5].contains("8")) totalData[10][8]++;
-              if (tempData[5].contains("9")) totalData[10][9]++;
-          } else if (Integer.parseInt(finalValue[i][userAge]) >= 10) {
-              totalData[9][0]++;
-              if (tempData[5].contains("1")) totalData[9][1]++;
-              if (tempData[5].contains("2")) totalData[9][2]++;
-              if (tempData[5].contains("3")) totalData[9][3]++;
-              if (tempData[5].contains("4")) totalData[9][4]++;
-              if (tempData[5].contains("5")) totalData[9][5]++;
-              if (tempData[5].contains("6")) totalData[9][6]++;
-              if (tempData[5].contains("7")) totalData[9][7]++;
-              if (tempData[5].contains("8")) totalData[9][8]++;
-              if (tempData[5].contains("9")) totalData[9][9]++;
-          } else {
-              totalData[15][0]++;
-              if (tempData[5].contains("1")) totalData[15][1]++;
-              if (tempData[5].contains("2")) totalData[15][2]++;
-              if (tempData[5].contains("3")) totalData[15][3]++;
-              if (tempData[5].contains("4")) totalData[15][4]++;
-              if (tempData[5].contains("5")) totalData[15][5]++;
-              if (tempData[5].contains("6")) totalData[15][6]++;
-              if (tempData[5].contains("7")) totalData[15][7]++;
-              if (tempData[5].contains("8")) totalData[15][8]++;
-              if (tempData[5].contains("9")) totalData[15][9]++;
-          }
-      }
-  }
+        } else {
+            System.out.println("girl");
+            totalData[8][0]++;
+            if (tempData[5].contains("1")) totalData[8][1]++;
+            if (tempData[5].contains("2")) totalData[8][2]++;
+            if (tempData[5].contains("3")) totalData[8][3]++;
+            if (tempData[5].contains("4")) totalData[8][4]++;
+            if (tempData[5].contains("5")) totalData[8][5]++;
+            if (tempData[5].contains("6")) totalData[8][6]++;
+            if (tempData[5].contains("7")) totalData[8][7]++;
+            if (tempData[5].contains("8")) totalData[8][8]++;
+            if (tempData[5].contains("9")) totalData[8][9]++;
+
+
+            if (Integer.parseInt(finalValue[i][userAge]) >= 70) {
+                totalData[15][0]++;
+                if (tempData[5].contains("1")) totalData[15][1]++;
+                if (tempData[5].contains("2")) totalData[15][2]++;
+                if (tempData[5].contains("3")) totalData[15][3]++;
+                if (tempData[5].contains("4")) totalData[15][4]++;
+                if (tempData[5].contains("5")) totalData[15][5]++;
+                if (tempData[5].contains("6")) totalData[15][6]++;
+                if (tempData[5].contains("7")) totalData[15][7]++;
+                if (tempData[5].contains("8")) totalData[15][8]++;
+                if (tempData[5].contains("9")) totalData[15][9]++;
+            } else if (Integer.parseInt(finalValue[i][userAge]) >= 60) {
+                totalData[14][0]++;
+                if (tempData[5].contains("1")) totalData[14][1]++;
+                if (tempData[5].contains("2")) totalData[14][2]++;
+                if (tempData[5].contains("3")) totalData[14][3]++;
+                if (tempData[5].contains("4")) totalData[14][4]++;
+                if (tempData[5].contains("5")) totalData[14][5]++;
+                if (tempData[5].contains("6")) totalData[14][6]++;
+                if (tempData[5].contains("7")) totalData[14][7]++;
+                if (tempData[5].contains("8")) totalData[14][8]++;
+                if (tempData[5].contains("9")) totalData[14][9]++;
+            } else if (Integer.parseInt(finalValue[i][userAge]) >= 50) {
+                totalData[13][0]++;
+                if (tempData[5].contains("1")) totalData[13][1]++;
+                if (tempData[5].contains("2")) totalData[13][2]++;
+                if (tempData[5].contains("3")) totalData[13][3]++;
+                if (tempData[5].contains("4")) totalData[13][4]++;
+                if (tempData[5].contains("5")) totalData[13][5]++;
+                if (tempData[5].contains("6")) totalData[13][6]++;
+                if (tempData[5].contains("7")) totalData[13][7]++;
+                if (tempData[5].contains("8")) totalData[13][8]++;
+                if (tempData[5].contains("9")) totalData[13][9]++;
+            } else if (Integer.parseInt(finalValue[i][userAge]) >= 40) {
+                totalData[12][0]++;
+                if (tempData[5].contains("1")) totalData[12][1]++;
+                if (tempData[5].contains("2")) totalData[12][2]++;
+                if (tempData[5].contains("3")) totalData[12][3]++;
+                if (tempData[5].contains("4")) totalData[12][4]++;
+                if (tempData[5].contains("5")) totalData[12][5]++;
+                if (tempData[5].contains("6")) totalData[12][6]++;
+                if (tempData[5].contains("7")) totalData[12][7]++;
+                if (tempData[5].contains("8")) totalData[12][8]++;
+                if (tempData[5].contains("9")) totalData[12][9]++;
+            } else if (Integer.parseInt(finalValue[i][userAge]) >= 30) {
+                totalData[11][0]++;
+                if (tempData[5].contains("1")) totalData[11][1]++;
+                if (tempData[5].contains("2")) totalData[11][2]++;
+                if (tempData[5].contains("3")) totalData[11][3]++;
+                if (tempData[5].contains("4")) totalData[11][4]++;
+                if (tempData[5].contains("5")) totalData[11][5]++;
+                if (tempData[5].contains("6")) totalData[11][6]++;
+                if (tempData[5].contains("7")) totalData[11][7]++;
+                if (tempData[5].contains("8")) totalData[11][8]++;
+                if (tempData[5].contains("9")) totalData[11][9]++;
+            } else if (Integer.parseInt(finalValue[i][userAge]) >= 20) {
+                totalData[10][0]++;
+                if (tempData[5].contains("1")) totalData[10][1]++;
+                if (tempData[5].contains("2")) totalData[10][2]++;
+                if (tempData[5].contains("3")) totalData[10][3]++;
+                if (tempData[5].contains("4")) totalData[10][4]++;
+                if (tempData[5].contains("5")) totalData[10][5]++;
+                if (tempData[5].contains("6")) totalData[10][6]++;
+                if (tempData[5].contains("7")) totalData[10][7]++;
+                if (tempData[5].contains("8")) totalData[10][8]++;
+                if (tempData[5].contains("9")) totalData[10][9]++;
+            } else if (Integer.parseInt(finalValue[i][userAge]) >= 10) {
+                totalData[9][0]++;
+                if (tempData[5].contains("1")) totalData[9][1]++;
+                if (tempData[5].contains("2")) totalData[9][2]++;
+                if (tempData[5].contains("3")) totalData[9][3]++;
+                if (tempData[5].contains("4")) totalData[9][4]++;
+                if (tempData[5].contains("5")) totalData[9][5]++;
+                if (tempData[5].contains("6")) totalData[9][6]++;
+                if (tempData[5].contains("7")) totalData[9][7]++;
+                if (tempData[5].contains("8")) totalData[9][8]++;
+                if (tempData[5].contains("9")) totalData[9][9]++;
+            } else {
+                totalData[15][0]++;
+                if (tempData[5].contains("1")) totalData[15][1]++;
+                if (tempData[5].contains("2")) totalData[15][2]++;
+                if (tempData[5].contains("3")) totalData[15][3]++;
+                if (tempData[5].contains("4")) totalData[15][4]++;
+                if (tempData[5].contains("5")) totalData[15][5]++;
+                if (tempData[5].contains("6")) totalData[15][6]++;
+                if (tempData[5].contains("7")) totalData[15][7]++;
+                if (tempData[5].contains("8")) totalData[15][8]++;
+                if (tempData[5].contains("9")) totalData[15][9]++;
+            }
+        }
+    }
+
+    private void checkMonth(){
+        for(int i=0; i<myData.length;i++){
+            int pl=Integer.parseInt(myData[i][3]);
+            monthTotal[pl-1]++;
+            System.out.println("myData[i][3]");
+            System.out.println(myData[i][3]);
+        }
+    }
+
+    private void lineChart(){
+
+        ArrayList<Entry> entry_chart = new ArrayList<>();
+
+        LineChart lineChart = findViewById(R.id.linechart);
+        LineData chartData = new LineData();
+
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM");
+        String monthPl = sdf.format(cal.getTime());
+        int nowMonth=Integer.parseInt(monthPl);
+
+        for(int i=nowMonth; i<12;i++) {
+            entry_chart.add(new Entry(i+1, monthTotal[i]));
+            System.out.println(i);
+            System.out.println(monthTotal[i]);
+        }
+        for(int i=0;i<nowMonth;i++) {
+            entry_chart.add(new Entry(i+1, monthTotal[i]));
+            System.out.println(i);
+            System.out.println(monthTotal[i]);
+        }
+
+        LineDataSet lineDataSet = new LineDataSet(entry_chart, "월별 누적량");
+        chartData.addDataSet(lineDataSet);
+
+
+
+        lineDataSet.setColor(Color.BLACK);
+        lineDataSet.setCircleColor(Color.BLACK);
+        lineDataSet.setMode(LineDataSet.Mode.LINEAR);
+        lineChart.animateXY(1000,1000);
+
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        YAxis yRAxis = lineChart.getAxisRight();
+        yRAxis.setDrawLabels(false);
+        yRAxis.setDrawAxisLine(false);
+        yRAxis.setDrawGridLines(false);
+
+
+        lineChart.setData(chartData);
+
+        lineChart.invalidate();
+    }
+
 }
 
-//    public void setPieChart(){
-//        pieChart = (PieChart)findViewById(R.id.piechart);
-//
-//        pieChart.invalidate();
-//        pieChart.setUsePercentValues(true);
-//        pieChart.getDescription().setEnabled(false);
-//        pieChart.setExtraOffsets(5,10,5,5);
-//
-//        pieChart.setDragDecelerationFrictionCoef(0.95f);
-//
-//
-//
-//        //가운데 원형 뚫는거
-//        pieChart.setDrawHoleEnabled(false);
-//
-//        pieChart.setHoleColor(Color.BLACK);
-//
-//
-//        //원형차트 고정
-//        pieChart.setRotationEnabled(false);
-//
-//        // 투명한 원반경 설정
-//        pieChart.setTransparentCircleRadius(61f);
-//
-//        pieChart.setRotationAngle(  300f);
-//
-//        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
-//
-//        for(int i =0;i<9;i++){
-//            if(recycleCategory[i]!=0) {
-//                switch (i){
-//                    case 0:
-//                        yValues.add(new PieEntry(recycleCategory[0],"플라스틱"));
-//                        break;
-//                    case 1:
-//                        yValues.add(new PieEntry(recycleCategory[1],"종이"));
-//                        break;
-//                    case 2:
-//                        yValues.add(new PieEntry(recycleCategory[2],"비닐"));
-//                        break;
-//                    case 3:
-//                        yValues.add(new PieEntry(recycleCategory[3],"캔"));
-//                        break;
-//                    case 4:
-//                        yValues.add(new PieEntry(recycleCategory[4],"스티로폼"));
-//                        break;
-//                    case 5:
-//                        yValues.add(new PieEntry(recycleCategory[5],"페트병"));
-//                        break;
-//                    case 6:
-//                        yValues.add(new PieEntry(recycleCategory[6],"유리"));
-//                        break;
-//                    case 7:
-//                        yValues.add(new PieEntry(recycleCategory[7],"일반 쓰레기"));
-//                        break;
-//                    case 8:
-//                        yValues.add(new PieEntry(recycleCategory[8],"전자제품"));
-//                        break;
-//
-//                }
-//            }
-//        }
-//
-//
-//        Description description = new Description();
-//        description.setText("월간 배출량"); //라벨
-//        description.setTextSize(32f);
-//        pieChart.setDescription(description);
-//
-//        pieChart.animateXY(1000, 1000); //애니메이션
-//
-//        PieDataSet dataSet = new PieDataSet(yValues,"품목");
-//        dataSet.setSliceSpace(3f);
-//        dataSet.setSelectionShift(5f);
-//        dataSet.setValueTextSize(32);
-//        dataSet.setFormSize(32);
-//        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-//
-//        PieData data = new PieData((dataSet));
-//        data.setValueTextSize(16f);
-//        data.setValueTextColor(Color.GREEN);
-//
-//        pieChart.setData(data);
-//    }
 

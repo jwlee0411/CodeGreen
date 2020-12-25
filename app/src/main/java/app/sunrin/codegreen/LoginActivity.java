@@ -49,16 +49,20 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        if(getLogined)
-        {
-            Toast.makeText(LoginActivity.this, "자동 로그인 되었습니다!", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        }
-        else
-        {
+//        if(getLogined)
+//        {
+//            Toast.makeText(LoginActivity.this, "자동 로그인 되었습니다!", Toast.LENGTH_SHORT).show();
+//            Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            startActivity(intent);
+//        }
+
+
+
+
+//        else
+//        {
             id_Layout = findViewById(R.id.textProductName);
             pw_Layout = findViewById(R.id.TextInputChangePassword);
             id_ET = findViewById(R.id.edit_id);
@@ -253,7 +257,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
                 finish();
             });
-        }
+//        }
 
 
 
