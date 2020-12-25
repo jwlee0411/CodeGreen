@@ -1,6 +1,5 @@
 package app.sunrin.codegreen;
 
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -292,7 +291,7 @@ public class AfterScanActivity extends AppCompatActivity {
                             prodName = false;
                             progressDialog.dismiss();
                             Toast.makeText(getApplicationContext(), "상품 정보가 없습니다.", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), ScannerActivity.class);
                             startActivity(intent);
                         }
                         else
@@ -520,7 +519,7 @@ public class AfterScanActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), ScannerActivity.class);
         startActivity(intent);
     }
 

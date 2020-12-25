@@ -1,8 +1,7 @@
 package app.sunrin.codegreen;
 
 import android.Manifest;
-import android.app.ProgressDialog;
-import android.content.Context;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,14 +11,11 @@ import android.location.Geocoder;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -32,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
 
@@ -57,6 +54,8 @@ public class SplashActivity  extends AppCompatActivity {
         super.onCreate(savedInstanceStare);
         setContentView(R.layout.activity_splash);
         // 어플리케이션을 열면 처음에 실행됨.(SpalshActivity -> MainActivity로 실행되는 구조)
+
+ //TODO : https://codechacha.com/ko/how-to-install-and-uninstall-app-in-android/
 
 
         Button buttonBarcode = findViewById(R.id.buttonBarcode);
@@ -161,11 +160,19 @@ public class SplashActivity  extends AppCompatActivity {
 
         buttonBarcode.setOnClickListener(v ->
         {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            startActivity(new Intent(getApplicationContext(), ScannerActivity.class));
             finish();
         });
 
-        buttonPhoto.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), MainActivity.class))); //TODO
+        buttonPhoto.setOnClickListener(v -> {
+            ComponentName compName = new ComponentName("com.tencent.yolov5ncnn","com.tencent.yolov5ncnn.MainActivity");
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.setComponent(compName);
+            intent.putExtra("psj_test", "this is test");
+            startActivity(intent);
+
+
+        }); //TODO
 
         buttonRecent.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), RecentActivity.class)));
 
