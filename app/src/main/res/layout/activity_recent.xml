@@ -1,121 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp">
 
-    <!--    <com.github.mikephil.charting.charts.PieChart-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="300dp"-->
-    <!--        android:id="@+id/piechart"-->
-    <!--        app:layout_constraintTop_toTopOf="parent">-->
-    <!--    </com.github.mikephil.charting.charts.PieChart>-->
-
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/linechart"
-        android:layout_height="300dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:layout_height="wrap_content">
 
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/piechart"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/linechart"/>
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/linechart"
+            android:layout_height="300dp"
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/piechart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/linechart"/>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/piecharttotal"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/piechart"/>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/piechartage"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/piecharttotal"/>
+
+        <TextView
+            android:id="@+id/usersex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="sex"
+            android:visibility="invisible"
+            app:layout_constraintTop_toBottomOf="@id/piechartage"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <TextView
+            android:id="@+id/userage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="age"
+            android:visibility="invisible"
+            app:layout_constraintTop_toBottomOf="@id/usersex"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
-<!--    <TextView-->
-<!--        android:id="@+id/txt1"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="전자제품"-->
-<!--        android:textSize="18sp"-->
-<!--        app:layout_constraintTop_toTopOf="@id/barchart"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"/>-->
-<!--    <TextView-->
-<!--        android:id="@+id/txt2"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="일반쓰레기"-->
-<!--        android:textSize="18sp"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/txt1"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/txt3"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"/>-->
-<!--    <TextView-->
-<!--        android:id="@+id/txt3"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="유리"-->
-<!--        android:textSize="18sp"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/txt2"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/txt4"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"/>-->
-<!--    <TextView-->
-<!--        android:id="@+id/txt4"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="페트병"-->
-<!--        android:textSize="18sp"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/txt3"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/txt5"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"/>-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/txt5"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="스티로폼"-->
-<!--        android:textSize="18sp"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/txt4"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/txt6"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"/>-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/txt6"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="캔"-->
-<!--        android:textSize="18sp"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/txt5"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/txt7"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"/>-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/txt7"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="비닐"-->
-<!--        android:textSize="18sp"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/txt6"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/txt8"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"/>-->
 
 
 <!--    <TextView-->
-<!--        android:id="@+id/txt8"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="종이"-->
-<!--        android:textSize="18sp"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/txt9"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/txt7" />-->
+    <!--        android:id="@+id/txt1"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="전자제품"-->
+    <!--        android:textSize="18sp"-->
+    <!--        app:layout_constraintTop_toTopOf="@id/barchart"-->
+    <!--        app:layout_constraintLeft_toLeftOf="parent"/>-->
+    <!--    <TextView-->
+    <!--        android:id="@+id/txt2"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="일반쓰레기"-->
+    <!--        android:textSize="18sp"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/txt1"-->
+    <!--        app:layout_constraintBottom_toTopOf="@id/txt3"-->
+    <!--        app:layout_constraintLeft_toLeftOf="parent"/>-->
+    <!--    <TextView-->
+    <!--        android:id="@+id/txt3"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="유리"-->
+    <!--        android:textSize="18sp"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/txt2"-->
+    <!--        app:layout_constraintBottom_toTopOf="@id/txt4"-->
+    <!--        app:layout_constraintLeft_toLeftOf="parent"/>-->
+    <!--    <TextView-->
+    <!--        android:id="@+id/txt4"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="페트병"-->
+    <!--        android:textSize="18sp"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/txt3"-->
+    <!--        app:layout_constraintBottom_toTopOf="@id/txt5"-->
+    <!--        app:layout_constraintLeft_toLeftOf="parent"/>-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/txt5"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="스티로폼"-->
+    <!--        android:textSize="18sp"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/txt4"-->
+    <!--        app:layout_constraintBottom_toTopOf="@id/txt6"-->
+    <!--        app:layout_constraintLeft_toLeftOf="parent"/>-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/txt6"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="캔"-->
+    <!--        android:textSize="18sp"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/txt5"-->
+    <!--        app:layout_constraintBottom_toTopOf="@id/txt7"-->
+    <!--        app:layout_constraintLeft_toLeftOf="parent"/>-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/txt7"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="비닐"-->
+    <!--        android:textSize="18sp"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/txt6"-->
+    <!--        app:layout_constraintBottom_toTopOf="@id/txt8"-->
+    <!--        app:layout_constraintLeft_toLeftOf="parent"/>-->
 
 
-<!--    <TextView-->
-<!--        android:id="@+id/txt9"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="플라스틱"-->
-<!--        android:textSize="18sp"-->
-<!--        app:layout_constraintBottom_toBottomOf="@id/barchart"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"/>-->
+    <!--    <TextView-->
+    <!--        android:id="@+id/txt8"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="종이"-->
+    <!--        android:textSize="18sp"-->
+    <!--        app:layout_constraintBottom_toTopOf="@+id/txt9"-->
+    <!--        app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/txt7" />-->
+
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/txt9"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="플라스틱"-->
+    <!--        android:textSize="18sp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@id/barchart"-->
+    <!--        app:layout_constraintLeft_toLeftO="parent"/>-->
 
 
 <!--    <com.github.mikephil.charting.charts.HorizontalBarChart-->
@@ -130,4 +163,4 @@
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
