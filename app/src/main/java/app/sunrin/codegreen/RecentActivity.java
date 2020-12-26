@@ -278,6 +278,9 @@ public class RecentActivity extends AppCompatActivity {
 
                                 showArray();
 
+                                setPieChartTotal();
+
+                                setPieChartAge();
 
                             }
 
@@ -336,9 +339,6 @@ public class RecentActivity extends AppCompatActivity {
         System.out.println("유저 성별");
         System.out.println(getUserAge);
 
-        setPieChartTotal();
-
-        setPieChartAge();
     }
 
 

@@ -64,14 +64,11 @@ public class NewScannerActivity extends AppCompatActivity {
         buclassify=(Button)findViewById(R.id.classify);
         classitext=(TextView)findViewById(R.id.classifytext);
 
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent,"Select Picture"),12);
-            }
+        imageView.setOnClickListener(v -> {
+            Intent intent=new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent,"Select Picture"),12);
         });
 
         try{
@@ -80,30 +77,27 @@ public class NewScannerActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        buclassify.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        buclassify.setOnClickListener(v -> {
 
-                int imageTensorIndex = 0;
-                int[] imageShape = tflite.getInputTensor(imageTensorIndex).shape(); // {1, height, width, 3}
-                imageSizeY = imageShape[1];
-                imageSizeX = imageShape[2];
-                DataType imageDataType = tflite.getInputTensor(imageTensorIndex).dataType();
+            int imageTensorIndex = 0;
+            int[] imageShape = tflite.getInputTensor(imageTensorIndex).shape(); // {1, height, width, 3}
+            imageSizeY = imageShape[1];
+            imageSizeX = imageShape[2];
+            DataType imageDataType = tflite.getInputTensor(imageTensorIndex).dataType();
 
-                int probabilityTensorIndex = 0;
-                int[] probabilityShape =
-                        tflite.getOutputTensor(probabilityTensorIndex).shape(); // {1, NUM_CLASSES}
-                DataType probabilityDataType = tflite.getOutputTensor(probabilityTensorIndex).dataType();
+            int probabilityTensorIndex = 0;
+            int[] probabilityShape =
+                    tflite.getOutputTensor(probabilityTensorIndex).shape(); // {1, NUM_CLASSES}
+            DataType probabilityDataType = tflite.getOutputTensor(probabilityTensorIndex).dataType();
 
-                inputImageBuffer = new TensorImage(imageDataType);
-                outputProbabilityBuffer = TensorBuffer.createFixedSize(probabilityShape, probabilityDataType);
-                probabilityProcessor = new TensorProcessor.Builder().add(getPostprocessNormalizeOp()).build();
+            inputImageBuffer = new TensorImage(imageDataType);
+            outputProbabilityBuffer = TensorBuffer.createFixedSize(probabilityShape, probabilityDataType);
+            probabilityProcessor = new TensorProcessor.Builder().add(getPostprocessNormalizeOp()).build();
 
-                inputImageBuffer = loadImage(bitmap);
+            inputImageBuffer = loadImage(bitmap);
 
-                tflite.run(inputImageBuffer.getBuffer(),outputProbabilityBuffer.getBuffer().rewind());
-                showresult();
-            }
+            tflite.run(inputImageBuffer.getBuffer(),outputProbabilityBuffer.getBuffer().rewind());
+            showresult();
         });
 
 
