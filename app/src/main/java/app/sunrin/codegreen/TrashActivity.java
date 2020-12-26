@@ -248,21 +248,27 @@ public class TrashActivity extends AppCompatActivity {
 
 
             Handler mHandler = new Handler();
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if(firebaseCount>0)
-                    {
-                        recyclerView = findViewById(R.id.recyclerView);
-                        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                        ReAdapterTrash reAdapterTrash = new ReAdapterTrash(data);
-                        recyclerView.setAdapter(reAdapterTrash);
-                        progressDialog.dismiss();
-                    }
-
+            mHandler.postDelayed(() -> {
+                if(firebaseCount>0)
+                {
+                    recyclerView = findViewById(R.id.recyclerView);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    ReAdapterTrash reAdapterTrash = new ReAdapterTrash(data);
+                    recyclerView.setAdapter(reAdapterTrash);
+                    progressDialog.dismiss();
+                }
+                else
+                {
+                    progressDialog.dismiss();
+                    Toast.makeText(this, "ㄴㄴ", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(TrashActivity.this, SplashActivity.class);
+                    startActivity(intent);
+                    finish();
 
                 }
-            }, 5000);
+
+
+            }, 1000);
 
     }
 

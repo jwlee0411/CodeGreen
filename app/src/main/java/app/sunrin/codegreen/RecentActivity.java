@@ -309,6 +309,8 @@ public class RecentActivity extends AppCompatActivity {
 
 //        barChart();
 
+
+
         setPieChart();
     }
 
@@ -616,7 +618,9 @@ public class RecentActivity extends AppCompatActivity {
 //    }
 
     private void setPieChart(){
-        pieChart = (PieChart)findViewById(R.id.piechart);
+
+
+        pieChart = findViewById(R.id.piechart);
 
 
         ArrayList<PieEntry> yValues = new ArrayList<>();
