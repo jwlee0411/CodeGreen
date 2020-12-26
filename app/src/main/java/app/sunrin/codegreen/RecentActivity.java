@@ -705,6 +705,7 @@ public class RecentActivity extends AppCompatActivity {
 
         pieChart.setData(data);
         pieChart.getDescription().setEnabled(false);
+        pieChart.getLegend().setEnabled(false);
         pieChart.setCenterText("월간 배출률");
         pieChart.animate();
         pieChart.invalidate();
@@ -764,6 +765,7 @@ public class RecentActivity extends AppCompatActivity {
 
         pieChartTotal.setData(data);
         pieChartTotal.getDescription().setEnabled(false);
+        pieChartTotal.getLegend().setEnabled(false);
         pieChartTotal.setCenterText("전체 평균");
         pieChartTotal.animate();
         pieChartTotal.invalidate();
@@ -881,10 +883,12 @@ public class RecentActivity extends AppCompatActivity {
         dataSet.setValueTextColor(Color.BLACK);
         dataSet.setValueTextSize(0);
 
+
         PieData data = new PieData((dataSet));
 
         pieChartAge.setData(data);
         pieChartAge.getDescription().setEnabled(false);
+        pieChartAge.getLegend().setEnabled(false);
         pieChartAge.setCenterText("나이대 평균");
         pieChartAge.animate();
         pieChartAge.invalidate();
