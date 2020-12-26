@@ -699,7 +699,7 @@ public class RecentActivity extends AppCompatActivity {
         PieDataSet dataSet = new PieDataSet(yValues,"월간 배출률");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         dataSet.setValueTextColor(Color.BLACK);
-        dataSet.setValueTextSize(16f);
+        dataSet.setValueTextSize(0);
 
         PieData data = new PieData((dataSet));
 
@@ -711,7 +711,6 @@ public class RecentActivity extends AppCompatActivity {
     }
 
     private void setUserSexAge(){
-
 
     }
 
@@ -758,7 +757,8 @@ public class RecentActivity extends AppCompatActivity {
         PieDataSet dataSet = new PieDataSet(totalValues,"전체 평균");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         dataSet.setValueTextColor(Color.BLACK);
-        dataSet.setValueTextSize(16f);
+
+        dataSet.setValueTextSize(0);
 
         PieData data = new PieData((dataSet));
 
@@ -772,7 +772,6 @@ public class RecentActivity extends AppCompatActivity {
     private void setPieChartAge(){
         pieChartAge = (PieChart)findViewById(R.id.piechartage);
 
-        setUserSexAge();
 
         txtUserAge = findViewById(R.id.userage);
         txtUserSex= findViewById(R.id.usersex);
@@ -880,7 +879,7 @@ public class RecentActivity extends AppCompatActivity {
         PieDataSet dataSet = new PieDataSet(ageValues,"나이대 평균");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         dataSet.setValueTextColor(Color.BLACK);
-        dataSet.setValueTextSize(16f);
+        dataSet.setValueTextSize(0);
 
         PieData data = new PieData((dataSet));
 
