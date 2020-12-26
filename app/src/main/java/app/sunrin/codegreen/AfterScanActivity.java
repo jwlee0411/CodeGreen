@@ -58,6 +58,7 @@ public class AfterScanActivity extends AppCompatActivity {
     Button buttonEco;
     boolean goShopping;
     SharedPreferences preferencesSaveAll, preferencesBarcodeResult;
+    boolean isCategory = true;
 
 
     DatabaseReference myRef;
@@ -314,7 +315,7 @@ public class AfterScanActivity extends AppCompatActivity {
                                });
 
                             myRef = database.getReference("product/" + preferencesBarcodeResult.getString("result", "") + "/recycle");
-                            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            myRef.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     String recycle = snapshot.getValue(String.class);
@@ -532,6 +533,9 @@ public class AfterScanActivity extends AppCompatActivity {
         db_KANcode.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                saveData = "";
+
                 db_category = dataSnapshot.getValue(String.class);
                 System.out.println("dbcat : " + db_category);
                 if (db_category == null) {
@@ -545,6 +549,14 @@ public class AfterScanActivity extends AppCompatActivity {
                     addGlass();
                     addVinyl();
                     addElec();
+                    isCategory = false;
+                    Button buttonSave2 = findViewById(R.id.buttonSave2);
+                    buttonSave2.setVisibility(View.VISIBLE);
+                    buttonSave2.setOnClickListener(v -> {
+                        SaveDialog saveDialog = new SaveDialog(AfterScanActivity.this);
+                        saveDialog.callFunction(KANcode);
+                    });
+
                 } else {
                     check_how = db_category.split(",");
 
@@ -590,6 +602,7 @@ public class AfterScanActivity extends AppCompatActivity {
                 recyclerView = findViewById(R.id.recycling);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 ReAdapter reAdapter = new ReAdapter(data);
+
                 recyclerView.setAdapter(reAdapter);
 
 
@@ -598,27 +611,36 @@ public class AfterScanActivity extends AppCompatActivity {
 
                 Button buttonSave = findViewById(R.id.buttonSave);
                 buttonSave.setOnClickListener(v -> {
-                    preferencesSaveAll = getSharedPreferences("saveAll", 0);
-                    String result = preferencesSaveAll.getString("saveAll", "");
-                    saveData = result + saveData;
+
+                    if(isCategory)
+                    {
+                        preferencesSaveAll = getSharedPreferences("saveAll", 0);
+                        String result = preferencesSaveAll.getString("saveAll", "");
+                        saveData = result + saveData;
 
 
-                    SharedPreferences.Editor editor = preferencesSaveAll.edit();
-                    editor.putString("saveAll", saveData);
-                    editor.commit();
+                        SharedPreferences.Editor editor = preferencesSaveAll.edit();
+                        editor.putString("saveAll", saveData);
+                        editor.commit();
 
-                    SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
+                        SharedPreferences sharedPreferences = getSharedPreferences("ID", 0);
 
-                    String user_id = sharedPreferences.getString("id", "");
+                        String user_id = sharedPreferences.getString("id", "");
 
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef = database.getReference("user/" + user_id + "/value");
-                    myRef.setValue(saveData);
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference myRef = database.getReference("user/" + user_id + "/value");
+                        myRef.setValue(saveData);
 
-                    System.out.println(saveData);
+                        System.out.println(saveData);
 
-                    Toast.makeText(getApplicationContext(), "저장되었습니다.", Toast.LENGTH_LONG).show();
-                    buttonSave.setVisibility(View.INVISIBLE);
+                        Toast.makeText(getApplicationContext(), "저장되었습니다.", Toast.LENGTH_LONG).show();
+                        buttonSave.setVisibility(View.INVISIBLE);
+                    }
+                    else
+                    {
+
+                    }
+
 
 
                 });

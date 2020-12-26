@@ -261,7 +261,7 @@ public class TrashActivity extends AppCompatActivity {
                 else
                 {
                     progressDialog.dismiss();
-                    Toast.makeText(this, "ㄴㄴ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "쓰레기 배출 관련 정보가 없습니다!", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(TrashActivity.this, SplashActivity.class);
                     startActivity(intent);
                     finish();

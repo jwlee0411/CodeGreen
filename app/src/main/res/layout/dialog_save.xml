@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="4dp">
+
+    <TextView
+        android:id="@+id/textView50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nanum_bold"
+        android:text="재활용 정보 추가"
+        android:textSize="32dp" />
+
+    <TextView
+        android:id="@+id/textView51"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nanum_regular"
+        android:text="DB에 등록된 재활용 정보가 없습니다.\n재활용 정보를 추가해주세요!"
+        android:textSize="16dp" />
+
+
+    <GridLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:columnCount="3">
+
+
+        <CheckBox
+            android:id="@+id/checkRecycle11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="플라스틱" />
+
+        <CheckBox
+            android:id="@+id/checkRecycle21"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="종이" />
+
+        <CheckBox
+            android:id="@+id/checkRecycle31"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="비닐" />
+
+
+        <CheckBox
+            android:id="@+id/checkRecycle41"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="캔" />
+
+        <CheckBox
+            android:id="@+id/checkRecycle51"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="스티로폼" />
+
+        <CheckBox
+            android:id="@+id/checkRecycle61"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="페트병" />
+
+
+        <CheckBox
+            android:id="@+id/checkRecycle71"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="유리" />
+
+        <CheckBox
+            android:id="@+id/checkRecycle81"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="일반 쓰레기" />
+
+        <CheckBox
+            android:id="@+id/checkRecycle91"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="전자제품" />
+
+    </GridLayout>
+
+
+    <Button
+        android:id="@+id/buttonConfirm2"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="저장하기" />
+
+</LinearLayout>

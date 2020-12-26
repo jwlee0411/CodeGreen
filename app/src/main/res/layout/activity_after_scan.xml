@@ -133,5 +133,14 @@
         app:layout_constraintBottom_toTopOf="@+id/buttonEco"
         app:layout_constraintEnd_toEndOf="@+id/recycling" />
 
+    <Button
+        android:id="@+id/buttonSave2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="카테고리 지정하기"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSave"
+        app:layout_constraintEnd_toEndOf="@+id/recycling" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

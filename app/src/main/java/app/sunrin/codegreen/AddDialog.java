@@ -60,7 +60,7 @@ public class AddDialog extends AppCompatActivity {
         editBarcodeNumber = dlg.findViewById(R.id.editBarcodeNumber);
         editProductName = dlg.findViewById(R.id.editProductName);
 
-        buttonConfirm = dlg.findViewById(R.id.buttonConfirm);
+        buttonConfirm = dlg.findViewById(R.id.buttonConfirm2);
 
         checkboxes[0] = dlg.findViewById(R.id.checkRecycle1);
         checkboxes[1] = dlg.findViewById(R.id.checkRecycle2);
