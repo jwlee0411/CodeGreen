@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -60,7 +61,8 @@ public class TrashActivity extends AppCompatActivity {
 
         TextView textSiDo = findViewById(R.id.textSiDo);
         TextView textSiGunGu = findViewById(R.id.textSiGunGu);
-        Button buttonLocationJumin = findViewById(R.id.buttonLocationJumin);
+        //Button buttonLocationJumin = findViewById(R.id.buttonLocationJumin);
+        FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
 
         SharedPreferences preferencesLocation = getSharedPreferences("location", 0);
 
@@ -70,7 +72,7 @@ public class TrashActivity extends AppCompatActivity {
         textSiGunGu.setText(locationSet[2]);
 
 
-        buttonLocationJumin.setOnClickListener(v -> {
+        floatingActionButton.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
             if(locationSet[3].contains("동"))
@@ -83,7 +85,6 @@ public class TrashActivity extends AppCompatActivity {
                 intent.setData(Uri.parse("geo:0,0?q=" + locationSet[4] + " 주민센터"));
                 startActivity(intent);
             }
-
         });
 
 

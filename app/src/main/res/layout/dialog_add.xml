@@ -1,19 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="4dp">
+
+    <TextView
+        android:id="@+id/textView50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nanum_bold"
+        android:text="데이터 추가하기"
+        android:textSize="32dp" />
+
+    <TextView
+        android:id="@+id/textView51"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:fontFamily="@font/nanum_regular"
+        android:text="어플리케이션 DB에 등록되어 있지 않은 상품을 추가해주세요!\nDB에 등록된 상품의 경우 등록한 데이터가 반영되지 않습니다."/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textProductName"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editProductName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="상품명"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textProductCategory"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView51"
-        tools:layout_editor_absoluteX="16dp">
+        android:layout_marginTop="8dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editProductCategory"
@@ -28,7 +60,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/textProductName">
+        android:layout_marginTop="8dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editBarcodeNumber"
@@ -38,144 +70,95 @@
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textProductName"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView51">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editProductName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="상품명"
-            android:inputType="text" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <TextView
-        android:id="@+id/textView50"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="데이터 추가하기"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView51"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="어플리케이션 DB에 등록되어 있지 않은 상품을 추가해주세요!"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView50" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView52">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <CheckBox
-                android:id="@+id/checkRecycle1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="종이" />
-
-            <CheckBox
-                android:id="@+id/checkRecycle2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="종이" />
-
-            <CheckBox
-                android:id="@+id/checkRecycle3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="종이" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <CheckBox
-                android:id="@+id/checkRecycle4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="종이" />
-
-            <CheckBox
-                android:id="@+id/checkRecycle5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="종이" />
-
-            <CheckBox
-                android:id="@+id/checkRecycle6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="종이" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <CheckBox
-                android:id="@+id/checkRecycle7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="종이" />
-
-            <CheckBox
-                android:id="@+id/checkRecycle8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="종이" />
-
-            <CheckBox
-                android:id="@+id/checkRecycle9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="종이" />
-        </LinearLayout>
-
-    </LinearLayout>
 
     <TextView
         android:id="@+id/textView52"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="재활용 정보"
+        android:layout_marginTop="4dp"
+        android:textSize="24dp"
+        android:fontFamily="@font/nanum_bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textProductCategory" />
+
+    <GridLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp">
+
+
+        <CheckBox
+            android:id="@+id/checkRecycle1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="플라스틱" />
+
+        <CheckBox
+            android:id="@+id/checkRecycle2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="종이" />
+
+        <CheckBox
+            android:id="@+id/checkRecycle3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="비닐" />
+
+
+        <CheckBox
+            android:id="@+id/checkRecycle4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="캔" />
+
+        <CheckBox
+            android:id="@+id/checkRecycle5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="스티로폼" />
+
+        <CheckBox
+            android:id="@+id/checkRecycle6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="페트병" />
+
+
+        <CheckBox
+            android:id="@+id/checkRecycle7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="유리" />
+
+        <CheckBox
+            android:id="@+id/checkRecycle8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="일반 쓰레기" />
+
+        <CheckBox
+            android:id="@+id/checkRecycle9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="전자제품" />
+
+    </GridLayout>
+
+
 
     <Button
         android:id="@+id/buttonConfirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+        android:text="저장하기"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_gravity="center"
+        />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

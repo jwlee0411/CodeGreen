@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="4dp">
+    android:padding="4dp"
+    android:background="@drawable/txt_edge">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,6 +20,7 @@
             android:layout_height="wrap_content"
             android:text="해당 지역구 : "
             android:textSize="22sp"
+            android:fontFamily="@font/nanum_bold"
             android:layout_weight="1"
             android:gravity="right"/>
 
@@ -27,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="(관리구역대상지정명)"
+            android:fontFamily="@font/nanum_bold"
             android:textSize="22sp"
             android:layout_weight="1"/>
     </LinearLayout>
@@ -37,7 +40,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="16dp"
-        android:gravity="center">
+        android:gravity="left">
 
         <GridLayout
             android:layout_width="wrap_content"
@@ -49,21 +52,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="생활쓰레기"
+                android:fontFamily="@font/nanum_bold"
                 android:textSize="24dp"
                 android:layout_columnSpan="2"
-                android:layout_gravity="center"/>
+                android:layout_gravity="left"/>
 
             <TextView
                 android:id="@+id/textView12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="배출 방법 : "
-                android:layout_gravity="right"/>
+                android:fontFamily="@font/nanum_bold"
+                android:layout_gravity="left"/>
 
             <TextView
                 android:id="@+id/textLifeTrashWay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_regular"
                 android:text="(관리구역대상지정명)"/>
 
             <TextView
@@ -71,11 +77,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="배출 요일 : "
-                android:layout_gravity="right"/>
+                android:fontFamily="@font/nanum_bold"
+                android:layout_gravity="left"/>
 
             <TextView
                 android:id="@+id/textLifeTrashDay"
                 android:layout_width="wrap_content"
+                android:fontFamily="@font/nanum_regular"
                 android:layout_height="wrap_content"
                 android:text="(관리구역대상지정명)"
                 />
@@ -86,12 +94,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="배출 시작 시간 : "
-                android:layout_gravity="right"/>
+                android:fontFamily="@font/nanum_bold"
+                android:layout_gravity="left"/>
 
             <TextView
                 android:id="@+id/textLifeTrashStart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_regular"
                 android:text="(관리구역대상지정명)" />
 
             <TextView
@@ -99,7 +109,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="배출 종료 시간 : "
-                android:layout_gravity="right"/>
+                android:fontFamily="@font/nanum_bold"
+                android:layout_gravity="left"/>
 
             <TextView
                 android:id="@+id/textLifeTrashEnd"
@@ -119,46 +130,53 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="음식물쓰레기"
+                android:fontFamily="@font/nanum_bold"
                 android:textSize="24dp"
                 android:layout_columnSpan="2"
-                android:layout_gravity="center"/>
+                android:layout_gravity="left"/>
 
             <TextView
                 android:id="@+id/textView23"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="배출 방법 : "
-                android:layout_gravity="right"/>
+                android:fontFamily="@font/nanum_bold"
+                android:layout_gravity="left"/>
 
             <TextView
                 android:id="@+id/textFoodTrashWay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_regular"
                 android:text="(관리구역대상지정명)"/>
 
             <TextView
                 android:id="@+id/textView27"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_bold"
                 android:text="배출 요일 : "
-                android:layout_gravity="right" />
+                android:layout_gravity="left" />
 
             <TextView
                 android:id="@+id/textFoodTrashDay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_regular"
                 android:text="(관리구역대상지정명)" />
 
             <TextView
                 android:id="@+id/textView28"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_bold"
                 android:text="배출 시작 시간 : "
-                android:layout_gravity="right"/>
+                android:layout_gravity="left"/>
 
             <TextView
                 android:id="@+id/textFoodTrashStart"
                 android:layout_width="wrap_content"
+                android:fontFamily="@font/nanum_regular"
                 android:layout_height="wrap_content"
                 android:text="(관리구역대상지정명)" />
 
@@ -166,13 +184,15 @@
                 android:id="@+id/textView30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_bold"
                 android:text="배출 종료 시간 : "
-                android:layout_gravity="right"/>
+                android:layout_gravity="left"/>
 
             <TextView
                 android:id="@+id/textFoodTrashEnd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_regular"
                 android:text="(관리구역대상지정명)" />
 
         </GridLayout>
@@ -187,34 +207,39 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="일시적다량폐기물"
+                android:fontFamily="@font/nanum_bold"
                 android:textSize="24dp"
                 android:layout_columnSpan="2"
-                android:layout_gravity="center"/>
+                android:layout_gravity="left"/>
 
             <TextView
                 android:id="@+id/textView32"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_bold"
                 android:text="배출 방법 : "
-                android:layout_gravity="right"/>
+                android:layout_gravity="left"/>
 
             <TextView
                 android:id="@+id/textManyTrashWay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_regular"
                 android:text="(관리구역대상지정명)" />
 
             <TextView
                 android:id="@+id/textView36"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_bold"
                 android:text="배출 요일 : "
-                android:layout_gravity="right" />
+                android:layout_gravity="left" />
 
             <TextView
                 android:id="@+id/textManyTrashDay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_regular"
                 android:text="(관리구역대상지정명)" />
 
             <TextView
@@ -222,12 +247,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="배출 시작 시간 : "
-                android:layout_gravity="right"/>
+                android:fontFamily="@font/nanum_bold"
+                android:layout_gravity="left"/>
 
             <TextView
                 android:id="@+id/textManyTrashStart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_regular"
                 android:text="(관리구역대상지정명)" />
 
             <TextView
@@ -235,11 +262,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="배출 종료 시간 : "
-                android:layout_gravity="right" />
+                android:fontFamily="@font/nanum_bold"
+                android:layout_gravity="left" />
 
             <TextView
                 android:id="@+id/textManyTrashEnd"
                 android:layout_width="wrap_content"
+                android:fontFamily="@font/nanum_regular"
                 android:layout_height="wrap_content"
                 android:text="(관리구역대상지정명)" />
 
@@ -255,21 +284,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="재활용품"
+                android:fontFamily="@font/nanum_bold"
                 android:textSize="24dp"
                 android:layout_columnSpan="2"
-                android:layout_gravity="center"/>
+                android:layout_gravity="left"/>
 
             <TextView
                 android:id="@+id/textView41"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="배출 방법 : "
-                android:layout_gravity="right"/>
+                android:fontFamily="@font/nanum_bold"
+                android:layout_gravity="left"/>
 
             <TextView
                 android:id="@+id/textRecycleWay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_regular"
                 android:text="(관리구역대상지정명)"/>
 
             <TextView
@@ -277,11 +309,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="배출 요일 : "
-                android:layout_gravity="right"/>
+                android:fontFamily="@font/nanum_bold"
+                android:layout_gravity="left"/>
 
             <TextView
                 android:id="@+id/textRecycleDay"
                 android:layout_width="123dp"
+                android:fontFamily="@font/nanum_regular"
                 android:layout_height="21dp"
                 android:text="(관리구역대상지정명)"/>
 
@@ -290,26 +324,30 @@
                 android:id="@+id/textView46"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_bold"
                 android:text="배출 시작 시간 : "
-                android:layout_gravity="right" />
+                android:layout_gravity="left" />
 
             <TextView
                 android:id="@+id/textRecycleStart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_regular"
                 android:text="(관리구역대상지정명)" />
 
             <TextView
                 android:id="@+id/textView48"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_bold"
                 android:text="배출 종료 시간 : "
-                android:layout_gravity="right"/>
+                android:layout_gravity="left"/>
 
             <TextView
                 android:id="@+id/textRecycleEnd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_regular"
                 android:text="(관리구역대상지정명)"/>
 
         </GridLayout>
@@ -327,6 +365,7 @@
             android:id="@+id/textView20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/nanum_bold"
             android:text="데이터 기준일 : "/>
 
         <TextView
@@ -341,7 +380,8 @@
             android:id="@+id/textView22"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="관련 부서 전화하기 : "/>
+            android:text="관련 부서 전화하기 : "
+            android:fontFamily="@font/nanum_bold"/>
 
         <TextView
             android:id="@+id/textCall"
@@ -354,7 +394,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:text="CALL"/>
+            android:text="전화하기"/>
 
 
         <TextView
@@ -362,6 +402,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="미수거일 : "
+            android:fontFamily="@font/nanum_bold"
             />
 
         <TextView
@@ -376,6 +417,7 @@
             android:id="@+id/textView16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/nanum_bold"
             android:text="배출장소 : "/>
 
         <TextView
