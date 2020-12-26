@@ -65,6 +65,7 @@ public class BirthDialog extends AppCompatActivity{
 
                     @Override
                     public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        pickerBtn.setVisibility(View.VISIBLE);
                         age = getAge(year, monthOfYear, dayOfMonth);
                         yy=Integer.toString(year);
                         if(monthOfYear+1<10)

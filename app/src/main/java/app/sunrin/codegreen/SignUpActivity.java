@@ -32,6 +32,7 @@ public class SignUpActivity extends AppCompatActivity {
     String[] newValue;
     public static String yy,mm,dd;
     FirebaseDatabase database;
+    Boolean isDateChanged = false;
     DatabaseReference myRef;
     int age;
     RadioGroup radioGroup;
@@ -96,6 +97,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                     @Override
                     public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        isDateChanged = true;
                         age = getAge(year, monthOfYear, dayOfMonth);
                         yy=Integer.toString(year);
                         if(monthOfYear+1<10)
@@ -258,62 +260,70 @@ public class SignUpActivity extends AppCompatActivity {
 
                     if(radioChecked)
                     {
-
-                        preferencesBirth = getSharedPreferences("birth", 0);
-                        System.out.println(yy);
-                        preferencesBirth.edit().putInt("year", Integer.parseInt(yy));
-                        preferencesBirth.edit().putInt("month", Integer.parseInt(mm));
-                        System.out.println(Integer.parseInt(mm));
-                        preferencesBirth.edit().putInt("day", Integer.parseInt(dd));
-                        preferencesBirth.edit().putInt("age", age);
-                        preferencesBirth.edit().commit();
-
-
-
+                        if(isDateChanged)
+                        {
+                            preferencesBirth = getSharedPreferences("birth", 0);
+                            System.out.println(yy);
+                            preferencesBirth.edit().putInt("year", Integer.parseInt(yy));
+                            preferencesBirth.edit().putInt("month", Integer.parseInt(mm));
+                            System.out.println(Integer.parseInt(mm));
+                            preferencesBirth.edit().putInt("day", Integer.parseInt(dd));
+                            preferencesBirth.edit().putInt("age", age);
+                            preferencesBirth.edit().commit();
 
 
-                        myRef = database.getReference("user/" + input_id + "/userID");
-                        myRef.setValue(input_id);
 
-                        myRef = database.getReference("user/" + input_id + "/userPW");
-                        myRef.setValue(input_pw);
 
-                        myRef = database.getReference("user/" + input_id + "/value");
-                        myRef.setValue(" ");
 
-                        myRef = database.getReference("user/" + input_id + "/userSex");
-                        myRef.setValue(sex);
+                            myRef = database.getReference("user/" + input_id + "/userID");
+                            myRef.setValue(input_id);
 
-                        myRef = database.getReference("user/" + input_id + "/userYear");
-                        myRef.setValue(Integer.parseInt(yy));
+                            myRef = database.getReference("user/" + input_id + "/userPW");
+                            myRef.setValue(input_pw);
 
-                        myRef = database.getReference("user/" + input_id + "/userMonth");
-                        myRef.setValue(Integer.parseInt(mm));
+                            myRef = database.getReference("user/" + input_id + "/value");
+                            myRef.setValue(" ");
 
-                        myRef = database.getReference("user/" + input_id + "/userDay");
-                        myRef.setValue(Integer.parseInt(dd));
+                            myRef = database.getReference("user/" + input_id + "/userSex");
+                            myRef.setValue(sex);
 
-                        myRef = database.getReference("user/" + input_id + "/userAge");
-                        myRef.setValue(age);
+                            myRef = database.getReference("user/" + input_id + "/userYear");
+                            myRef.setValue(Integer.parseInt(yy));
 
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        database.getReference("/userNum").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                int value = snapshot.getValue(Integer.class);
-                                database.getReference("/userNum").setValue(value + 1);
-                            }
+                            myRef = database.getReference("user/" + input_id + "/userMonth");
+                            myRef.setValue(Integer.parseInt(mm));
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
+                            myRef = database.getReference("user/" + input_id + "/userDay");
+                            myRef.setValue(Integer.parseInt(dd));
 
-                            }
-                        });
+                            myRef = database.getReference("user/" + input_id + "/userAge");
+                            myRef.setValue(age);
 
-                        Toast.makeText(SignUpActivity.this, "새 아이디를 생성했습니다!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(intent);
-                        finish();
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            database.getReference("/userNum").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    int value = snapshot.getValue(Integer.class);
+                                    database.getReference("/userNum").setValue(value + 1);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
+                            Toast.makeText(SignUpActivity.this, "새 아이디를 생성했습니다!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        else
+                        {
+                            Toast.makeText(this, "생년월일을 설정해주세요.", Toast.LENGTH_LONG).show();
+                        }
+
+
                     }
                     else
                     {

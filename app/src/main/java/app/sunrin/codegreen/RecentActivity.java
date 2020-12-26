@@ -539,17 +539,27 @@ public class RecentActivity extends AppCompatActivity {
 
 
     private void checkMonth(){
-        for(int i=0; i<myData.length;i++){
-            int pl=Integer.parseInt(myData[i][3]);
-            monthTotal[pl-1]++;
-            if(pl==nowMonth){
-                for(int j = 1; j<=9; j++){
-                    if (myData[i][5].contains(Integer.toString(j))){
-                        recycleCategory[j - 1]++;
+        if(myData==null)
+        {
+            Toast.makeText(this, "조회 내역이 없습니다. 바코드 인식 후 다시 시도해주세요!", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        else
+        {
+            for(int i=0; i<myData.length;i++){
+                int pl=Integer.parseInt(myData[i][3]);
+                monthTotal[pl-1]++;
+                if(pl==nowMonth){
+                    for(int j = 1; j<=9; j++){
+                        if (myData[i][5].contains(Integer.toString(j))){
+                            recycleCategory[j - 1]++;
+                        }
                     }
                 }
             }
         }
+
+
     }
 
     private void lineChart(){

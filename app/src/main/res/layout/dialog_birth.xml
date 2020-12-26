@@ -18,5 +18,6 @@
         android:layout_gravity="center"
         android:layout_marginTop="300dp"
         android:id="@+id/pickerBtn"
+        android:visibility="invisible"
         ></Button>
 </LinearLayout>
