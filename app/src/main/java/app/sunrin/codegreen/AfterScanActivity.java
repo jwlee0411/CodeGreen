@@ -603,7 +603,18 @@ public class AfterScanActivity extends AppCompatActivity {
 
 
                 recyclerView = findViewById(R.id.recycling);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()){
+                    @Override
+                    public boolean canScrollHorizontally() {
+                        return false;
+
+                    }
+
+                    @Override
+                    public boolean canScrollVertically() {
+                        return false;
+                    }
+                });
                 ReAdapter reAdapter = new ReAdapter(data);
 
                 recyclerView.setAdapter(reAdapter);
