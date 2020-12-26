@@ -14,12 +14,25 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class RecentActivity extends AppCompatActivity {
 
@@ -91,7 +105,7 @@ public class RecentActivity extends AppCompatActivity {
 
     //메인화면(카메라로 바코드 스캔하는 곳)에서 설정 버튼 누르면 들어오는 화면임
 
-//    PieChart pieChart;
+    PieChart pieChart;
 
 
     String[] data;
@@ -101,6 +115,13 @@ public class RecentActivity extends AppCompatActivity {
     int[] monthTotal= {0,0,0,0,0,0,0,0,0,0,0,0};
 
     int[] recycleCategory = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+    HorizontalBarChart barChart;
+
+    Calendar cal = Calendar.getInstance();
+    SimpleDateFormat sdf = new SimpleDateFormat("MM");
+    String monthPl = sdf.format(cal.getTime());
+    int nowMonth=Integer.parseInt(monthPl);
 
     int[][] recycle;
     //각 카테고리별로 몇 개를 버렸는지
@@ -284,6 +305,11 @@ public class RecentActivity extends AppCompatActivity {
 
         lineChart();
 
+//        barChart = findViewById(R.id.barchart);
+
+//        barChart();
+
+        setPieChart();
     }
 
 
@@ -509,12 +535,18 @@ public class RecentActivity extends AppCompatActivity {
         }
     }
 
+
     private void checkMonth(){
         for(int i=0; i<myData.length;i++){
             int pl=Integer.parseInt(myData[i][3]);
             monthTotal[pl-1]++;
-            System.out.println("myData[i][3]");
-            System.out.println(myData[i][3]);
+            if(pl==nowMonth){
+                for(int j = 1; j<=9; j++){
+                    if (myData[i][5].contains(Integer.toString(j))){
+                        recycleCategory[j - 1]++;
+                    }
+                }
+            }
         }
     }
 
@@ -525,10 +557,6 @@ public class RecentActivity extends AppCompatActivity {
         LineChart lineChart = findViewById(R.id.linechart);
         LineData chartData = new LineData();
 
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("MM");
-        String monthPl = sdf.format(cal.getTime());
-        int nowMonth=Integer.parseInt(monthPl);
 
         for(int i=nowMonth; i<12;i++) {
             entry_chart.add(new Entry(i+1, monthTotal[i]));
@@ -564,7 +592,85 @@ public class RecentActivity extends AppCompatActivity {
         lineChart.invalidate();
     }
 
-    //TODO
+
+
+//    private void barChart(){
+//        ArrayList<BarEntry> yVals = new ArrayList<>();
+//        float barWidth=9f;
+//        float spaceForBar=10f;
+//
+//
+//
+//        for(int i=0; i<9;i++){
+//            yVals.add(new BarEntry(i*spaceForBar,recycleCategory[i]));
+//        }
+//
+//        BarDataSet set1=new BarDataSet(yVals,"월간 누적");
+//        BarData data = new BarData(set1);
+//        data.setBarWidth(barWidth);
+//
+//        barChart.setData(data);
+////        barChart.getXAxis().setDrawGridLines(false);
+//
+//        barChart.invalidate();
+//    }
+
+    private void setPieChart(){
+        pieChart = (PieChart)findViewById(R.id.piechart);
+
+
+        ArrayList<PieEntry> yValues = new ArrayList<>();
+
+        for(int i=0;i<9;i++){
+            if(recycleCategory[i]==0) continue;
+            switch (i){
+                case 0:
+                    yValues.add(new PieEntry(recycleCategory[0],"플라스틱"));
+                    break;
+                case 1:
+                    yValues.add(new PieEntry(recycleCategory[1],"종이"));
+                    break;
+                case 2:
+                    yValues.add(new PieEntry(recycleCategory[2],"비닐"));
+                    break;
+                case 3:
+                    yValues.add(new PieEntry(recycleCategory[3],"캔"));
+                    break;
+                case 4:
+                    yValues.add(new PieEntry(recycleCategory[4],"스티로폼"));
+                    break;
+                case 5:
+                    yValues.add(new PieEntry(recycleCategory[5],"페트병"));
+                    break;
+                case 6:
+                    yValues.add(new PieEntry(recycleCategory[6],"유리"));
+                    break;
+                case 7:
+                    yValues.add(new PieEntry(recycleCategory[7],"일반쓰레기"));
+                    break;
+                case 8:
+                    yValues.add(new PieEntry(recycleCategory[8],"전자제품"));
+                    break;
+            }
+
+        }
+
+
+
+        PieDataSet dataSet = new PieDataSet(yValues,"월간 배출률");
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        dataSet.setValueTextColor(Color.BLACK);
+        dataSet.setValueTextSize(16f);
+
+        PieData data = new PieData((dataSet));
+
+        pieChart.setData(data);
+        pieChart.getDescription().setEnabled(false);
+        pieChart.setCenterText("월간 배출률");
+        pieChart.animate();
+        pieChart.invalidate();
+    }
+
 
 }
 
