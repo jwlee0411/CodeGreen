@@ -536,6 +536,14 @@ public class AfterScanActivity extends AppCompatActivity {
 
                 saveData = "";
 
+
+                Button buttonSave2 = findViewById(R.id.buttonSave2);
+                buttonSave2.setOnClickListener(v -> {
+                    SaveDialog saveDialog = new SaveDialog(AfterScanActivity.this);
+                    saveDialog.callFunction(KANcode);
+                });
+
+
                 db_category = dataSnapshot.getValue(String.class);
                 System.out.println("dbcat : " + db_category);
                 if (db_category == null) {
@@ -550,12 +558,7 @@ public class AfterScanActivity extends AppCompatActivity {
                     addVinyl();
                     addElec();
                     isCategory = false;
-                    Button buttonSave2 = findViewById(R.id.buttonSave2);
-                    buttonSave2.setVisibility(View.VISIBLE);
-                    buttonSave2.setOnClickListener(v -> {
-                        SaveDialog saveDialog = new SaveDialog(AfterScanActivity.this);
-                        saveDialog.callFunction(KANcode);
-                    });
+
 
                 } else {
                     check_how = db_category.split(",");

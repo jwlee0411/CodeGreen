@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/nanum_bold"
-        android:text="재활용 정보 추가"
+        android:text="재활용 정보 추가 / 수정"
         android:textSize="32dp" />
 
     <TextView
@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/nanum_regular"
-        android:text="DB에 등록된 재활용 정보가 없습니다.\n재활용 정보를 추가해주세요!"
+        android:text="재활용 정보를 추가하거나 수정할 수 있습니다."
         android:textSize="16dp" />
 
 
