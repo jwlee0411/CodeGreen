@@ -534,7 +534,7 @@ public class AfterScanActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                saveData = "";
+                //saveData = "";
 
 
                 Button buttonSave2 = findViewById(R.id.buttonSave2);
