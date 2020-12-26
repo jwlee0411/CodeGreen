@@ -96,11 +96,8 @@ public class SaveDialog extends AppCompatActivity {
                     DatabaseReference reference = database.getReference(KANcode);
                     reference.setValue(recycle);
                     Toast.makeText(context, "등록되었습니다.", Toast.LENGTH_SHORT).show();
-//                    Intent intent = new Intent(context, AfterScanActivity.class);
-//                    startActivity(intent);
 
                     dlg.dismiss();
-//                    finish();
 
                 }
 
