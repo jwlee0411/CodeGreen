@@ -14,12 +14,20 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class RecentActivity extends AppCompatActivity {
 
@@ -101,6 +110,13 @@ public class RecentActivity extends AppCompatActivity {
     int[] monthTotal= {0,0,0,0,0,0,0,0,0,0,0,0};
 
     int[] recycleCategory = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+    HorizontalBarChart barChart;
+
+    Calendar cal = Calendar.getInstance();
+    SimpleDateFormat sdf = new SimpleDateFormat("MM");
+    String monthPl = sdf.format(cal.getTime());
+    int nowMonth=Integer.parseInt(monthPl);
 
     int[][] recycle;
     //각 카테고리별로 몇 개를 버렸는지
@@ -284,6 +300,9 @@ public class RecentActivity extends AppCompatActivity {
 
         lineChart();
 
+        barChart = findViewById(R.id.barchart);
+
+        barChart();
     }
 
 
@@ -509,12 +528,18 @@ public class RecentActivity extends AppCompatActivity {
         }
     }
 
+
     private void checkMonth(){
         for(int i=0; i<myData.length;i++){
             int pl=Integer.parseInt(myData[i][3]);
             monthTotal[pl-1]++;
-            System.out.println("myData[i][3]");
-            System.out.println(myData[i][3]);
+            if(pl==nowMonth){
+                for(int j = 1; j<=9; j++){
+                    if (myData[i][5].contains(Integer.toString(j))){
+                        recycleCategory[j - 1]++;
+                    }
+                }
+            }
         }
     }
 
@@ -525,10 +550,6 @@ public class RecentActivity extends AppCompatActivity {
         LineChart lineChart = findViewById(R.id.linechart);
         LineData chartData = new LineData();
 
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("MM");
-        String monthPl = sdf.format(cal.getTime());
-        int nowMonth=Integer.parseInt(monthPl);
 
         for(int i=nowMonth; i<12;i++) {
             entry_chart.add(new Entry(i+1, monthTotal[i]));
@@ -562,6 +583,28 @@ public class RecentActivity extends AppCompatActivity {
         lineChart.setData(chartData);
 
         lineChart.invalidate();
+    }
+
+
+    private void barChart(){
+        ArrayList<BarEntry> yVals = new ArrayList<>();
+        float barWidth=9f;
+        float spaceForBar=10f;
+
+
+
+        for(int i=0; i<9;i++){
+            yVals.add(new BarEntry(i*spaceForBar,recycleCategory[i]));
+        }
+
+        BarDataSet set1=new BarDataSet(yVals,"월간 누적");
+        BarData data = new BarData(set1);
+        data.setBarWidth(barWidth);
+
+        barChart.setData(data);
+//        barChart.getXAxis().setDrawGridLines(false);
+
+        barChart.invalidate();
     }
 
 }
