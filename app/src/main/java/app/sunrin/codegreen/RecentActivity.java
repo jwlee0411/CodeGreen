@@ -593,6 +593,7 @@ public class RecentActivity extends AppCompatActivity {
     }
 
 
+
 //    private void barChart(){
 //        ArrayList<BarEntry> yVals = new ArrayList<>();
 //        float barWidth=9f;
