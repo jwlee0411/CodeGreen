@@ -165,10 +165,12 @@ public class SplashActivity  extends AppCompatActivity {
         });
 
         buttonPhoto.setOnClickListener(v -> {
-            ComponentName compName = new ComponentName("com.tencent.yolov5ncnn","com.tencent.yolov5ncnn.MainActivity");
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.setComponent(compName);
-            intent.putExtra("psj_test", "this is test");
+//            ComponentName compName = new ComponentName("com.tencent.yolov5ncnn","com.tencent.yolov5ncnn.MainActivity");
+//            Intent intent = new Intent(Intent.ACTION_MAIN);
+//            intent.setComponent(compName);
+//            intent.putExtra("psj_test", "this is test");
+//            startActivity(intent);
+            Intent intent = new Intent(SplashActivity.this, NewScannerActivity.class);
             startActivity(intent);
 
 
