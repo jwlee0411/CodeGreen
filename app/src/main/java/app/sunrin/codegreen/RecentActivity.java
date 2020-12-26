@@ -1,6 +1,7 @@
 package app.sunrin.codegreen;
 
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -98,7 +99,6 @@ public class RecentActivity extends AppCompatActivity {
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //60대
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //기타 나이
 
-
     }; //0번째 인덱스 => 총 쓰레기 수
     // 1~9번째 인덱스 => 재활용 관련 정보(1~9)
 
@@ -106,6 +106,16 @@ public class RecentActivity extends AppCompatActivity {
     //메인화면(카메라로 바코드 스캔하는 곳)에서 설정 버튼 누르면 들어오는 화면임
 
     PieChart pieChart;
+    PieChart pieChartTotal;
+    PieChart pieChartAge;
+
+    int getUserAge;
+    Boolean getUserSex;
+    int getUserAge2;
+    Boolean getUserSex2;
+
+    TextView txtUserSex;
+    TextView txtUserAge;
 
 
     String[] data;
@@ -137,6 +147,13 @@ public class RecentActivity extends AppCompatActivity {
         dataAll = dataSave.getString("saveAll", "");
         System.out.println("dataAll");
         System.out.println(dataAll);
+
+
+        System.out.println("totaldata");
+        System.out.println(totalData[0][1]);
+        System.out.println(totalData[0][2]);
+        System.out.println(totalData[0][3]);
+        System.out.println(totalData[8][1]);
 
 
 
@@ -181,8 +198,6 @@ public class RecentActivity extends AppCompatActivity {
                 System.out.println("@" + Arrays.toString(myData[i]));
 
             }
-
-
 
 
             //모든 유저의 재활용 정보 불러오기
@@ -301,6 +316,8 @@ public class RecentActivity extends AppCompatActivity {
             });
         }
 
+
+
         checkMonth();
 
         lineChart();
@@ -312,6 +329,16 @@ public class RecentActivity extends AppCompatActivity {
 
 
         setPieChart();
+
+
+
+
+        System.out.println("유저 성별");
+        System.out.println(getUserAge);
+
+        setPieChartTotal();
+
+        setPieChartAge();
     }
 
 
@@ -669,8 +696,6 @@ public class RecentActivity extends AppCompatActivity {
 
         }
 
-
-
         PieDataSet dataSet = new PieDataSet(yValues,"월간 배출률");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         dataSet.setValueTextColor(Color.BLACK);
@@ -685,6 +710,186 @@ public class RecentActivity extends AppCompatActivity {
         pieChart.invalidate();
     }
 
+    private void setUserSexAge(){
+
+
+    }
+
+    private void setPieChartTotal(){
+        pieChartTotal = (PieChart)findViewById(R.id.piecharttotal);
+
+        ArrayList<PieEntry> totalValues = new ArrayList<>();
+
+        for(int i=0;i<9;i++){
+            int sexTotal= totalData[0][i]+totalData[8][i];
+            if(sexTotal==0) continue;
+            switch (i){
+                case 0:
+                    totalValues.add(new PieEntry(sexTotal,"플라스틱"));
+                    break;
+                case 1:
+                    totalValues.add(new PieEntry(sexTotal,"종이"));
+                    break;
+                case 2:
+                    totalValues.add(new PieEntry(sexTotal,"비닐"));
+                    break;
+                case 3:
+                    totalValues.add(new PieEntry(sexTotal,"캔"));
+                    break;
+                case 4:
+                    totalValues.add(new PieEntry(sexTotal,"스티로폼"));
+                    break;
+                case 5:
+                    totalValues.add(new PieEntry(sexTotal,"페트병"));
+                    break;
+                case 6:
+                    totalValues.add(new PieEntry(sexTotal,"유리"));
+                    break;
+                case 7:
+                    totalValues.add(new PieEntry(sexTotal,"일반쓰레기"));
+                    break;
+                case 8:
+                    totalValues.add(new PieEntry(sexTotal,"전자제품"));
+                    break;
+            }
+
+        }
+
+        PieDataSet dataSet = new PieDataSet(totalValues,"전체 평균");
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        dataSet.setValueTextColor(Color.BLACK);
+        dataSet.setValueTextSize(16f);
+
+        PieData data = new PieData((dataSet));
+
+        pieChartTotal.setData(data);
+        pieChartTotal.getDescription().setEnabled(false);
+        pieChartTotal.setCenterText("전체 평균");
+        pieChartTotal.animate();
+        pieChartTotal.invalidate();
+    }
+
+    private void setPieChartAge(){
+        pieChartAge = (PieChart)findViewById(R.id.piechartage);
+
+        setUserSexAge();
+
+        txtUserAge = findViewById(R.id.userage);
+        txtUserSex= findViewById(R.id.usersex);
+
+        SharedPreferences preferencesID = getSharedPreferences("ID", 0);
+        String id = preferencesID.getString("id", "");
+
+
+        FirebaseDatabase fdb =FirebaseDatabase.getInstance();
+        DatabaseReference userSex = fdb.getReference("user/" + id + "/userSex");
+        DatabaseReference userAge = fdb.getReference("user/" + id + "/userAge");
+        userAge.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                getUserAge = snapshot.getValue(int.class);
+                System.out.println("유저 나이");
+                System.out.println(getUserAge);
+                txtUserAge.setText(String.valueOf(getUserAge));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        userSex.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                getUserSex = snapshot.getValue(Boolean.class);
+                if(getUserSex) txtUserSex.setText("남자");
+                else txtUserSex.setText("여자");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        ArrayList<PieEntry> ageValues = new ArrayList<>();
+
+        int plAge;
+
+        if(getUserAge>=60&&getUserAge<70) {
+            plAge=6;
+        }
+        else if(getUserAge>=50) {
+            plAge=5;
+        }
+        else if(getUserAge>=40) {
+            plAge=4;
+        }
+        else if(getUserAge>=30) {
+            plAge=3;
+        }
+        else if(getUserAge>=20){
+            plAge=2;
+        }
+        else if(getUserAge>=10){
+            plAge=1;
+        }
+        else {
+            plAge=7;
+        }
+        System.out.println("유저 나이대");
+        System.out.println(plAge);
+
+
+        for(int i=0;i<9;i++){
+            if(totalData[plAge][i]==0) continue;
+            switch (i){
+                case 0:
+                    ageValues.add(new PieEntry(totalData[plAge][i],"플라스틱"));
+                    break;
+                case 1:
+                    ageValues.add(new PieEntry(totalData[plAge][i],"종이"));
+                    break;
+                case 2:
+                    ageValues.add(new PieEntry(totalData[plAge][i],"비닐"));
+                    break;
+                case 3:
+                    ageValues.add(new PieEntry(totalData[plAge][i],"캔"));
+                    break;
+                case 4:
+                    ageValues.add(new PieEntry(totalData[plAge][i],"스티로폼"));
+                    break;
+                case 5:
+                    ageValues.add(new PieEntry(totalData[plAge][i],"페트병"));
+                    break;
+                case 6:
+                    ageValues.add(new PieEntry(totalData[plAge][i],"유리"));
+                    break;
+                case 7:
+                    ageValues.add(new PieEntry(totalData[plAge][i],"일반쓰레기"));
+                    break;
+                case 8:
+                    ageValues.add(new PieEntry(totalData[plAge][i],"전자제품"));
+                    break;
+            }
+
+        }
+
+        PieDataSet dataSet = new PieDataSet(ageValues,"나이대 평균");
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        dataSet.setValueTextColor(Color.BLACK);
+        dataSet.setValueTextSize(16f);
+
+        PieData data = new PieData((dataSet));
+
+        pieChartAge.setData(data);
+        pieChartAge.getDescription().setEnabled(false);
+        pieChartAge.setCenterText("나이대 평균");
+        pieChartAge.animate();
+        pieChartAge.invalidate();
+    }
 
 }
 
