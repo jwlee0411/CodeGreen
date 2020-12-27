@@ -29,8 +29,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="(관리구역대상지정명)"
-            android:fontFamily="@font/nanum_bold"
-            android:textSize="22sp"
+            android:fontFamily="@font/nanum_regular"
+            android:textSize="18sp"
             android:layout_weight="1"/>
     </LinearLayout>
 
@@ -366,7 +366,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/nanum_bold"
-            android:text="데이터 기준일 : "/>
+            android:text="기준일 : "/>
 
         <TextView
             android:id="@+id/textDataDate"
@@ -380,7 +380,7 @@
             android:id="@+id/textView22"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="관련 부서 전화하기 : "
+            android:text="전화하기 : "
             android:fontFamily="@font/nanum_bold"/>
 
         <TextView

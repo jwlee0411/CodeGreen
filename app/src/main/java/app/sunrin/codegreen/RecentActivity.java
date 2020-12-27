@@ -1,6 +1,7 @@
 package app.sunrin.codegreen;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -117,6 +119,8 @@ public class RecentActivity extends AppCompatActivity {
     TextView txtUserSex;
     TextView txtUserAge;
 
+    ProgressDialog progressDialog;
+
 
     String[] data;
     String[][] newData;
@@ -141,6 +145,12 @@ public class RecentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recent);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("검색 중...");
+        progressDialog.setMessage("검색 중입니다. 잠시만 기다려 주세요.");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
         //sharedpreference : 이름 saveAll, 키 saveAll에 String형으로 모든 데이터를 때려박음
         SharedPreferences dataSave = getSharedPreferences("saveAll", 0);
@@ -662,51 +672,79 @@ public class RecentActivity extends AppCompatActivity {
 
         ArrayList<PieEntry> yValues = new ArrayList<>();
 
+        int total = 0;
+        for(int i = 0; i<9; i++)
+        {
+            total = total + recycleCategory[i];
+        }
+        int[] custom_colors = new int[9];
+        int colorLength = 0;
+
         for(int i=0;i<9;i++){
             if(recycleCategory[i]==0) continue;
+            float totalVal = (float)recycleCategory[i]/(float)total * 100;
             switch (i){
                 case 0:
-                    yValues.add(new PieEntry(recycleCategory[0],"플라스틱"));
+                    yValues.add(new PieEntry(totalVal,"플라스틱"));
+                    custom_colors[colorLength] = Color.rgb(183, 221, 176);
+                    colorLength++;
                     break;
                 case 1:
-                    yValues.add(new PieEntry(recycleCategory[1],"종이"));
+                    yValues.add(new PieEntry(totalVal,"종이"));
+                    custom_colors[colorLength] = Color.	rgb(163, 215, 160);
+                    colorLength++;
                     break;
                 case 2:
-                    yValues.add(new PieEntry(recycleCategory[2],"비닐"));
+                    yValues.add(new PieEntry(totalVal,"비닐"));
+                    custom_colors[colorLength] = Color.	rgb(153, 209, 143);
+                    colorLength++;
                     break;
                 case 3:
-                    yValues.add(new PieEntry(recycleCategory[3],"캔"));
+                    yValues.add(new PieEntry(totalVal,"캔"));
+                    custom_colors[colorLength] = Color.rgb(123, 200, 108);
+                    colorLength++;
                     break;
                 case 4:
-                    yValues.add(new PieEntry(recycleCategory[4],"스티로폼"));
+                    yValues.add(new PieEntry(totalVal,"스티로폼"));
+                    custom_colors[colorLength] = Color.rgb(97, 189, 79);
+                    colorLength++;
                     break;
                 case 5:
-                    yValues.add(new PieEntry(recycleCategory[5],"페트병"));
+                    yValues.add(new PieEntry(totalVal,"페트병"));
+                    custom_colors[colorLength] = Color.rgb(93, 180, 74);
+                    colorLength++;
                     break;
                 case 6:
-                    yValues.add(new PieEntry(recycleCategory[6],"유리"));
+                    yValues.add(new PieEntry(totalVal,"유리"));
+                    custom_colors[colorLength] = Color.		rgb(90, 172, 68);
+                    colorLength++;
                     break;
                 case 7:
-                    yValues.add(new PieEntry(recycleCategory[7],"일반쓰레기"));
+                    yValues.add(new PieEntry(totalVal,"일반쓰레기"));
+                    custom_colors[colorLength] = Color.rgb(81, 152, 57);
+                    colorLength++;
                     break;
                 case 8:
-                    yValues.add(new PieEntry(recycleCategory[8],"전자제품"));
+                    yValues.add(new PieEntry(totalVal,"전자제품"));
+                    custom_colors[colorLength] = Color.	rgb(73, 133, 46);
+                    colorLength++;
                     break;
             }
 
         }
 
         PieDataSet dataSet = new PieDataSet(yValues,"월간 배출률");
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+
+        dataSet.setColors(ColorTemplate.createColors(custom_colors));
         dataSet.setValueTextColor(Color.BLACK);
-        dataSet.setValueTextSize(0);
+        dataSet.setValueTextSize(15);
 
         PieData data = new PieData((dataSet));
 
         pieChart.setData(data);
         pieChart.getDescription().setEnabled(false);
         pieChart.getLegend().setEnabled(false);
-        pieChart.setCenterText("월간 배출률");
+        pieChart.setCenterText("월간 배출률(%)");
         pieChart.animate();
         pieChart.invalidate();
     }
@@ -720,53 +758,84 @@ public class RecentActivity extends AppCompatActivity {
 
         ArrayList<PieEntry> totalValues = new ArrayList<>();
 
-        for(int i=0;i<9;i++){
+        int sexAll = 0;
+
+        for(int i = 1; i<10; i++)
+        {
+            sexAll = sexAll + totalData[0][i]+totalData[8][i];
+        }
+        int[] custom_colors = new int[9];
+        int colorLength = 0;
+
+        for(int i=1;i<10;i++){
             int sexTotal= totalData[0][i]+totalData[8][i];
             if(sexTotal==0) continue;
+
+            float finalVal = (float)sexTotal/(float)sexAll * 100;
+
+
             switch (i){
-                case 0:
-                    totalValues.add(new PieEntry(sexTotal,"플라스틱"));
-                    break;
                 case 1:
-                    totalValues.add(new PieEntry(sexTotal,"종이"));
+                    totalValues.add(new PieEntry(finalVal,"플라스틱"));
+                    custom_colors[colorLength] = Color.rgb(183, 221, 176);
+                    colorLength++;
                     break;
                 case 2:
-                    totalValues.add(new PieEntry(sexTotal,"비닐"));
+                    totalValues.add(new PieEntry(finalVal,"종이"));
+                    custom_colors[colorLength] = Color.	rgb(163, 215, 160);
+                    colorLength++;
                     break;
                 case 3:
-                    totalValues.add(new PieEntry(sexTotal,"캔"));
+                    totalValues.add(new PieEntry(finalVal,"비닐"));
+                    custom_colors[colorLength] = Color.	rgb(153, 209, 143);
+                    colorLength++;
                     break;
                 case 4:
-                    totalValues.add(new PieEntry(sexTotal,"스티로폼"));
+                    totalValues.add(new PieEntry(finalVal,"캔"));
+                    custom_colors[colorLength] = Color.rgb(123, 200, 108);
+                    colorLength++;
                     break;
                 case 5:
-                    totalValues.add(new PieEntry(sexTotal,"페트병"));
+                    totalValues.add(new PieEntry(finalVal,"스티로폼"));
+                    custom_colors[colorLength] = Color.rgb(97, 189, 79);
+                    colorLength++;
                     break;
                 case 6:
-                    totalValues.add(new PieEntry(sexTotal,"유리"));
+                    totalValues.add(new PieEntry(finalVal,"페트병"));
+                    custom_colors[colorLength] = Color.rgb(93, 180, 74);
+                    colorLength++;
                     break;
                 case 7:
-                    totalValues.add(new PieEntry(sexTotal,"일반쓰레기"));
+                    totalValues.add(new PieEntry(finalVal,"유리"));
+                    custom_colors[colorLength] = Color.		rgb(90, 172, 68);
+                    colorLength++;
                     break;
                 case 8:
-                    totalValues.add(new PieEntry(sexTotal,"전자제품"));
+                    totalValues.add(new PieEntry(finalVal,"일반쓰레기"));
+                    custom_colors[colorLength] = Color.rgb(81, 152, 57);
+                    colorLength++;
+                    break;
+                case 9:
+                    totalValues.add(new PieEntry(finalVal,"전자제품"));
+                    custom_colors[colorLength] = Color.	rgb(73, 133, 46);
+                    colorLength++;
                     break;
             }
 
         }
 
         PieDataSet dataSet = new PieDataSet(totalValues,"전체 평균");
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        dataSet.setColors(ColorTemplate.createColors(custom_colors));
         dataSet.setValueTextColor(Color.BLACK);
 
-        dataSet.setValueTextSize(0);
+        dataSet.setValueTextSize(15);
 
         PieData data = new PieData((dataSet));
 
         pieChartTotal.setData(data);
         pieChartTotal.getDescription().setEnabled(false);
         pieChartTotal.getLegend().setEnabled(false);
-        pieChartTotal.setCenterText("전체 평균");
+        pieChartTotal.setCenterText("전체 평균(%)");
         pieChartTotal.animate();
         pieChartTotal.invalidate();
     }
@@ -807,6 +876,121 @@ public class RecentActivity extends AppCompatActivity {
                 if(getUserSex) txtUserSex.setText("남자");
                 else txtUserSex.setText("여자");
 
+
+
+                ArrayList<PieEntry> ageValues = new ArrayList<>();
+
+                int plAge;
+
+                if(getUserAge>=60&&getUserAge<70) {
+                    plAge=6;
+                }
+                else if(getUserAge>=50) {
+                    plAge=5;
+                }
+                else if(getUserAge>=40) {
+                    plAge=4;
+                }
+                else if(getUserAge>=30) {
+                    plAge=3;
+                }
+                else if(getUserAge>=20){
+                    plAge=2;
+                }
+                else if(getUserAge>=10){
+                    plAge=1;
+                }
+                else {
+                    plAge=7;
+                }
+                System.out.println("유저 나이대");
+                System.out.println(plAge);
+
+                int totalVal = 0;
+
+                for(int i = 1; i<10; i++)
+                {
+                    totalVal = totalData[plAge][i] + totalVal;
+                }
+
+
+
+                int[] custom_colors = new int[9];
+                int colorLength = 0;
+
+
+                for(int i=1;i<10;i++){
+                    if(totalData[plAge][i]==0) continue;
+
+                    float finalVal = (float)totalData[plAge][i] / (float)totalVal * 100;
+
+                    switch (i){
+                        case 1:
+                            ageValues.add(new PieEntry(finalVal,"플라스틱"));
+                            custom_colors[colorLength] = Color.rgb(183, 221, 176);
+                            colorLength++;
+                            break;
+                        case 2:
+                            ageValues.add(new PieEntry(finalVal,"종이"));
+                            custom_colors[colorLength] = Color.	rgb(163, 215, 160);
+                            colorLength++;
+                            break;
+                        case 3:
+                            ageValues.add(new PieEntry(finalVal,"비닐"));
+                            custom_colors[colorLength] = Color.	rgb(153, 209, 143);
+                            colorLength++;
+                            break;
+                        case 4:
+                            ageValues.add(new PieEntry(finalVal,"캔"));
+                            custom_colors[colorLength] = Color.rgb(123, 200, 108);
+                            colorLength++;
+                            break;
+                        case 5:
+                            ageValues.add(new PieEntry(finalVal,"스티로폼"));
+                            custom_colors[colorLength] = Color.rgb(97, 189, 79);
+                            colorLength++;
+                            break;
+                        case 6:
+                            ageValues.add(new PieEntry(finalVal,"페트병"));
+                            custom_colors[colorLength] = Color.rgb(93, 180, 74);
+                            colorLength++;
+                            break;
+                        case 7:
+                            ageValues.add(new PieEntry(finalVal,"유리"));
+                            custom_colors[colorLength] = Color.		rgb(90, 172, 68);
+                            colorLength++;
+                            break;
+                        case 8:
+                            ageValues.add(new PieEntry(finalVal,"일반쓰레기"));
+                            custom_colors[colorLength] = Color.rgb(81, 152, 57);
+                            colorLength++;
+                            break;
+                        case 9:
+                            ageValues.add(new PieEntry(finalVal,"전자제품"));
+                            custom_colors[colorLength] = Color.	rgb(73, 133, 46);
+                            colorLength++;
+                            break;
+                    }
+
+                }
+
+                PieDataSet dataSet = new PieDataSet(ageValues,"나이대 평균");
+                dataSet.setColors(ColorTemplate.createColors(custom_colors));
+                dataSet.setValueTextColor(Color.BLACK);
+                dataSet.setValueTextSize(15);
+
+
+                PieData data = new PieData((dataSet));
+
+                pieChartAge.setData(data);
+                pieChartAge.getDescription().setEnabled(false);
+                pieChartAge.getLegend().setEnabled(false);
+
+                pieChartAge.setCenterText("나이대 평균(%)");
+                pieChartAge.animate();
+                pieChartAge.invalidate();
+                progressDialog.dismiss();
+
             }
 
             @Override
@@ -815,83 +999,22 @@ public class RecentActivity extends AppCompatActivity {
             }
         });
 
-        ArrayList<PieEntry> ageValues = new ArrayList<>();
 
-        int plAge;
+    }
 
-        if(getUserAge>=60&&getUserAge<70) {
-            plAge=6;
-        }
-        else if(getUserAge>=50) {
-            plAge=5;
-        }
-        else if(getUserAge>=40) {
-            plAge=4;
-        }
-        else if(getUserAge>=30) {
-            plAge=3;
-        }
-        else if(getUserAge>=20){
-            plAge=2;
-        }
-        else if(getUserAge>=10){
-            plAge=1;
-        }
-        else {
-            plAge=7;
-        }
-        System.out.println("유저 나이대");
-        System.out.println(plAge);
+    private class ProgressDialog extends AlertDialog {
 
-
-        for(int i=0;i<9;i++){
-            if(totalData[plAge][i]==0) continue;
-            switch (i){
-                case 0:
-                    ageValues.add(new PieEntry(totalData[plAge][i],"플라스틱"));
-                    break;
-                case 1:
-                    ageValues.add(new PieEntry(totalData[plAge][i],"종이"));
-                    break;
-                case 2:
-                    ageValues.add(new PieEntry(totalData[plAge][i],"비닐"));
-                    break;
-                case 3:
-                    ageValues.add(new PieEntry(totalData[plAge][i],"캔"));
-                    break;
-                case 4:
-                    ageValues.add(new PieEntry(totalData[plAge][i],"스티로폼"));
-                    break;
-                case 5:
-                    ageValues.add(new PieEntry(totalData[plAge][i],"페트병"));
-                    break;
-                case 6:
-                    ageValues.add(new PieEntry(totalData[plAge][i],"유리"));
-                    break;
-                case 7:
-                    ageValues.add(new PieEntry(totalData[plAge][i],"일반쓰레기"));
-                    break;
-                case 8:
-                    ageValues.add(new PieEntry(totalData[plAge][i],"전자제품"));
-                    break;
-            }
-
+        public ProgressDialog(@NonNull Context context) {
+            super(context);
         }
 
-        PieDataSet dataSet = new PieDataSet(ageValues,"나이대 평균");
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        dataSet.setValueTextColor(Color.BLACK);
-        dataSet.setValueTextSize(0);
+        public ProgressDialog(@NonNull Context context, int themeResId) {
+            super(context, themeResId);
+        }
 
-
-        PieData data = new PieData((dataSet));
-
-        pieChartAge.setData(data);
-        pieChartAge.getDescription().setEnabled(false);
-        pieChartAge.getLegend().setEnabled(false);
-        pieChartAge.setCenterText("나이대 평균");
-        pieChartAge.animate();
-        pieChartAge.invalidate();
+        protected ProgressDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
+            super(context, cancelable, cancelListener);
+        }
     }
 
 }

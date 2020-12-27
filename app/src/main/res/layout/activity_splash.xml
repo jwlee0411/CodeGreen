@@ -8,36 +8,36 @@
     android:padding="16dp">
 
     <TextView
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/jua"
         android:text="@string/app_name"
         android:textColor="@color/green_03"
         android:textSize="52dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/gridlayout"
-        />
+        app:layout_constraintBottom_toTopOf="@+id/gridlayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <GridLayout
         android:id="@+id/gridlayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
         android:columnCount="2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:orientation="horizontal"
         android:padding="16dp"
-        >
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
 
         <Button
-            android:layout_gravity="center"
             android:id="@+id/buttonBarcode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginRight="32dp"
             android:layout_marginBottom="32dp"
             android:background="@drawable/btn_background"
@@ -46,42 +46,43 @@
             android:text="바코드 인식"
             android:textColor="@color/white"
             android:textSize="18sp" />
+
         <Button
             android:id="@+id/buttonPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/btn_background"
+            android:drawableTop="@drawable/image_search"
             android:fontFamily="@font/jua"
             android:text="사물 인식"
-            android:drawableTop="@drawable/image_search"
-            android:background="@drawable/btn_background"
             android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:layout_marginBottom="32dp" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/buttonRecent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/btn_background"
+            android:drawableTop="@drawable/bar_chart_24"
             android:fontFamily="@font/jua"
             android:text="내역 조회"
-            android:drawableTop="@drawable/bar_chart_24"
-            android:background="@drawable/btn_background"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:layout_marginBottom="32dp"/>
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/buttonSetting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/jua"
-            android:text="설정"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="32dp"
             android:background="@drawable/btn_background"
             android:drawableTop="@drawable/settings"
+            android:fontFamily="@font/jua"
+            android:text="설정"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="32dp"/>
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/buttonJumin"
