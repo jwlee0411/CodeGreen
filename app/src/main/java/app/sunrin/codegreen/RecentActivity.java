@@ -960,6 +960,9 @@ public class RecentActivity extends AppCompatActivity {
                 else {
                     plAge=7;
                 }
+
+                if(!getUserSex) plAge+=8;
+
                 System.out.println("유저 나이대");
                 System.out.println(plAge);
 

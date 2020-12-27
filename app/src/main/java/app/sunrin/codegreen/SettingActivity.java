@@ -9,14 +9,18 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
@@ -169,6 +173,22 @@ public class SettingActivity extends AppCompatActivity{
                         public void onClick(DialogInterface dialog, int which) {
                             preferences.edit().putBoolean("getLogined", false).commit();
                             Toast.makeText(getApplicationContext(),"회원 탈퇴가 완료되었습니다.",Toast.LENGTH_LONG).show();
+
+                            FirebaseDatabase database2 = FirebaseDatabase.getInstance();
+                            DatabaseReference myRef2 = database2.getReference("userNum");
+                            myRef2.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    int value = snapshot.getValue(Integer.class);
+                                    value--;
+                                    myRef2.setValue(value);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
 
 
 
