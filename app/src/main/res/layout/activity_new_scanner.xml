@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,35 +7,92 @@
     tools:context=".NewScannerActivity">
 
     <TextView
+        android:id="@+id/classifytext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/classifytext"
         android:layout_above="@+id/img"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp"
-        android:text="Click below to select a Image"
-        android:textStyle="bold"
-        android:textSize="20dp">
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/nanum_bold"
+        android:text="이미지를 선택하세요."
+        android:textSize="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView6"
+        app:layout_constraintStart_toEndOf="@+id/textView6">
 
     </TextView>
-    <ImageView
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_centerVertical="true"
-        android:src="@color/green_02"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/img">
-    </ImageView>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/classify"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/img"
-        android:layout_margin="50dp"
-        android:text="Classify"
-        android:background="#fff"
-        android:textColor="#000">
-    </Button>
 
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:src="@color/green_02"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/classifytext"></ImageView>
+
+    <Button
+        android:id="@+id/classify"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="50dp"
+        android:layout_marginTop="8dp"
+        android:background="#fff"
+        android:text="분석하기"
+        android:textColor="#000"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/img"
+        app:layout_constraintStart_toStartOf="@+id/img"
+        app:layout_constraintTop_toBottomOf="@+id/img"></Button>
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="56dp"
+        android:fontFamily="@font/nanum_bold"
+        android:text="상품명 : "
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/nanum_bold"
+        android:text="분리수거 방법 : "
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/classify" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_new"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/img"
+        app:layout_constraintStart_toStartOf="@+id/textView19"
+        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/normal_white" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

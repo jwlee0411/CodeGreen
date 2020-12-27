@@ -40,6 +40,8 @@ public class TrashActivity extends AppCompatActivity {
     String[] locationSet;
     ProgressDialog progressDialog;
 
+
+    boolean isAdded = false;
     boolean getOutLoop = false;
     int firebaseCount = 0;
 
@@ -132,23 +134,23 @@ public class TrashActivity extends AppCompatActivity {
                             path[3] = "trash/records/" + tempVal + "/미수거일";
                             path[4] = "trash/records/" + tempVal + "/배출장소";
                             path[5] = "trash/records/" + tempVal + "/생활쓰레기배출방법";
-                            path[6] = "trash/records/" + tempVal + "/생활쓰레기배출시작시각";
-                            path[7] = "trash/records/" + tempVal + "/생활쓰레기배출요일";
+                            path[7] = "trash/records/" + tempVal + "/생활쓰레기배출시작시각";
+                            path[6] = "trash/records/" + tempVal + "/생활쓰레기배출요일";
                             path[8] = "trash/records/" + tempVal + "/생활쓰레기배출종료시각";
 
                             path[9] = "trash/records/" + tempVal + "/음식물쓰레기배출방법";
-                            path[10] = "trash/records/" + tempVal + "/음식물쓰레기배출시작시각";
-                            path[11] = "trash/records/" + tempVal + "/음식물쓰레기배출요일";
+                            path[11] = "trash/records/" + tempVal + "/음식물쓰레기배출시작시각";
+                            path[10] = "trash/records/" + tempVal + "/음식물쓰레기배출요일";
                             path[12] = "trash/records/" + tempVal + "/음식물쓰레기배출종료시각";
 
                             path[13] = "trash/records/" + tempVal + "/일시적다량폐기물배출방법";
-                            path[14] = "trash/records/" + tempVal + "/일시적다량폐기물배출시작시각";
-                            path[15] = "trash/records/" + tempVal + "/일시적다량폐기물배출요일";
+                            path[15] = "trash/records/" + tempVal + "/일시적다량폐기물배출시작시각";
+                            path[14] = "trash/records/" + tempVal + "/일시적다량폐기물배출요일";
                             path[16] = "trash/records/" + tempVal + "/일시적다량폐기물배출종료시각";
 
                             path[17] = "trash/records/" + tempVal + "/재활용품배출방법";
-                            path[18] = "trash/records/" + tempVal + "/재활용품배출시작시간";
-                            path[19] = "trash/records/" + tempVal + "/재활용품배출요일";
+                            path[19] = "trash/records/" + tempVal + "/재활용품배출시작시간";
+                            path[18] = "trash/records/" + tempVal + "/재활용품배출요일";
                             path[20] = "trash/records/" + tempVal + "/재활용품배출종료시각";
 
 
@@ -159,10 +161,19 @@ public class TrashActivity extends AppCompatActivity {
                                     String value = snapshot.getValue(String.class);
                                     if (value == null) {
 
-                                    } else if (value.equals("없음")) {
+                                    } else if (value.equals("없음"))
+                                    {
 
-                                    } else {
+                                    }
+                                    else if(isAdded)
+                                    {
+
+                                    }
+
+                                    else
+                                    {
                                         firebaseCount++;
+                                        isAdded = true;
 
                                         itemTrash.setRecycle(value, 0);
 
@@ -198,6 +209,7 @@ public class TrashActivity extends AppCompatActivity {
                                 public void onCancelled(@NonNull DatabaseError error) {
 
                                 }
+
                             });
 
 
