@@ -139,21 +139,33 @@ public class SplashActivity  extends AppCompatActivity {
             checkRunTimePermission();
         }
 
-
-
-
-
         gpstracker = new Gpstracker(SplashActivity.this);
 
         double latitude = gpstracker.getLatitude();
         double longitude = gpstracker.getLongitude();
 
         String address = getCurrentAddress(latitude, longitude);
+
+
         SharedPreferences preferencesLocation = getSharedPreferences("location", 0);
         SharedPreferences.Editor editorLocation = preferencesLocation.edit();
         editorLocation.putString("location", address);
         System.out.println(address);
         editorLocation.commit();
+
+//        SharedPreferences preferences = getSharedPreferences("isAppFirstStarted", 0);
+//        if(!preferences.getBoolean("started", false)) {
+//            startActivity(new Intent(this, TrashActivity.class));
+//            preferences.edit().putBoolean("started", true).commit();
+//        }
+//
+//        else
+//        {
+//
+//        }
+
+
+
 
         //Toast.makeText(SettingActivity.this, "현재위치 \n위도 " + latitude + "\n경도 " + longitude, Toast.LENGTH_LONG).show();
 

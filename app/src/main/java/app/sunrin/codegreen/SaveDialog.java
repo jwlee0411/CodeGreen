@@ -30,6 +30,7 @@ public class SaveDialog extends AppCompatActivity {
     String recycle = "";
     DatabaseReference myRef;
 
+    Intent intent;
 
     CheckBox[] checkboxes = new CheckBox[9];
 
@@ -103,6 +104,9 @@ public class SaveDialog extends AppCompatActivity {
                     reference.setValue(recycle);
                     Toast.makeText(context, "등록되었습니다.", Toast.LENGTH_SHORT).show();
 
+                    intent = new Intent(context, AfterScanActivity.class);
+                    context.startActivity(intent);
+                    //context.finish();
                     dlg.dismiss();
 
                 }

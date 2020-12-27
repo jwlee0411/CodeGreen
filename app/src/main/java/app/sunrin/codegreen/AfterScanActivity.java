@@ -538,10 +538,30 @@ public class AfterScanActivity extends AppCompatActivity {
 
 
                 Button buttonSave2 = findViewById(R.id.buttonSave2);
-                buttonSave2.setOnClickListener(v -> {
-                    SaveDialog saveDialog = new SaveDialog(AfterScanActivity.this);
-                    saveDialog.callFunction(KANcode);
-                });
+
+                System.out.println(KANcode);
+                if(KANcode==null)
+                {
+                    //Toast.makeText(getApplicationContext(), "재활용 정보를 등록할 수 없는 상품입니다.", Toast.LENGTH_SHORT).show();
+                    buttonSave2.setVisibility(View.INVISIBLE);
+                }
+                else if(KANcode.equals("") || KANcode.equals("0000000"))
+                {
+                    buttonSave2.setVisibility(View.INVISIBLE);
+                    //Toast.makeText(getApplicationContext(), "재활용 정보를 등록할 수 없는 상품입니다.", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    buttonSave2.setVisibility(View.VISIBLE);
+                    buttonSave2.setOnClickListener(v -> {
+                        SaveDialog saveDialog = new SaveDialog(AfterScanActivity.this);
+                        saveDialog.callFunction(KANcode);
+                    });
+
+                }
+
+
+
 
 
                 db_category = dataSnapshot.getValue(String.class);
@@ -783,12 +803,10 @@ public class AfterScanActivity extends AppCompatActivity {
                 }
                 else
                 {
-
                         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                         sharingIntent.setType("text/plain");
-                        sharingIntent.putExtra(Intent.EXTRA_TEXT, "[상품명]\n" + productName.getText().toString() + "\n\n[카테고리]" + productCategory.getText().toString().substring(2) + "\n[분리배출 방법]" + shareString );
+                        sharingIntent.putExtra(Intent.EXTRA_TEXT, "[상품명]\n" + productName.getText().toString() + "\n\n[카테고리]\n" + productCategory.getText().toString() + "\n[분리배출 방법]" + shareString );
                         startActivity(sharingIntent);
-
                 }
 
             } else {
@@ -815,7 +833,7 @@ public class AfterScanActivity extends AppCompatActivity {
                     sharingIntent.setType("text/plain");
                    // sharingIntent.putExtra(Intent.EXTRA_TEXT, result);
 
-                    sharingIntent.putExtra(Intent.EXTRA_TEXT, "[상품명]\n" + productName.getText().toString() + "\n\n[카테고리]" + productCategory.getText().toString().substring(2) + "\n[분리배출 방법]" + shareString + "\n\n[구매링크]" + result);
+                    sharingIntent.putExtra(Intent.EXTRA_TEXT, "[상품명]\n" + productName.getText().toString() + "\n\n[카테고리]\n" + productCategory.getText().toString() + "\n[분리배출 방법]" + shareString + "\n\n[구매링크]" + result);
                     startActivity(sharingIntent.createChooser(sharingIntent, "공유하기"));
                 }
 

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -94,10 +95,18 @@ public class NewScannerActivity extends AppCompatActivity {
             outputProbabilityBuffer = TensorBuffer.createFixedSize(probabilityShape, probabilityDataType);
             probabilityProcessor = new TensorProcessor.Builder().add(getPostprocessNormalizeOp()).build();
 
-            inputImageBuffer = loadImage(bitmap);
+            if(bitmap==null)
+            {
+                Toast.makeText(this, "이미지를 등록해주세요!", Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                inputImageBuffer = loadImage(bitmap);
 
-            tflite.run(inputImageBuffer.getBuffer(),outputProbabilityBuffer.getBuffer().rewind());
-            showresult();
+                tflite.run(inputImageBuffer.getBuffer(),outputProbabilityBuffer.getBuffer().rewind());
+                showresult();
+            }
+
         });
 
 
@@ -106,7 +115,15 @@ public class NewScannerActivity extends AppCompatActivity {
 
     private TensorImage loadImage(final Bitmap bitmap) {
         // Loads bitmap into a TensorImage.
-        inputImageBuffer.load(bitmap);
+
+        try {
+            inputImageBuffer.load(bitmap);
+        }
+        catch (NullPointerException e)
+        {
+            Toast.makeText(this, "이미지를 등록해주세요!", Toast.LENGTH_LONG).show();
+        }
+
 
         // Creates processor for the TensorImage.
         int cropSize = Math.min(bitmap.getWidth(), bitmap.getHeight());

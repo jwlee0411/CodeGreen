@@ -1,5 +1,6 @@
 package app.sunrin.codegreen;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -67,49 +68,57 @@ public class TrashActivity extends AppCompatActivity {
         SharedPreferences preferencesLocation = getSharedPreferences("location", 0);
 
         locationSet = preferencesLocation.getString("location", "").split(" ");
-        System.out.println(locationSet[0]);
-        textSiDo.setText(locationSet[1]);
-        textSiGunGu.setText(locationSet[2]);
-
-
-        floatingActionButton.setOnClickListener(v -> {
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_VIEW);
-            if(locationSet[3].contains("동"))
-            {
-                intent.setData(Uri.parse("geo:0,0?q=" + locationSet[3] + " 주민센터"));
-                startActivity(intent);
-            }
-            else
-            {
-                intent.setData(Uri.parse("geo:0,0?q=" + locationSet[4] + " 주민센터"));
-                startActivity(intent);
-            }
-        });
-
-
-
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        for(i = 1; i<trashLocationCount; i++)
+        if(locationSet.length<3){
+            progressDialog.dismiss();
+            Toast.makeText(this, "쓰레기 배출 관련 정보가 없습니다!", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(TrashActivity.this, SplashActivity.class);
+            startActivity(intent);
+            finish();
+                
+        }
+        else
         {
+            System.out.println(locationSet[0]);
+            textSiDo.setText(locationSet[1]);
+            textSiGunGu.setText(locationSet[2]);
 
 
-            int tempVal = i;
+            floatingActionButton.setOnClickListener(v -> {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                if(locationSet[3].contains("동"))
+                {
+                    intent.setData(Uri.parse("geo:0,0?q=" + locationSet[3] + " 주민센터"));
+                    startActivity(intent);
+                }
+                else
+                {
+                    intent.setData(Uri.parse("geo:0,0?q=" + locationSet[4] + " 주민센터"));
+                    startActivity(intent);
+                }
+            });
 
 
-            reference = database.getReference("trash/records/" + i + "/시군구명");
-            reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String value = snapshot.getValue(String.class);
-                    System.out.println("$" + value);
 
 
-                    //System.out.println(value);
-                    System.out.print(value.equals(locationSet[1]) || value.equals(locationSet[2]) || value.equals(locationSet[3]));
-                    if(value.equals(locationSet[1]) || value.equals(locationSet[2]) || value.equals(locationSet[3]))
-                    {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            for(i = 1; i<trashLocationCount; i++) {
+
+
+                int tempVal = i;
+
+
+                reference = database.getReference("trash/records/" + i + "/시군구명");
+                reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String value = snapshot.getValue(String.class);
+                        System.out.println("$" + value);
+
+
+                        //System.out.println(value);
+                        System.out.print(value.equals(locationSet[1]) || value.equals(locationSet[2]) || value.equals(locationSet[3]));
+                        if (value.equals(locationSet[1]) || value.equals(locationSet[2]) || value.equals(locationSet[3])) {
 
 
                             System.out.println("이거 된거임");
@@ -143,28 +152,21 @@ public class TrashActivity extends AppCompatActivity {
                             path[20] = "trash/records/" + tempVal + "/재활용품배출종료시각";
 
 
-
                             reference = database.getReference(path[0]);
                             reference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     String value = snapshot.getValue(String.class);
-                                    if(value==null)
-                                    {
+                                    if (value == null) {
 
-                                    }
-                                    else if(value.equals("없음"))
-                                    {
+                                    } else if (value.equals("없음")) {
 
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         firebaseCount++;
 
                                         itemTrash.setRecycle(value, 0);
 
-                                        for(int k =  1; k<viewCount; k++)
-                                        {
+                                        for (int k = 1; k < viewCount; k++) {
                                             reference = database.getReference(path[k]);
                                             System.out.println("$" + path[k]);
                                             int finalK = k;
@@ -183,8 +185,6 @@ public class TrashActivity extends AppCompatActivity {
                                             });
 
 
-
-
                                         }
 
                                         data.add(itemTrash);
@@ -201,38 +201,31 @@ public class TrashActivity extends AppCompatActivity {
                             });
 
 
+                        }
 
 
+                        if (trashLocationCount - 1 == tempVal) {
 
+                            checkView();
+                            System.out.println("ㅋㅋㅋ" + firebaseCount);
 
                         }
 
 
-
-
-
-                    if(trashLocationCount-1==tempVal)
-                    {
-
-                        checkView();
-                        System.out.println("ㅋㅋㅋ"+ firebaseCount);
-
                     }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-
-
-
+                    }
+                });
+            }
         }
+
+
+
+
+
 
 
 
