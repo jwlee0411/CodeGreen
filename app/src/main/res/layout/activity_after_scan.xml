@@ -140,7 +140,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:fontFamily="@font/nanum_regular"
-            android:text="저장하기"
+            android:text="버리기"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="@+id/recycling"
             app:layout_constraintTop_toBottomOf="@+id/recycling" />
