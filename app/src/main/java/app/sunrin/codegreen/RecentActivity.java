@@ -3,10 +3,12 @@ package app.sunrin.codegreen;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -119,12 +122,26 @@ public class RecentActivity extends AppCompatActivity {
     TextView txtUserSex;
     TextView txtUserAge;
 
+    TextView textMyTrash;
+    TextView textAllTrash;
+
+    TextView textTrashNewAll;
+    TextView textTrashNewAll2;
+
     ProgressDialog progressDialog;
 
 
     String[] data;
     String[][] newData;
     String[][] myData;
+
+    int myTrash = 0;
+    int allTrash = 0;
+
+    int allUserTrash = 0;
+    int allUserMonthlyTrash = 0;
+
+    int userCount = 0;
 
     int[] monthTotal= {0,0,0,0,0,0,0,0,0,0,0,0};
 
@@ -199,7 +216,7 @@ public class RecentActivity extends AppCompatActivity {
             System.out.println(data[0]);
 
 
-
+            System.out.println("MONTH" + nowMonth);
             for(int i = 0; i<data.length; i++)
             {
                 myData[i] = data[i].split("@");
@@ -207,7 +224,19 @@ public class RecentActivity extends AppCompatActivity {
                 System.out.println("12345" + myData[i][3]);
                 System.out.println("@" + Arrays.toString(myData[i]));
 
+                if(nowMonth == Integer.parseInt(myData[i][3]))
+                {
+                    myTrash++;
+                }
+                allTrash++;
+
             }
+
+
+
+
+
+
 
 
             //모든 유저의 재활용 정보 불러오기
@@ -231,6 +260,7 @@ public class RecentActivity extends AppCompatActivity {
                     myRef.addChildEventListener(new ChildEventListener() {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                            userCount++;
                             String valueAll = snapshot.getValue().toString();
                             valueAll = valueAll.replace("{", "").replace("}", "")
                                     .replace("userSex=", "")
@@ -257,7 +287,7 @@ public class RecentActivity extends AppCompatActivity {
                             if(totalLength == userNum)
                             {
                                 for (int i = 0; i < totalLength; i++) {
-                                    System.out.println(Arrays.toString(finalValue[i]));
+                                    System.out.println("새로출력함 ㅇㅇ" + Arrays.toString(finalValue[i]));
                                     if(!finalValue[i][value].contains("★"))
                                     {
 
@@ -277,6 +307,11 @@ public class RecentActivity extends AppCompatActivity {
                                         for (int j = 0; j < data.length; j++) {
                                             System.out.println(data[j]);
                                             tempData = data[j].split("@");
+                                            if(tempData[3].contains(Integer.toString(nowMonth)))
+                                            {
+                                                allUserMonthlyTrash++;
+                                            }
+                                            allUserTrash++;
                                             checkWhoTrash(i);
                                         }
 
@@ -291,6 +326,11 @@ public class RecentActivity extends AppCompatActivity {
                                 setPieChartTotal();
 
                                 setPieChartAge();
+
+                                setTextView();
+
+//
+
 
                             }
 
@@ -355,6 +395,23 @@ public class RecentActivity extends AppCompatActivity {
 //        setPieChart();
 
 
+    private void setTextView()
+    {
+
+            textMyTrash = findViewById(R.id.textViewMy);
+            textMyTrash.setText(Integer.toString(myTrash));
+
+            textAllTrash = findViewById(R.id.textViewMyAll);
+            textAllTrash.setText(Integer.toString(allTrash));
+
+            textTrashNewAll = findViewById(R.id.textViewAll);
+            textTrashNewAll.setText(Integer.toString(allUserMonthlyTrash/userCount));
+
+            textTrashNewAll2 = findViewById(R.id.textViewAll2);
+            textTrashNewAll2.setText(Integer.toString(allUserTrash/userCount));
+
+
+    }
     private void showArray()
     {
         System.out.println(totalData[0][0]);

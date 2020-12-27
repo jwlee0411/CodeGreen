@@ -58,6 +58,11 @@ public class SaveDialog extends AppCompatActivity {
             Toast.makeText(context, "재활용 정보를 등록할 수 없는 상품입니다.", Toast.LENGTH_SHORT).show();
             dlg.dismiss();
         }
+        else if(KANcode.equals("") || KANcode.equals("0000000"))
+        {
+            Toast.makeText(context, "재활용 정보를 등록할 수 없는 상품입니다.", Toast.LENGTH_SHORT).show();
+            dlg.dismiss();
+        }
         else
         {
             checkboxes[0] = dlg.findViewById(R.id.checkRecycle11);
