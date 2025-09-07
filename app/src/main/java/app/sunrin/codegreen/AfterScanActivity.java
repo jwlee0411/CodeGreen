@@ -235,30 +235,49 @@ public class AfterScanActivity extends AppCompatActivity {
                 //상품명 가져오기 => nameNew에 저장
                 Element name = document.select("h3").first();
                 System.out.println(name);
+                assert name != null;
                 String nameNew = name.toString();
                 nameNew = nameNew.replace("<h3>", "").replace("</h3>", "");
 
 
                 //KAN코드 가져오기 => kanNew에 저장
                 Element kan = document.select("tr").first();
+                assert kan != null;
                 String kanNew = kan.toString();
                 kanNew = kanNew.replace("<tr>", "").replace("<th>KAN 상품분류코드</th>", "").replace("&gt;", ">").replace("</tr>", "").replace("<td>", "").replace("</td>", "");
 
 
                 //상품 카테고리 가져오기 => categoryNew에 저장
                 Element category = document.select("tr[class=b_line]").first();
+                assert category != null;
                 String categoryNew = category.toString();
                 categoryNew = categoryNew.replace("<tr class=\"b_line\">", "").replace("<th>KAN 상품분류</th>", "").replace("&gt;", ">").replace("</tr>", "").replace("<td>", "").replace("</td>", "");
 
 
                 //사진 가져오기 => photoNew에 저장
-                Element photo = document.select("ul[class=btn_img]").first();
-                String photoNew = photo.toString();
+                Element photo = document.select("div.pv_img img#marketImg").first();
+                String photoNew = "";
 
-                String target = "/pr/";
-                int target_num = photoNew.indexOf(target);
-                photoNew = Shorturl + photoNew.substring(target_num, (photoNew.substring(target_num).indexOf("\',\'") + target_num));
-                photoNew = photoNew.replace("&amp;", "&");
+                if (photo != null) {
+//                    photoNew = photo.toString();
+//                    String target = "/pr/";
+//                    int target_num = photoNew.indexOf(target);
+//                    photoNew = Shorturl + photoNew.substring(target_num, (photoNew.substring(target_num).indexOf("\',\'") + target_num));
+//                    photoNew = photoNew.replace("&amp;", "&");
+                    photoNew = photo.attr("src");
+                    photoNew = photoNew.replace("&amp;", "&");
+                    // 필요 시 Shorturl 앞에 붙이는 경우
+                    if (!photoNew.startsWith("http")) {
+                        photoNew = Shorturl + photoNew;
+                    }
+
+                } else {
+                    // photo가 없을 때 기본값 처리
+                    photoNew = " ";  // 또는 "이미지가 없습니다." 등 원하는 값
+                }
+
+
+
                 return nameNew + "★" + kanNew + "★" + categoryNew + "★" + photoNew;
 
 
@@ -445,7 +464,8 @@ public class AfterScanActivity extends AppCompatActivity {
                 productName.setText(results[0]);
 
 
-                KANcode = results[kan].substring(7, 14);
+                KANcode = results[kan].substring(5, 12);
+                //KANcode = results[kan];
                 loadDb();
                 loadEco();
 
@@ -455,7 +475,13 @@ public class AfterScanActivity extends AppCompatActivity {
 
                 TextView textView = findViewById(R.id.debug);
                 textView.setText(results[photo]);
-                new LoadImage().execute(results[photo]);
+                try {
+                    new LoadImage().execute(results[photo]);
+                } catch (Exception ignored) {
+
+                }
+                System.out.println(results[kan]);
+
                 saveData = "★" + results[photo] + "@" + results[name] + "@" + results[category] + "@" + currentDate + "@" + results[kan] + "@";
                 saveData = saveData.replaceAll("  ", "");
 
